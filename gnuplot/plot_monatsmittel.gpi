@@ -1,0 +1,10 @@
+set terminal png
+set output "daten_monatsmittel.png"
+set xrange [1 to 12] # 12 monate
+
+plot "daten_monatsmittel" using 1:2 \
+       title "Monatsmitteltemperatur" smooth cspline \
+       with lines, \
+     "daten_monatsmittel" using 1:2 \
+       title "" \
+       with points

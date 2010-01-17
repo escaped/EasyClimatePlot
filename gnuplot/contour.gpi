@@ -1,0 +1,32 @@
+# einfacher contourplot
+# enhanced ermoeglicht erweiterte textdarstellung
+set terminal png size 1024,786 enhanced
+set output "a_plotted_contour.png"
+
+set contour
+set dgrid3d
+
+set title "Lenkoran"
+
+# wieviele linien fuer die projektion:
+set cntrparam levels 10
+
+# wohin mit der legende
+#set key outside right bottom
+
+set xtics 1
+set ytics 2
+
+set xtics nomirror
+set ytics nomirror
+
+# z tics sollten nicht sichtbar sein
+unset ztics
+
+# monat, mittl. temperatur und mittl. niederschlg.
+
+set contour base
+set view 0,0
+unset surface
+
+splot "daten_monatsmittel" using 1:2:6 with lines
