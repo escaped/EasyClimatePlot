@@ -1,17 +1,16 @@
 #!/bin/bash    
 # von dan
 
-if [ ! -e "Diagramme" ];
+OUTPUTPATH="Diagramme"
+
+if [ ! -e $OUTPUTPATH ];
 then
-  mkdir Diagramme
+  mkdir $OUTPUTPATH
 fi
 
-for file in *.dat
-do
-  filename=$file
-  echo Trying to plot $file ...
-  extension=${filename##*.}
-  name=${filename%.*}
-  title=$(grep Title: ${filename} | sed 's|.*Title:\(.*\)|\1|g') 
-  m4 -DNAME=${name} -DFILE=${file} -DTITLE="${title}" multiplot.gpi | gnuplot
-done 
+filename=$1
+echo Trying to plot $filename ...
+extension=${filename##*.}
+name=$(basename ${filename%.*})
+title=$(grep Title: ${filename} | sed 's|.*Title:\(.*\)|\1|g') 
+m4 -DNAME=${name} -DFILE=${filename} -DTITLE="${title}" -DOUTPUTPATH=${OUTPUTPATH} gnuplot/multiplot.gpi | gnuplot

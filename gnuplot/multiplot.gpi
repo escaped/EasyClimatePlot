@@ -1,6 +1,6 @@
 set term postscript eps enhanced
 set title "TITLE"
-set output "Diagramme/NAME.eps"
+set output "OUTPUTPATH/NAME.eps"
 
 ## allgemeines
 set style fill solid #border -1
