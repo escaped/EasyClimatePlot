@@ -1,6 +1,6 @@
-set term png 
+set term FORMAT
 set title "TITLE"
-set output "OUTPUTPATH/NAME.png"
+set output "OUTPUTPATH/NAME.EXTENSION"
 
 ## allgemeines
 set style fill solid #border -1
@@ -56,6 +56,7 @@ set xtics nomirror
 
 set y2tics 0,20,100 tc rgbcolor "#000000"
 set y2range [ 0 : 99 ]
+set y2tics nomirror
 
 set xlabel "Monat"
 set xmtics
