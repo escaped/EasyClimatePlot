@@ -387,12 +387,11 @@ class Config {
 				throw new Exception('Error: File is empty'."\n");
 				
 			$years = array();			
-			//$first = true;
 			foreach ($this->content as $line) {
-				/*if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
-				}*/
+				}
 			
 				// parse each line
 				$data = explode(',',$line);
@@ -486,13 +485,12 @@ class Config {
 			$sum = array();
 			$counter = array();
 			$process = new DataProcessing();
-		//	$first = true;
 			echo "-- parse data\n";
 			foreach ($this->content as $line) {
-				/*if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
-				}*/
+				}
 				$data = explode(',', $line); 
 				if ($data[2] < $this->config->starttime || $data[2] > $this->config->endtime)
 					continue; // ignore line
@@ -548,13 +546,12 @@ class Config {
 		function extractData() {
 			global $DATA_TYPES;
 			$process = new DataProcessing();
-			//$first = true;
 			echo "-- parse data\n";
 			foreach ($this->content as $line) {
-				/*if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
-				}*/
+				}
 				$data = explode(',', $line); 
 				if ($data[2] < $this->config->starttime || $data[2] > $this->config->endtime)
 					continue; // ignore line
