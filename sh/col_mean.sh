@@ -16,7 +16,7 @@ fi
 SUM=0
 INPUTLENGTH=0
 cat $FILENAME > tmp
-for val in $(awk '{print $ARGV[2];}' tmp $COL)
+for val in $(cat tmp | sed '/#/d' | sed 's/  */\t/g' | cut -f $COL)
 do
   SUM=$(echo "$SUM + $val" | bc)
   INPUTLENGTH=$(echo "$INPUTLENGTH+1" | bc)
