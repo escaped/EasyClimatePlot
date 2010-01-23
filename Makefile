@@ -5,6 +5,7 @@
 vpath %.dat data
 vpath %.eps Diagramme
 vpath %.pdf Diagramme
+vpath %.tex Tex_Output
 
 %.eps: %.dat
 	sh/plot_normal.sh $? eps
@@ -14,6 +15,9 @@ vpath %.pdf Diagramme
 
 %.png: %.dat
 	sh/plot_normal.sh $? png
+
+%.tex: %.pdf %.dat
+	sh/create_tex.sh $^ $@
 
 clean: 
 	-rm Diagramme/*
