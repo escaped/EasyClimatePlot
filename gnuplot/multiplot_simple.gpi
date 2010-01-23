@@ -1,4 +1,7 @@
 # almost exact copy of multiplot.gpi, but doesn't plot as much cols
+# hier mal nachschauen: http://gnuplot.sourceforge.net/demo_4.3/transparent.html
+
+
 set term FORMAT
 set title "TITLE"
 set output "OUTPUTPATH/NAME.EXTENSION"
@@ -64,6 +67,6 @@ set xmtics
 set ylabel "Temperatur (°C)" #tc rgbcolor "#FF0000" font "Arial,18"
 set y2label "Niederschlag (mm)" #tc rgbcolor "#006600"
 
-plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl. Niederschlag",\
+plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl.  Niederschlag",\
      "FILE" using 1:3:xtic(1) with lines lc -1 lw 1.5 title "mittl. Temperatur"
 set nomultiplot

@@ -17,7 +17,7 @@ PRCPSUM=$(sh/col_sum.sh $DATAFILE 2)
 
 # TODO: $FILE should point to the right path...
 cat > Tex_Output/$OUTPUT << _EOF
-\includegraphics[scale=0.8]{Bilder/eigene/Diagramme/$FILE}
+\includegraphics[scale=0.8]{Bilder/eigene/$FILE}
 \\begin{block}
   \\tiny
   \\centering
