@@ -387,10 +387,9 @@ class Config {
 				throw new Exception('Error: File is empty'."\n");
 				
 			$years = array();			
-			$first = true;
 			foreach ($this->content as $line) {
-				if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
 				}
 			
@@ -486,11 +485,10 @@ class Config {
 			$sum = array();
 			$counter = array();
 			$process = new DataProcessing();
-			$first = true;
 			echo "-- parse data\n";
 			foreach ($this->content as $line) {
-				if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
 				}
 				$data = explode(',', $line); 
@@ -548,11 +546,10 @@ class Config {
 		function extractData() {
 			global $DATA_TYPES;
 			$process = new DataProcessing();
-			$first = true;
 			echo "-- parse data\n";
 			foreach ($this->content as $line) {
-				if ($first) {
-					$first = false;
+				if (!preg_match('/.*?[0-9].*?,/', $line)) {
+					echo '--- #Skipping invalid line.'."\n";
 					continue;
 				}
 				$data = explode(',', $line); 
@@ -594,8 +591,6 @@ class Config {
 			}
 			if ($this->result) {
 				$header = '#Date';
-				if ($this->config->mode == 'm')
-					$header .= "\tMonth";
 
 				foreach ($this->config->types as $type => $v) {
 					$header .= "\t".$type;
@@ -603,12 +598,9 @@ class Config {
 				fwrite($fh, $header."\n");
 			
 				// write data
-				$MONTH_STR = array(1 => 'J',2 => 'F',3 => 'M',4 => 'A',5 => 'M',6 => 'J',7 => 'J',8 => 'A',9 => 'S',10 => 'O',11 => 'N',12 => 'D');
-			
 				foreach ($this->result as $index => $v1) {
 					fwrite($fh, $index);
-					if ($this->config->mode = 'm')
-						fwrite($fh, "\t".$MONTH_STR[$index]);
+
 					$count = 0;
 					foreach ($this->result[$index] as $value) {
 						$tmp = (is_numeric($value))?round($value, $this->config->digits):$value;
