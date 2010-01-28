@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>NOAA Parser</title>
-		<meta name="author" content="Nathan Borror">
+		<meta name="author" content="Alexander Frenzel">
  		<link rel="stylesheet" href="css/boilerplate.css" type="text/css" media="screen" charset="utf-8">
 		<link rel="stylesheet" href="css/plugins.css" type="text/css" media="screen" charset="utf-8">
 		<!--[if lte IE 6]>
