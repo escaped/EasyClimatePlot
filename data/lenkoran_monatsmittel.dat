@@ -1,15 +1,16 @@
-# Title: Klima Lenkorans (Reihe: 1971 - 1990. Monatsdurchschnittswerte)
-# reihe von 1971 - 1990 nach Klimate der Welt.
+#Title: Klima Lenkorans (Reihe: 1971 - 1990. Monatsdurchschnittswerte)
+#Land: Aserbaidschan
+#reihe von 1971 - 1990 nach Klimate der Welt.
 #
-# beschreibung:
-# + 1. Spalte: Monat
-# + 2. Spalte: Mittlere Temperatur in °C
-# + 3. Spalte: Mittlere maximale Temperatur in °C
-# + 4. Spalte: Mittlere minimale Temperatur in °C
-# + 5. Spalte: Dampfdruck in hPa
-# + 6. Spalte: Niederschlag in mm
-# + 7. Spalte: Tage mit >= 1 mm Niederschlag
-# + 8. Spalte: Sonnenscheindauer in Stunden [h]
+#beschreibung:
+#+ 1. Spalte: Monat
+#+ 2. Spalte: Mittlere Temperatur in °C
+#+ 3. Spalte: Mittlere maximale Temperatur in °C
+#+ 4. Spalte: Mittlere minimale Temperatur in °C
+#+ 5. Spalte: Dampfdruck in hPa
+#+ 6. Spalte: Niederschlag in mm
+#+ 7. Spalte: Tage mit >= 1 mm Niederschlag
+#+ 8. Spalte: Sonnenscheindauer in Stunden [h]
 #
 
 1  3.4  7.2  0    6.4  91   10  106
