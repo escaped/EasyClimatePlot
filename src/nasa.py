@@ -1,0 +1,2 @@
+class NASA (Plugin):
+  pass
