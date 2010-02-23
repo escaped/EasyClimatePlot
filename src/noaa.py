@@ -51,6 +51,7 @@ class NOAA (Plugin):
     self.retrieveListOfFiles (files)
 
     # convert tmp/noaa to self.data
+
     # saveModelToCacheWithHashIndexFile
     self.data.save ("cache")
   
@@ -60,7 +61,8 @@ class NOAA (Plugin):
   def getUserInput (self):
     self.use_wban = main.dowhile ("Do you want to use WBAN? Yes/No [Default: No]", ['Y','N'])
     print 'Please insert stationnumber: ',
-    self.station_number = sys.stdin.readline ()
+    # read station number and remove \n
+    self.station_number = sys.stdin.readline ().rstrip ()
 
   def getCountryList (self):
     self.retrieveListOfFiles (["ish-history.txt"])
