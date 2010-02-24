@@ -7,6 +7,8 @@ import ftplib
 # time: used to sleep
 import time
 
+import weatherstation
+
 #noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 
 # XXX
@@ -23,7 +25,7 @@ def example ():
 
 def fileExistsInCache (f):
   f = os.path.basename (f)
-  return not os.path.exists ("cache/noaa/%s" %f)
+  return not os.path.exists (os.path.join("cache","noaa", "%s" %f))
 
 class NOAA (Plugin):
   name = "NOAA Plugin"
@@ -80,9 +82,28 @@ class NOAA (Plugin):
       print "Downloading %s........" %filename
       try:
         ftp.retrbinary('RETR %s' %f,
-            open('cache/noaa/%s' %filename, 'w+').write)
+            open(os.path.join ("cache", "noaa", "%s" %filename), 'w+').write)
       except:
         print "%s doesn't exist." %filename
       print "waiting for 2 sec...."
       time.sleep (2)
     ftp.quit ()
+
+  def listAvailableStations (self):
+    # get ish-history
+    self.getCountryList ()
+
+    # read ish-history
+    file = open (os.path.join("cache","noaa", "ish-history.txt"), 'r')
+    content = file.readlines ()
+    file.close ()
+    # delete unneeded lines
+    del content[0:20]
+
+    stations = [weatherstation.WeatherStation (line) for line in content]
+    
+    # TODO weg damit
+    print stations[0].station_name
+
+    return stations
+
