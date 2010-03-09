@@ -33,7 +33,7 @@ class NOAA (Plugin):
   desc = "NOAA Plugin"
   data = {}
 
-  def downloadData (self, start, end):
+  def downloadData (self, start=1929, end=2011):
     # check if subdir tmp/noaa exists
     # createDataModel - read station data from ish-history
     self.data = data.Data (str(self.station_number), (0,0))
