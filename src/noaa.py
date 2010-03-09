@@ -83,6 +83,9 @@ class NOAA (Plugin):
       try:
         ftp.retrbinary('RETR %s' %f,
             open(os.path.join ("cache", "noaa", "%s" %filename), 'w+').write)
+      except IOError:
+        print "Missing directory cache/noaa"
+        sys.exit (-1)
       except:
         print "%s doesn't exist." %filename
       print "waiting for 2 sec...."
