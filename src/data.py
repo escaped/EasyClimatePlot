@@ -34,9 +34,18 @@ class Data:
   def save (self, path):
     cPickle.dump (self, open(os.path.join (path, hashName (self.name)),'w+'))
 
-  def getData (self, category, resolution):
+  def getData (self, category, resolution = 'm'):
     # return the category according to the given resolution
-    return self.data
+    if resolution == 'm':
+        dat = self.data[category]
+        counter = [0,0,0,0,0,0,0,0,0,0,0,0]
+        tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]
+        
+        for key, value in dat:
+            print key
+            print value
+        
+    return None
 
 def loadDataObject (path, name):
   return cPickle.load (os.path.join (path, hashName (name)))

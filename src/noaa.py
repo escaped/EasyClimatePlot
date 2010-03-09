@@ -95,6 +95,7 @@ class NOAA (Plugin):
     for type in CAT:
         self.data.addCategory(type, values[type])
     
+    self.data.getData('temp', 'm')
     print "everything is fine"
     
     # convert tmp/noaa to self.data
