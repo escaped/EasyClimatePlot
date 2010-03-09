@@ -2,6 +2,8 @@
 *.eps
 *.pdf
 *.pyc
+src/tmp
+src/cache
 webform/download/*
 .project
 .pydevproject
