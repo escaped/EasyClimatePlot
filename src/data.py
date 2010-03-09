@@ -1,10 +1,10 @@
 import cPickle
-import md5
+import hashlib
 import os
 
 categories = ['TEMP','MAXTEMP','MINTEMP','WIND','MAXWIND','GUST']
 def hashName (name):
-  return md5.md5 (name).hexdigest ()
+  return hashlib.md5 (name).hexdigest ()
 
 class Data:
   name = ""
