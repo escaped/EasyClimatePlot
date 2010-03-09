@@ -2,7 +2,7 @@ import Gnuplot
 import os
 
 class WalterLieth (Gnuplot):
-  filename = ""
+  ouput_filename = ""
 
   def process (self):
     # plot a walther-lieth diagramm
@@ -74,11 +74,13 @@ class WalterLieth (Gnuplot):
     g('set y2label "Niederschlag (mm)" #tc rgbcolor "#006600"')
 
     # TODO second plot
-    plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl.  Niederschlag",\
-         "FILE" using 1:3:xtic(1) with lines lc -1 lw 1.5 title "mittl. Temperatur"
+    #plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl.  Niederschlag",\
+    #     "FILE" using 1:3:xtic(1) with lines lc -1 lw 1.5 title "mittl. Temperatur"
     g('set nomultiplot')
 
     # TODO save to file
+    # TODO filename
+    g.hardcopy ("%s.png" %self.output_filename)
 
   def getUserInput (self):
     print 'hallo'
