@@ -151,9 +151,6 @@ class NOAA (Plugin):
 
     stations = [weatherstation.WeatherStation (line) for line in content]
     
-    # TODO weg damit
-    print stations[0].station_name
-
     return stations
 
 class MultiDict(dict):

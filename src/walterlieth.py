@@ -3,13 +3,13 @@ import os
 
 class WalterLieth (Gnuplot):
   ouput_filename = ""
+  plot_title = ""
 
   def process (self):
     # plot a walther-lieth diagramm
     g = Gnuplot.Gnuplot ()
 
-    # TODO title
-    g.title("TITLE")
+    g.title(plot_title)
 
     ## configuration
     g('set style fill solid') #border -1
@@ -44,7 +44,7 @@ class WalterLieth (Gnuplot):
     g('unset key')
 
     # TODO first plot
-    plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl. Niederschlag"
+    #plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl. Niederschlag"
     g('unset grid')
 
     #######################
