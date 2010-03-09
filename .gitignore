@@ -1,6 +1,7 @@
 *.png
 *.eps
 *.pdf
+*.pyc
 webform/download/*
 .project
 .pydevproject
