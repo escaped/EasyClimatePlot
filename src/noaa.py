@@ -53,7 +53,7 @@ class NOAA (Plugin):
     self.retrieveListOfFiles (files)
 
     # convert tmp/noaa to self.data
-
+    # TODO insert conversion logic here
     # saveModelToCacheWithHashIndexFile
     self.data.save ("cache")
   
