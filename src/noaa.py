@@ -55,7 +55,7 @@ class NOAA (Plugin):
     # convert tmp/noaa to self.data
     # TODO insert conversion logic here
     # saveModelToCacheWithHashIndexFile
-    self.data.save ("cache")
+    # self.data.save ("cache")
   
   def getData (self):
     return self.data
