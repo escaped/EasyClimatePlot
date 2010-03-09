@@ -4,6 +4,7 @@ import main
 import os
 import sys
 import ftplib
+import gzip
 # time: used to sleep
 import time
 
@@ -20,7 +21,7 @@ def example ():
   no.station_number = 37735
   no.use_wban = True
   no.getCountryList ()
-  no.downloadData ()
+  no.downloadData (1969, 2011)
   return no
 
 def fileExistsInCache (f):
@@ -32,14 +33,15 @@ class NOAA (Plugin):
   desc = "NOAA Plugin"
   data = {}
 
-  def downloadData (self):
+  def downloadData (self, start, end):
     # check if subdir tmp/noaa exists
     # createDataModel - read station data from ish-history
     self.data = data.Data (str(self.station_number), (0,0))
     # download data to tmp/noaa using ftp
     files = []
+    print 'Loading data: %d - %d' %(start, end)
     # TODO use right time range
-    for year in range (1969, 2011):
+    for year in range (start, end):
       # should look like this:
       # decide wether to use WBAN or USAF
       # 998234-99999-2010.op.gz
@@ -51,7 +53,32 @@ class NOAA (Plugin):
       files.append (s)
 
     self.retrieveListOfFiles (files)
+    
+    # unzip and cache data to one file
+    outFilename = "%d-%d-%d.dat" %(self.station_number, start, end)
+    outfile = open(os.path.join("cache", "noaa", outFilename), 'w')
+    print "creating tmp file; %s" %(outFilename)
+    for file in files:
+      print "  appending data from %s" %(file)
+      try:
+        f = gzip.open(os.path.join("cache","noaa", "%s" %os.path.basename (file)), "rb")
+        lines = f.readlines()
+        outfile.write(''.join(lines[1:])) #remove first line
+        f.close()
+      except:
+        print "   (warn) file does not exist"
+    outfile.close()
 
+    # load data into array
+    outfile = open(os.path.join("cache", "noaa", outFilename), 'r')
+    content = outfile.readlines()
+    outfile.close()
+    
+    # parse data
+    
+    
+    
+    
     # convert tmp/noaa to self.data
     # TODO insert conversion logic here
     # saveModelToCacheWithHashIndexFile
