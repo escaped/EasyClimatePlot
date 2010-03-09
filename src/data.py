@@ -2,7 +2,7 @@ import cPickle
 import hashlib
 import os
 
-categories = ['TEMP','MAXTEMP','MINTEMP','WIND','MAXWIND','GUST']
+categories = ['temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
 def hashName (name):
   return hashlib.md5 (name).hexdigest ()
 

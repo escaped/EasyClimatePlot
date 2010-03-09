@@ -55,29 +55,47 @@ class NOAA (Plugin):
     self.retrieveListOfFiles (files)
     
     # unzip and cache data to one file
-    outFilename = "%d-%d-%d.dat" %(self.station_number, start, end)
-    outfile = open(os.path.join("cache", "noaa", outFilename), 'w')
-    print "creating tmp file; %s" %(outFilename)
+    lines = []
     for file in files:
-      print "  appending data from %s" %(file)
+      print "  loading data from %s" %(file)
       try:
         f = gzip.open(os.path.join("cache","noaa", "%s" %os.path.basename (file)), "rb")
-        lines = f.readlines()
-        outfile.write(''.join(lines[1:])) #remove first line
+        lines.extend(f.readlines()[1:]) # ignore first line
         f.close()
       except:
         print "   (warn) file does not exist"
-    outfile.close()
-
-    # load data into array
-    outfile = open(os.path.join("cache", "noaa", outFilename), 'r')
-    content = outfile.readlines()
-    outfile.close()
     
     # parse data
+    CAT = ['date','temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
+    DATA_COL = {'date': 2, 'temp': 3, 'mintemp': 18, 'maxtemp': 17,'windspeed': 13, 'windgust':16, 'maxwindspeed': 15, 'precipitation': 19, 'visibility': 11,  'dewpoint': 5,   'pressure': 9, 'seapressure': 7}
+    DATA_INV = {'temp': 9999.9, 'mintemp': 9999.9, 'maxtemp': 9999.9, 'windspeed': 999.9, 'windgust': 999.9, 'maxwindspeed': 999.9, 'precipitation': 99.99, 'visibility': 999.9, 'dewpoint': 9999.9, 'pressure': 9999.9, 'seapressure': 9999.9}
     
+    values = MultiDict()
+    for line in lines:
+      tmp = line.replace('*','').replace('\n','').split()
+      date = tmp[DATA_COL['date']]
+      for type in CAT:
+        index = DATA_COL[type]
+        if index != 2: # ignore date -> already parsed
+            value = tmp[index]
+            if value != DATA_INV[type]: # parse and convert data
+                if type in ['temp', 'mintemp', 'maxtemp', 'dewpoint']:
+                    values[type][date] = (float(value) - 32) * (5.0/9.0)
+                elif type in ['windspeed', 'windgust', 'maxwindspeed']:
+                    values[type][date] = float(value) * 0.51
+                elif type == 'visibility':
+                    values[type][date] = float(value) * 1.609
+                elif type == 'precipitation':
+                    pass
+                    #values[type][date] = float(value) * 25.4
+                else:
+                    values[type, date] = float(value)
     
+    # save to dataObject                
+    for type in CAT:
+        self.data.addCategory(type, values[type])
     
+    print "everything is fine"
     
     # convert tmp/noaa to self.data
     # TODO insert conversion logic here
@@ -137,3 +155,9 @@ class NOAA (Plugin):
 
     return stations
 
+class MultiDict(dict):
+    def __getitem__(self, key):
+        try:
+            return dict.__getitem__(self, key)
+        except:
+            return self.setdefault(key, MultiDict()) 
