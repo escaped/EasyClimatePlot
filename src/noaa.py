@@ -5,6 +5,7 @@ import os
 import sys
 import ftplib
 import gzip
+import re
 # time: used to sleep
 import time
 
@@ -86,8 +87,38 @@ class NOAA (Plugin):
                 elif type == 'visibility':
                     values[type][date] = float(value) * 1.609
                 elif type == 'precipitation':
-                    pass
-                    #values[type][date] = float(value) * 25.4
+                    '''
+                         A = 1 report of 6-hour precipitation 
+                             amount.
+                         B = Summation of 2 reports of 6-hour 
+                             precipitation amount.
+                         C = Summation of 3 reports of 6-hour 
+                             precipitation amount.
+                         D = Summation of 4 reports of 6-hour 
+                             precipitation amount.
+                         E = 1 report of 12-hour precipitation
+                             amount.
+                         F = Summation of 2 reports of 12-hour
+                             precipitation amount.
+                         G = 1 report of 24-hour precipitation
+                             amount.
+                         H = Station reported '0' as the amount
+                             for the day (eg, from 6-hour reports),
+                             but also reported at least one
+                             occurrence of precipitation in hourly
+                             observations--this could indicate a
+                             trace occurred, but should be considered
+                             as incomplete data for the day.
+                         I = Station did not report any precip data
+                             for the day and did not report any
+                             occurrences of precipitation in its hourly
+                             observations--it's still possible that
+                             precip occurred but was not reported.
+                    '''
+                    p = re.compile("\d+[,\.]\d+")
+                    m = p.match(value)
+                    if m != None:
+                        values[type][date] = float(m.group()) * 25.4
                 else:
                     values[type, date] = float(value)
     

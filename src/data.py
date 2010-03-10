@@ -1,6 +1,7 @@
 import cPickle
 import hashlib
 import os
+import calendar
 
 categories = ['temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
 def hashName (name):
@@ -32,14 +33,16 @@ class Data:
     self.data[category] = data
     dates = data.keys()
     dates.sort()
+    '''
     _minDate = dates.min()
     _maxDate = dates.max()
-    
+     
     if _minDate < self.minDate:
         self.minDate = _minDate
     
     if _maxDate > self.maxDate:
         self.maxDate = _maxDate
+    '''
 
   def save (self, path):
     pass
@@ -49,10 +52,10 @@ class Data:
     # return the category according to the given resolution
     if resolution == 'm':
         dat = self.data[category]
-        counter = [0,0,0,0,0,0,0,0,0,0,0,0]
-        tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]
         dates = dat.keys()
         dates.sort()
+        counter = [0,0,0,0,0,0,0,0,0,0,0,0]
+        tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]        
         
         for date in dates:
             index = int(date[4:6])-1 #month
@@ -62,7 +65,7 @@ class Data:
         for index in range(0,12):
             print "%i: value=%d; counter=%i;" %(index, tmpdata[index], counter[index])
             tmpdata[index] /= counter[index]
-        
+            
         return tmpdata
             
         
