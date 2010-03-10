@@ -30,9 +30,20 @@ class Data:
 
   def addCategory (self, category, data):
     self.data[category] = data
+    dates = data.keys()
+    dates.sort()
+    _minDate = dates.min()
+    _maxDate = dates.max()
+    
+    if _minDate < self.minDate:
+        self.minDate = _minDate
+    
+    if _maxDate > self.maxDate:
+        self.maxDate = _maxDate
 
   def save (self, path):
-    cPickle.dump (self, open(os.path.join (path, hashName (self.name)),'w+'))
+    pass
+    # cPickle.dump(self, open(os.path.join (path, hashName (self.name)),'w+'))
 
   def getData (self, category, resolution = 'm'):
     # return the category according to the given resolution
@@ -40,12 +51,23 @@ class Data:
         dat = self.data[category]
         counter = [0,0,0,0,0,0,0,0,0,0,0,0]
         tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]
+        dates = dat.keys()
+        dates.sort()
         
-        for key, value in dat:
-            print key
-            print value
+        for date in dates:
+            index = int(date[4:6])-1 #month
+            tmpdata[index] += dat[date]
+            counter[index] += 1
+        
+        for index in range(0,12):
+            print "%i: value=%d; counter=%i;" %(index, tmpdata[index], counter[index])
+            tmpdata[index] /= counter[index]
+        
+        return tmpdata
+            
         
     return None
 
 def loadDataObject (path, name):
-  return cPickle.load (os.path.join (path, hashName (name)))
+    pass
+  # return cPickle.load(os.path.join (path, hashName (name)))

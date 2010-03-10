@@ -94,12 +94,7 @@ class NOAA (Plugin):
     # save to dataObject                
     for type in CAT:
         self.data.addCategory(type, values[type])
-    
-    self.data.getData('temp', 'm')
-    print "everything is fine"
-    
-    # convert tmp/noaa to self.data
-    # TODO insert conversion logic here
+ 
     # saveModelToCacheWithHashIndexFile
     # self.data.save ("cache")
   
