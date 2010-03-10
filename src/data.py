@@ -63,7 +63,6 @@ class Data:
             counter[index] += 1
         
         for index in range(0,12):
-            print "%i: value=%d; counter=%i;" %(index, tmpdata[index], counter[index])
             tmpdata[index] /= counter[index]
             
         return tmpdata
