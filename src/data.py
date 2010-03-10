@@ -36,7 +36,7 @@ class Data:
     '''
     _minDate = dates.min()
     _maxDate = dates.max()
-     
+    
     if _minDate < self.minDate:
         self.minDate = _minDate
     
@@ -65,6 +65,10 @@ class Data:
         for index in range(0,12):
             tmpdata[index] /= counter[index]
             
+        if category == 'precipitation':
+            for index in range(0,12):
+                tmpdata[index] *= calendar.mdays[index+1]
+
         return tmpdata
             
         

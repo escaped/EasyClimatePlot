@@ -75,11 +75,16 @@ class NOAA (Plugin):
     for line in lines:
       tmp = line.replace('*','').replace('\n','').split()
       date = tmp[DATA_COL['date']]
+      
       for type in CAT:
         index = DATA_COL[type]
+        
         if index != 2: # ignore date -> already parsed
             value = tmp[index]
-            if value != DATA_INV[type]: # parse and convert data
+            p = re.compile("\d+[,\.]\d+")
+            m = p.match(value)
+            
+            if m != None and float(m.group()) != DATA_INV[type]: # parse and convert data
                 if type in ['temp', 'mintemp', 'maxtemp', 'dewpoint']:
                     values[type][date] = (float(value) - 32) * (5.0/9.0)
                 elif type in ['windspeed', 'windgust', 'maxwindspeed']:
@@ -88,6 +93,7 @@ class NOAA (Plugin):
                     values[type][date] = float(value) * 1.609
                 elif type == 'precipitation':
                     '''
+                         all Flags treated as valid
                          A = 1 report of 6-hour precipitation 
                              amount.
                          B = Summation of 2 reports of 6-hour 
@@ -115,10 +121,8 @@ class NOAA (Plugin):
                              observations--it's still possible that
                              precip occurred but was not reported.
                     '''
-                    p = re.compile("\d+[,\.]\d+")
-                    m = p.match(value)
-                    if m != None:
-                        values[type][date] = float(m.group()) * 25.4
+                    values[type][date] = float(m.group()) * 25.4
+
                 else:
                     values[type, date] = float(value)
     
