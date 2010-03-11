@@ -1,18 +1,20 @@
 from plugin import Plugin
+
 import data
-import main
-import os
-import sys
 import ftplib
 import gzip
+import main
+import multidict
+import os
 import re
+import sys
+
 # time: used to sleep
 import time
-
 import weatherstation
 
-#noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 
+#noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # XXX
 # ftplib hat ein problem mit namensauflsung
 noaa_url="205.167.25.101"
@@ -79,7 +81,7 @@ class NOAA (Plugin):
     DATA_COL = {'date': 2, 'temp': 3, 'mintemp': 18, 'maxtemp': 17,'windspeed': 13, 'windgust':16, 'maxwindspeed': 15, 'precipitation': 19, 'visibility': 11,  'dewpoint': 5,   'pressure': 9, 'seapressure': 7}
     DATA_INV = {'temp': 9999.9, 'mintemp': 9999.9, 'maxtemp': 9999.9, 'windspeed': 999.9, 'windgust': 999.9, 'maxwindspeed': 999.9, 'precipitation': 99.99, 'visibility': 999.9, 'dewpoint': 9999.9, 'pressure': 9999.9, 'seapressure': 9999.9}
     
-    values = MultiDict()
+    values = multidict.MultiDict()
     for line in lines:
       tmp = line.replace('*','').replace('\n','').split()
       date = tmp[DATA_COL['date']]
@@ -190,13 +192,6 @@ class NOAA (Plugin):
     stations = [weatherstation.WeatherStation (line) for line in content]
     
     return stations
-
-class MultiDict(dict):
-    def __getitem__(self, key):
-        try:
-            return dict.__getitem__(self, key)
-        except:
-            return self.setdefault(key, MultiDict()) 
 
 # test routine
 if __name__ == "__main__":
