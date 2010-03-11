@@ -1,15 +1,25 @@
+# -*- coding: utf-8 -*-
+
 import Gnuplot
 import os
 
-class WalterLieth (Gnuplot):
+class WalterLieth:
   ouput_filename = ""
   plot_title = ""
 
+  temp = []
+  prcp = []
+
+  def __init__ (self, temp, prcp):
+    self.temp = zip (range (1,13), temp)
+    self.prcp = zip (range (1,13), prcp)
+
   def process (self):
     # plot a walther-lieth diagramm
-    g = Gnuplot.Gnuplot ()
+    g = Gnuplot.Gnuplot (persist=1)
 
-    g.title(plot_title)
+    # TODO plot title
+    g.title("plot_title")
 
     ## configuration
     g('set style fill solid') #border -1
@@ -21,7 +31,8 @@ class WalterLieth (Gnuplot):
     # Plot
     ###############
 
-    set multiplot
+    g('set multiplot')
+
     #######################
     ##
     ## above 100 mm PRCP
@@ -41,10 +52,10 @@ class WalterLieth (Gnuplot):
     g('set y2label " "')
     g('set ylabel " "')
     g('set grid y2tics')
-    g('unset key')
 
-    # TODO first plot
-    #plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl. Niederschlag"
+    # first plot
+    g.plot (Gnuplot.PlotItems.Data (self.prcp,
+      with_='boxes axes x1y2 lc rgbcolor "#bbbbff"'))
     g('unset grid')
 
     #######################
@@ -70,17 +81,20 @@ class WalterLieth (Gnuplot):
 
     g('set xlabel "Monat"')
     g('set xmtics')
-    g('set ylabel "Temperatur (°C)" #tc rgbcolor "#FF0000" font "Arial,18"')
-    g('set y2label "Niederschlag (mm)" #tc rgbcolor "#006600"')
+    g('set ylabel "Temperatur [C]" #tc rgbcolor "#FF0000" font "Arial,18"')
+    g('set y2label "Niederschlag [mm]" #tc rgbcolor "#006600"')
 
-    # TODO second plot
-    #plot "FILE" using 1:2 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl.  Niederschlag",\
-    #     "FILE" using 1:3:xtic(1) with lines lc -1 lw 1.5 title "mittl. Temperatur"
+    # second plot
+    g.replot (Gnuplot.PlotItems.Data (self.temp,
+      with_ = 'lines lc -1 lw 1.5'))
+    g.replot (Gnuplot.PlotItems.Data (self.prcp,
+      with_ = ' boxes axes x1y2 lc rgbcolor "#bbbbff"'))
     g('set nomultiplot')
 
     # TODO save to file
     # TODO filename
-    g.hardcopy ("%s.png" %self.output_filename)
+    g.hardcopy ("cache/output.eps")
+    g.close ()
 
   def getUserInput (self):
     print 'hallo'

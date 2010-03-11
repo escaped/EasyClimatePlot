@@ -23,6 +23,14 @@ def example ():
   no.use_wban = True
   no.getCountryList ()
   no.downloadData (1969, 2011)
+  # plot
+  import walterlieth
+  data = no.getData ()
+  w = walterlieth.WalterLieth (
+        data.getData ("temp", "m"),
+        data.getData ("precipitation", "m")
+      )
+  w.process ()
   return no
 
 def fileExistsInCache (f):
@@ -189,3 +197,7 @@ class MultiDict(dict):
             return dict.__getitem__(self, key)
         except:
             return self.setdefault(key, MultiDict()) 
+
+# test routine
+if __name__ == "__main__":
+  example ()
