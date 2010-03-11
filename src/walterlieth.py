@@ -52,10 +52,12 @@ class WalterLieth:
     g('set y2label " "')
     g('set ylabel " "')
     g('set grid y2tics')
+    g('unset key')
 
     # first plot
     g.plot (Gnuplot.PlotItems.Data (self.prcp,
-      with_='boxes axes x1y2 lc rgbcolor "#bbbbff"'))
+      with_='boxes axes x1y2 lc rgbcolor "#bbbbff"',
+      title='Niederschlag'))
     g('unset grid')
 
     #######################
@@ -86,7 +88,8 @@ class WalterLieth:
 
     # second plot
     g.replot (Gnuplot.PlotItems.Data (self.temp,
-      with_ = 'lines lc -1 lw 1.5'))
+      with_ = 'lines lc -1 lw 1.5',
+      title = "Temperatur"))
     g.replot (Gnuplot.PlotItems.Data (self.prcp,
       with_ = ' boxes axes x1y2 lc rgbcolor "#bbbbff"'))
     g('set nomultiplot')
