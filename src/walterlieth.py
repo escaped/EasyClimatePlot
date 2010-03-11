@@ -39,7 +39,7 @@ class WalterLieth:
     ##
     #######################
 
-    g('set xrange [ 0 : 12.5 ]')
+    g('set xrange [ 0.5 : 12.5 ]')
     g('set y2range [ 100 : 300 ]')
     g('unset xtics')
     g('set y2tics 100,100,300')
