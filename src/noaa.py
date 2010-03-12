@@ -1,5 +1,7 @@
 from plugin import Plugin
 
+import contour
+import socket
 import data
 import ftplib
 import gzip
@@ -33,6 +35,14 @@ def example ():
         data.getData ("precipitation", "m")
       )
   w.process ()
+  c = contour.Contour (
+        data.getData ("temp", "m"),
+        data.getData ("temp", "m"),
+        data.getData ("temp", "m")
+      )
+  # TODO klappt noch nicht.
+  #c.process ()
+
   return no
 
 def fileExistsInCache (f):
@@ -160,23 +170,26 @@ class NOAA (Plugin):
     missing_files = filter (fileExistsInCache, listoffiles)
 
     # get missing files
-    ftp = ftplib.FTP(noaa_url)
-    ftp.login("anonymous", "")
-    ftp.cwd ("pub/data/gsod")
-    for f in missing_files:
-      filename = os.path.basename (f)
-      print "Downloading %s........" %filename
-      try:
-        ftp.retrbinary('RETR %s' %f,
-            open(os.path.join ("cache", "noaa", "%s" %filename), 'w+').write)
-      except IOError:
-        print "Missing directory cache/noaa"
-        sys.exit (-1)
-      except:
-        print "%s doesn't exist." %filename
-      print "waiting for 2 sec...."
-      time.sleep (2)
-    ftp.quit ()
+    try:
+      ftp = ftplib.FTP(noaa_url)
+      ftp.login("anonymous", "")
+      ftp.cwd ("pub/data/gsod")
+      for f in missing_files:
+        filename = os.path.basename (f)
+        print "Downloading %s........" %filename
+        try:
+          ftp.retrbinary('RETR %s' %f,
+              open(os.path.join ("cache", "noaa", "%s" %filename), 'w+').write)
+        except IOError:
+          print "Missing directory cache/noaa"
+          sys.exit (-1)
+        except:
+          print "%s doesn't exist." %filename
+        print "waiting for 2 sec...."
+        time.sleep (2)
+      ftp.quit ()
+    except socket.error:
+      sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
 
   def listAvailableStations (self):
     # get ish-history

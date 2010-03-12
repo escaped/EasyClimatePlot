@@ -16,7 +16,7 @@ class WalterLieth:
 
   def process (self):
     # plot a walther-lieth diagramm
-    g = Gnuplot.Gnuplot (persist=1)
+    g = Gnuplot.Gnuplot ()
 
     # TODO plot title
     g.title("plot_title")
