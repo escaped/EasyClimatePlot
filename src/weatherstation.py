@@ -30,9 +30,9 @@ class WeatherStation (object):
     self.ctry_wmo     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])]
     self.ctry_fips    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])]
     try:
-      self.lat          = int(line[int (fields["LAT"][0])         :int(fields["LAT"][1])])
-      self.lon          = int(line[int (fields["LON"][0])         :int(fields["LON"][1])])
-      self.elev         = int(line[int (fields["ELEV"][0])        :int(fields["ELEV"][1])])
+      self.lat          = float(line[int (fields["LAT"][0]) :int(fields["LAT"][1])]) / 1000
+      self.lon          = float(line[int (fields["LON"][0]) :int(fields["LON"][1])]) / 1000
+      self.elev         = float(line[int (fields["ELEV"][0]):int(fields["ELEV"][1])])
     except ValueError:
       # If this happens, one of the upper values was empty. We don't care about that.
       pass

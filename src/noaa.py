@@ -227,22 +227,24 @@ class NOAA (Plugin):
   # ul: upper left
   # lr: lower right
   def searchStationsByLonLat (self, ul, lr):
-    '''Search stations by Longitude and Latitude. Format: (lon,lat) = (+/-nnn.nnnn,
-    +/-nn.nnnn). The first argument of the method is left upper corner and the second
+    '''Search stations by Latitude and Longitude. Format: (lat, lon) = (+/-nn.nnnn,
+    +/-nnn.nnnn). The first argument of the method is left upper corner and the second
     argument is the right lower corner of a rectangle.'''
 
     # filter stations in the west, northwest or north of the ul
-    stations = filter (lambda x: x.lon >= ul[0] and x.lat >= ul[1],
+    stations = filter (lambda x: x.lat <= ul[0] and x.lon >= ul[1],
                                       self.listAvailableStations ())
     # filter stations in the south, southeast or east of the lr
-    stations = filter (lambda x: x.lon <= lr[0] and x.lat <= lr[1],
+    stations = filter (lambda x: x.lat >= lr[0] and x.lon <= lr[1],
                                       stations)
 
     return stations
 
 def searchStations ():
   n = NOAA ()
-  print n.searchStationsByLonLat ((-99999,-99999),(-99999,-99999))
+  # print n.searchStationsByLonLat ((-99999,-999999),(-99999,-999999))
+  for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
+    print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
 
 # test routine
 if __name__ == "__main__":
