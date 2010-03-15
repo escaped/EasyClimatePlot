@@ -96,7 +96,7 @@ class WalterLieth:
 
     # TODO save to file
     # TODO filename
-    g.hardcopy ("cache/output.eps")
+    g.hardcopy ("cache/output.eps", enhanced=True)
     g.close ()
 
   def getUserInput (self):

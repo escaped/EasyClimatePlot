@@ -50,7 +50,7 @@ class Contour:
     data = Gnuplot.PlotItems.Data (zip (self.col1, self.col2, self.col3), with_ = 'lines')
     g.splot (data)
 
-    g.hardcopy ("cache/contour.eps")
+    g.hardcopy ("cache/contour.eps", enhanced=True)
 
   def getUserInput (self):
     raise NotImplemented

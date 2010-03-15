@@ -40,7 +40,6 @@ def example ():
         data.getData ("temp", "m"),
         data.getData ("temp", "m")
       )
-  # TODO klappt noch nicht.
   c.process ()
 
   return no
@@ -50,6 +49,9 @@ def fileExistsInCache (f):
   return not os.path.exists (os.path.join("cache","noaa", "%s" %f))
 
 class NOAA (Plugin):
+  '''Objects of this class are used to access the NOAA FTP, search and download station
+  data.'''
+
   name = "NOAA Plugin"
   desc = "NOAA Plugin"
   data = {}
@@ -163,9 +165,12 @@ class NOAA (Plugin):
     self.station_number = sys.stdin.readline ().rstrip ()
 
   def getCountryList (self):
+    '''This method downloads the file ish-history.txt from the NOAA FTP. That file
+    contains all stations, which are listed and for which some data exist on the FTP.'''
     self.retrieveListOfFiles (["ish-history.txt"])
 
   def retrieveListOfFiles (self, listoffiles):
+    '''This method simply retrieves the files in the list listoffiles from the FTP.'''
     # check cache
     missing_files = filter (fileExistsInCache, listoffiles)
 
@@ -192,6 +197,8 @@ class NOAA (Plugin):
       sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
 
   def listAvailableStations (self):
+    '''This method parses ish-history.txt, creates a WeatherStation object for each line
+    and returns a list of all available WeatherStations contained in ish-history.txt.'''
     # get ish-history
     self.getCountryList ()
 
@@ -205,6 +212,12 @@ class NOAA (Plugin):
     stations = [weatherstation.WeatherStation (line) for line in content]
     
     return stations
+  
+  def searchStationsByCountryCode (self, countrycode):
+    pass
+
+  def searchStationsByLonLat (self, (lon1,lat1), (lon2, lat2)):
+    pass
 
 # test routine
 if __name__ == "__main__":
