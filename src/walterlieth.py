@@ -100,5 +100,5 @@ class WalterLieth:
     g.close ()
 
   def getUserInput (self):
-    print 'hallo'
+    raise NotImplemented
 

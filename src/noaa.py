@@ -213,8 +213,15 @@ class NOAA (Plugin):
     
     return stations
   
-  def searchStationsByCountryCode (self, countrycode):
-    pass
+  def searchStationsByCountryCode (self, countrycode, use_FIPS = True):
+    '''Search a station by country code. The country code can be either a historical WMO
+    country ID (with use_FIPS = False), or a FIPS country ID.'''
+
+    # TODO do we need to search according to regex?
+    if use_FIPS:
+      return filter (lambda x: x.ctry_fips == countrycode, self.listAvailableStations ())
+    else:
+      return filter (lambda x: x.ctry_wmo == countrycode, self.listAvailableStations ())
 
   def searchStationsByLonLat (self, (lon1,lat1), (lon2, lat2)):
     pass

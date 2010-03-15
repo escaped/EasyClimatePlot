@@ -1,12 +1,17 @@
 # fields (i omit ST = State)
-fields = {"USAF": (0,5), "WBAN":(7,11), "STATION NAME":(13,43), "CTRY WMO":(43,44),
-    "CTRY FIPS":(46,47), "CALL":(52,53), "LAT":(59,63), "LON":(65,71), "ELEV":(73,78)}
+fields = {"USAF": (0,6), "WBAN":(7,12), "STATION NAME":(13,44), "CTRY WMO":(43,45),
+    "CTRY FIPS":(46,48), "CALL":(52,54), "LAT":(59,64), "LON":(65,72), "ELEV":(73,79)}
 
 class WeatherStation (object):
+  # USAF = Air Force Datsav3 station number
   usaf = ""
+  # WBAN = NCDC WBAN number
   wban = ""
   station_name = ""
+
+  # Historical WMO Country ID
   ctry_wmo = ""
+  # FIPS Country ID
   ctry_fips = ""
   lat = ""
   lon = ""
