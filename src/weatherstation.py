@@ -1,5 +1,5 @@
 # fields (i omit ST = State)
-fields = {"USAF": (0,6), "WBAN":(7,12), "STATION NAME":(13,44), "CTRY WMO":(43,45),
+fields = {"USAF": (0,6), "WBAN":(7,12), "STATION NAME":(13,43), "CTRY WMO":(43,45),
     "CTRY FIPS":(46,48), "CALL":(52,54), "LAT":(59,64), "LON":(65,72), "ELEV":(73,79)}
 
 class WeatherStation (object):
@@ -7,14 +7,18 @@ class WeatherStation (object):
   usaf = ""
   # WBAN = NCDC WBAN number
   wban = ""
+
   station_name = ""
 
   # Historical WMO Country ID
   ctry_wmo = ""
   # FIPS Country ID
   ctry_fips = ""
+  # LAT = Latitude in thousandths of decimal degrees
   lat = ""
+  # LON = Longitude in thousandths of decimal degrees
   lon = ""
+  # ELEV = Elevation in tenths of meters
   elev = ""
 
   # ctor parses one line of ish-history.txt
@@ -25,6 +29,10 @@ class WeatherStation (object):
     self.station_name = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])]
     self.ctry_wmo     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])]
     self.ctry_fips    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])]
-    self.lat          = line[int (fields["LAT"][0])         :int(fields["LAT"][1])]
-    self.lon          = line[int (fields["LON"][0])         :int(fields["LON"][1])]
-    self.elev         = line[int (fields["ELEV"][0])        :int(fields["ELEV"][1])]
+    try:
+      self.lat          = int(line[int (fields["LAT"][0])         :int(fields["LAT"][1])])
+      self.lon          = int(line[int (fields["LON"][0])         :int(fields["LON"][1])])
+      self.elev         = int(line[int (fields["ELEV"][0])        :int(fields["ELEV"][1])])
+    except ValueError:
+      # If this happens, one of the upper values was empty. We don't care about that.
+      pass

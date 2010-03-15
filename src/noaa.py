@@ -197,6 +197,7 @@ class NOAA (Plugin):
       sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
 
   def listAvailableStations (self):
+    # TODO we should cache the resulting list
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
     # get ish-history
@@ -214,7 +215,7 @@ class NOAA (Plugin):
     return stations
   
   def searchStationsByCountryCode (self, countrycode, use_FIPS = True):
-    '''Search a station by country code. The country code can be either a historical WMO
+    '''Search stations by country code. The country code can be either a historical WMO
     country ID (with use_FIPS = False), or a FIPS country ID.'''
 
     # TODO do we need to search according to regex?
@@ -223,9 +224,28 @@ class NOAA (Plugin):
     else:
       return filter (lambda x: x.ctry_wmo == countrycode, self.listAvailableStations ())
 
-  def searchStationsByLonLat (self, (lon1,lat1), (lon2, lat2)):
-    pass
+  # ul: upper left
+  # lr: lower right
+  def searchStationsByLonLat (self, ul, lr):
+    '''Search stations by Longitude and Latitude. Format: (lon,lat) = (+/-nnn.nnnn,
+    +/-nn.nnnn). The first argument of the method is left upper corner and the second
+    argument is the right lower corner of a rectangle.'''
+
+    # filter stations in the west, northwest or north of the ul
+    stations = filter (lambda x: x.lon >= ul[0] and x.lat >= ul[1],
+                                      self.listAvailableStations ())
+    return stations
+    # filter stations in the south, southeast or east of the lr
+    stations = filter (lambda x: x.lon <= lr[0] and x.lat <= lr[1],
+                                      stations)
+
+    return stations
+
+def searchStations ():
+  n = NOAA ()
+  print n.searchStationsByLonLat ((-99999,-99999),(-99999,-99999))
 
 # test routine
 if __name__ == "__main__":
-  example ()
+  #example ()
+  searchStations ()
