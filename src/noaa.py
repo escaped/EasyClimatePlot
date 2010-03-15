@@ -41,7 +41,7 @@ def example ():
         data.getData ("temp", "m")
       )
   # TODO klappt noch nicht.
-  #c.process ()
+  c.process ()
 
   return no
 

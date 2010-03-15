@@ -7,26 +7,29 @@ class Contour:
   col1 = []
   col2 = []
   col3 = []
+  title = ""
 
-  def __init__ (self, col1, col2, col3):
-    pass
+  def __init__ (self, col1, col2, col3, title = ""):
+    self.col1 = col1
+    self.col2 = col2
+    self.col3 = col3
+
+    self.title = title
+
   def process (self):
     g = Gnuplot.Gnuplot (persist=1)
+
     # einfacher contourplot
-    # enhanced ermoeglicht erweiterte textdarstellung
-    g ('set terminal png size 1024,786 enhanced')
-    g ('set output "a_plotted_contour.png"')
 
     g ('set contour')
     g ('set dgrid3d')
-
-    g ('set title "Lenkoran"')
+    g.title (self.title)
 
     # wieviele linien fuer die projektion:
     g ('set cntrparam levels 10')
 
     # wohin mit der legende
-    #set key outside right bottom
+    #g ('set key outside right bottom')
 
     g ('set xtics 1')
     g ('set ytics 2')
@@ -46,6 +49,8 @@ class Contour:
     # create plotitem
     data = Gnuplot.PlotItems.Data (zip (self.col1, self.col2, self.col3), with_ = 'lines')
     g.splot (data)
+
+    g.hardcopy ("cache/contour.eps")
 
   def getUserInput (self):
     raise NotImplemented
