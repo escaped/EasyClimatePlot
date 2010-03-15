@@ -234,7 +234,6 @@ class NOAA (Plugin):
     # filter stations in the west, northwest or north of the ul
     stations = filter (lambda x: x.lon >= ul[0] and x.lat >= ul[1],
                                       self.listAvailableStations ())
-    return stations
     # filter stations in the south, southeast or east of the lr
     stations = filter (lambda x: x.lon <= lr[0] and x.lat <= lr[1],
                                       stations)
