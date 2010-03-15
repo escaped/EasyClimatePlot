@@ -44,6 +44,12 @@ def example ():
 
   return no
 
+def searchStations ():
+  n = NOAA ()
+  # print n.searchStationsByLonLat ((-99999,-999999),(-99999,-999999))
+  for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
+    print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
+
 def fileExistsInCache (f):
   f = os.path.basename (f)
   return not os.path.exists (os.path.join("cache","noaa", "%s" %f))
@@ -240,11 +246,6 @@ class NOAA (Plugin):
 
     return stations
 
-def searchStations ():
-  n = NOAA ()
-  # print n.searchStationsByLonLat ((-99999,-999999),(-99999,-999999))
-  for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
-    print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
 
 # test routine
 if __name__ == "__main__":
