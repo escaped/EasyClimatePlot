@@ -3,6 +3,9 @@
 import Gnuplot
 import os
 
+
+import config
+
 class WalterLieth:
   ouput_filename = ""
   plot_title = ""
@@ -10,16 +13,16 @@ class WalterLieth:
   temp = []
   prcp = []
 
-  def __init__ (self, temp, prcp):
+  def __init__ (self, temp, prcp, plot_title = ""):
     self.temp = zip (range (1,13), temp)
     self.prcp = zip (range (1,13), prcp)
+    self.plot_title = plot_title
 
   def process (self):
     # plot a walther-lieth diagramm
     g = Gnuplot.Gnuplot ()
 
-    # TODO plot title
-    g.title("plot_title")
+    g.title(self.plot_title)
 
     ## configuration
     g('set style fill solid') #border -1
@@ -96,7 +99,7 @@ class WalterLieth:
 
     # TODO save to file
     # TODO filename
-    g.hardcopy ("cache/output.eps", enhanced=True)
+    g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
     g.close ()
 
   def getUserInput (self):

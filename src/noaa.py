@@ -2,6 +2,7 @@
 from plugin import Plugin
 
 import contour
+import config
 import socket
 import data
 import ftplib
@@ -15,13 +16,6 @@ import sys
 # time: used to sleep while downloading via FTP
 import time
 import weatherstation
-
-###################
-# global variables
-###################
-STATION_LIST_CACHE_FILENAME = "stationlist"
-CACHEDIR = "cache"
-
 
 #noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # XXX
@@ -59,7 +53,7 @@ def searchStations ():
 
 def fileExistsInCache (f):
   f = os.path.basename (f)
-  return not os.path.exists (os.path.join (CACHEDIR ,"noaa", "%s" %f))
+  return not os.path.exists (os.path.join (config.CACHEDIR ,"noaa", "%s" %f))
 
 class NOAA (Plugin):
   '''Objects of this class are used to access the NOAA FTP, search and download station
@@ -102,7 +96,7 @@ class NOAA (Plugin):
     for file in files:
       print "  loading data from %s" %(file)
       try:
-        f = gzip.open(os.path.join(CACHEDIR,"noaa", "%s" %os.path.basename (file)), "rb")
+        f = gzip.open(os.path.join(config.CACHEDIR,"noaa", "%s" %os.path.basename (file)), "rb")
         lines.extend(f.readlines()[1:]) # ignore first line
         f.close()
       except:
@@ -204,9 +198,9 @@ class NOAA (Plugin):
         print "Downloading %s........" %filename
         try:
           ftp.retrbinary('RETR %s' %f,
-              open(os.path.join (CACHEDIR, "noaa", "%s" %filename), 'w+').write)
+              open(os.path.join (config.CACHEDIR, "noaa", "%s" %filename), 'w+').write)
         except IOError:
-          print "Missing directory %s/noaa" %CACHEDIR
+          print "Missing directory %s/noaa" %config.CACHEDIR
           sys.exit (-1)
         except:
           print "%s doesn't exist." %filename
@@ -220,23 +214,23 @@ class NOAA (Plugin):
     # TODO we should cache the resulting list
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
-    if not os.path.exists (os.path.join (CACHEDIR, STATION_LIST_CACHE_FILENAME)):
+    if not os.path.exists (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME)):
       # get ish-history
       self.getCountryList ()
 
       # read ish-history
-      file = open (os.path.join(CACHEDIR ,"noaa", "ish-history.txt"), 'r')
+      file = open (os.path.join(config.CACHEDIR ,"noaa", "ish-history.txt"), 'r')
       content = file.readlines ()
       file.close ()
       # delete unneeded lines
       del content[0:20]
 
       stations = [weatherstation.WeatherStation (line) for line in content]
-      f = open (os.path.join (CACHEDIR, STATION_LIST_CACHE_FILENAME), "w")
+      f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
       cPickle.pickle (f, stations)
       f.close ()
     else:
-      f = open (os.path.join (CACHEDIR, STATION_LIST_CACHE_FILENAME), "r")
+      f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
       stations = cPickle.load (f)
       f.close ()
     
@@ -283,5 +277,5 @@ class NOAA (Plugin):
 
 # test routine
 if __name__ == "__main__":
-  #example ()
-  searchStations ()
+  example ()
+  #searchStations ()
