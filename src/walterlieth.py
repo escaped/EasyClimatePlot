@@ -13,7 +13,7 @@ class WalterLieth:
   temp = []
   prcp = []
 
-  def __init__ (self, temp, prcp, plot_title = ""):
+  def __init__ (self, temp, prcp, plot_title = "", output_filename = "output.eps"):
     self.temp = zip (range (1,13), temp)
     self.prcp = zip (range (1,13), prcp)
     self.plot_title = plot_title
@@ -98,7 +98,6 @@ class WalterLieth:
     g('set nomultiplot')
 
     # TODO save to file
-    # TODO filename
     g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
     g.close ()
 
