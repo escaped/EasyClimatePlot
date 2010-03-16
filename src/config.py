@@ -1,5 +1,5 @@
 ###################
 # global variables
 ###################
-STATION_LIST_CACHE_FILENAME = "stationlist"
 CACHEDIR = "cache"
+STATION_LIST_CACHE_FILENAME = "stationlist"
