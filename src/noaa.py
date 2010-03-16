@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plugin import Plugin
 
 import contour
@@ -11,7 +12,7 @@ import os
 import re
 import sys
 
-# time: used to sleep
+# time: used to sleep while downloading via FTP
 import time
 import weatherstation
 
@@ -30,7 +31,7 @@ noaa_url="205.167.25.101"
 def example ():
   no = NOAA ()
   no.station_number = 37735
-  no.use_wban = True
+  no.use_usaf = True
   no.getCountryList ()
   no.downloadData (1969, 2011)
   # plot
@@ -75,15 +76,22 @@ class NOAA (Plugin):
     # download data to tmp/noaa using ftp
     files = []
     print 'Loading data: %d - %d' %(start, end)
-    # TODO use right time range
-    for year in range (start, end):
+
+    for year in range (start, end + 1):
       # should look like this:
       # decide wether to use WBAN or USAF
       # 998234-99999-2010.op.gz
-      # TODO use WBAN / USAF
-      s = "%s/%s-99999-%s.op.gz" %(year, 
-          str(self.station_number).ljust (6,'0'),
-          year
+      # TODO falls für eine station sowohl wban als auch usaf vorhanden ist, können auch
+      # beide fehler != 999* sein.
+      if self.use_usaf:
+        s = "%s/%s-99999-%s.op.gz" %(year, 
+            str(self.station_number).ljust (6,'0'),
+            year
+          )
+      else:
+        s = "%s/999999-%s-%s.op.gz" %(year, 
+            str(self.station_number).ljust (6,'0'),
+            year
           )
       files.append (s)
 
@@ -171,7 +179,7 @@ class NOAA (Plugin):
     return self.data
 
   def getUserInput (self):
-    self.use_wban = main.dowhile ("Do you want to use WBAN? Yes/No [Default: No]", ['Y','N'])
+    self.use_usaf = main.dowhile ("Do you want to use USAF station ID? Yes/No [Default: Y]", ['Y','N'])
     print 'Please insert stationnumber: ',
     # read station number and remove \n
     self.station_number = sys.stdin.readline ().rstrip ()
