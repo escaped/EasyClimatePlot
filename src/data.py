@@ -36,7 +36,7 @@ class Data:
   def availableCategories (self):
     return self.data.keys ()
 
-  def addCategory (self, category, data):
+  def addCategory (self, category, data): 
     self.data[category] = data
     dates = data.keys()
     dates.sort()
@@ -61,10 +61,19 @@ class Data:
     if _maxDate > self.maxDate:
         self.maxDate = _maxDate
 
+  def __getstate__(self):
+      return self.data
+  
+  def __setstate__(self, d):
+      self.data = d
+
   def save (self, path):
     pass
     # cPickle.dump(self, open(os.path.join (path, hashName (self.name)),'w+'))
-
+    
+  def _getData(self):
+      return self.data
+  
   def getData (self, category, resolution = 'm'):
     # return the category according to the given resolution
     if resolution == 'm':
