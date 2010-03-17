@@ -2,27 +2,9 @@ import config
 import os
 import cPickle
 import hashlib
-import multidict
+import utils
 
-# http://code.activestate.com/recipes/82465/
-def _mkdir(newdir):
-    """works the way a good mkdir should :)
-        - already exists, silently complete
-        - regular file in the way, raise an exception
-        - parent directory(ies) does not exist, make them as well
-    """
-    if os.path.isdir(newdir):
-        pass
-    elif os.path.isfile(newdir):
-        raise OSError("a file with the same name as the desired " \
-                      "dir, '%s', already exists." % newdir)
-    else:
-        head, tail = os.path.split(newdir)
-        if head and not os.path.isdir(head):
-            _mkdir(head)
-        #print "_mkdir %s" % repr(newdir)
-        if tail:
-            os.mkdir(newdir)
+
             
 def test():
     cache = CacheManager()
@@ -30,7 +12,7 @@ def test():
     d1 = data.Data('33','coord')
     d2 = data.Data('34','coord')
 
-    dd = multidict.Dict()
+    dd = utils.Dict()
     for i in range(1966,2010):
         dd['temp'][str(i)+'1033'] = 10
         dd['precipitation'][str(i)+'1033'] = 20
@@ -75,12 +57,12 @@ def test():
 
 class CacheManager(object):
     
-    index = multidict.MultiDict()
+    index = utils.Dict()
     indexFilename= os.path.join (config.CACHEDIR, config.CACHE_INDEX_FILENAME)
     
     def __init__(self):
         # checkPathes
-        _mkdir(config.CACHEDIR)
+        utils._mkdir(config.CACHEDIR)
         
         # load index-Hashtable
         if os.path.isfile(self.indexFilename):
@@ -121,7 +103,7 @@ class CacheManager(object):
         
         #create dirs if not exist
         dir = os.path.join(config.CACHEDIR, module)
-        _mkdir(dir)
+        utils._mkdir(dir)
         
         # store data
         f = open(os.path.join(dir, filename), "w")
