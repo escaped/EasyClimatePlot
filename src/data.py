@@ -62,12 +62,6 @@ class Data:
     if _maxDate > self.maxDate:
         self.maxDate = _maxDate
 
-  def __getstate__(self):
-      return self.data
-  
-  def __setstate__(self, d):
-      self.data = d
-
   def save (self, path):
     pass
     # cPickle.dump(self, open(os.path.join (path, hashName (self.name)),'w+'))
