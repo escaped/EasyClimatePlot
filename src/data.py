@@ -9,7 +9,7 @@ def hashName (name):
   return hashlib.md5 (name).hexdigest ()
 
 class Data:
-    
+
   # NOTE: all membervariables are overridden in the constructor __init__ !
   name = ""
   coord = (0,0) 
