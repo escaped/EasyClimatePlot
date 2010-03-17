@@ -8,7 +8,7 @@ import data
 import ftplib
 import gzip
 import main
-import multidict
+import utils
 import os
 import re
 import sys
@@ -107,7 +107,7 @@ class NOAA (Plugin):
     DATA_COL = {'date': 2, 'temp': 3, 'mintemp': 18, 'maxtemp': 17,'windspeed': 13, 'windgust':16, 'maxwindspeed': 15, 'precipitation': 19, 'visibility': 11,  'dewpoint': 5,   'pressure': 9, 'seapressure': 7}
     DATA_INV = {'temp': 9999.9, 'mintemp': 9999.9, 'maxtemp': 9999.9, 'windspeed': 999.9, 'windgust': 999.9, 'maxwindspeed': 999.9, 'precipitation': 99.99, 'visibility': 999.9, 'dewpoint': 9999.9, 'pressure': 9999.9, 'seapressure': 9999.9}
     
-    values = multidict.MultiDict()
+    values = utils.Dict()
     for line in lines:
       tmp = line.replace('*','').replace('\n','').split()
       date = tmp[DATA_COL['date']]
@@ -227,7 +227,7 @@ class NOAA (Plugin):
 
       stations = [weatherstation.WeatherStation (line) for line in content]
       f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
-      cPickle.pickle (f, stations)
+      cPickle.dump(f, stations)
       f.close ()
     else:
       f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
