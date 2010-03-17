@@ -3,9 +3,10 @@ import os
 import cPickle
 import hashlib
 import utils
+from singletonmixin import Singleton
 
 def test():
-    cache = CacheManager()
+    cache = CacheManager.getInstance()
     import data
     d1 = data.Data('31','coord')
     d2 = data.Data('34','coord')
@@ -53,7 +54,7 @@ def test():
     print
     print d2_3
 
-class CacheManager(object):
+class CacheManager(Singleton):
     
     index = utils.Dict()
     indexFilename= os.path.join (config.CACHEDIR, config.CACHE_INDEX_FILENAME)
