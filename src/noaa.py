@@ -64,13 +64,14 @@ class NOAA (Plugin):
   desc = "NOAA Plugin"
   data = {}
 
+  # check cache
+  cache = cachemanager.CacheManager.getInstance()
+
   def downloadData (self, start=1929, end=2011):
-    # check cache
-    cache = cachemanager.CacheManager.getInstance()
     
-    if cache.hashExists("noaa", self.station_number, start, end):
+    if self.cache.hashExists("noaa", self.station_number, start, end):
         print "Data found in cache... loading!"
-        self.data = cache.load("noaa", self.station_number, start, end)
+        self.data = self.cache.load("noaa", self.station_number, start, end)
         return 
     else:
         print "Data not found in cache... "
@@ -180,7 +181,7 @@ class NOAA (Plugin):
             self.data.addCategory(type, values[type])
 
     # self.data.save ("cache")
-    cache.save(self.data, "noaa", self.station_number, start, end)
+    self.cache.save(self.data, "noaa", self.station_number, start, end)
   
   def getData (self):
     return self.data
