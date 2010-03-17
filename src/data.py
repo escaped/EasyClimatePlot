@@ -48,13 +48,14 @@ class Data:
     mi = int (min (dates))
     ma = int (max (dates))
     # TODO das sollte wohl irgendwo anders hin?
+    _minDate = datetime.date (datetime.MAXYEAR, 1, 1)
+    _maxDate = datetime.date (datetime.MINYEAR, 1, 1)
     try:
       _minDate = datetime.date (mi % 10000, mi % 10000 / 100, mi % 100) 
       _maxDate = datetime.date (ma % 10000, ma % 10000 / 100, ma % 100)
     except ValueError:
-      print mi, mi % 100
-      exit
-    
+      print "Date corrupt: ", mi
+
     if _minDate < self.minDate:
         self.minDate = _minDate
     
