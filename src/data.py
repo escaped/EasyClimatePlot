@@ -9,6 +9,8 @@ def hashName (name):
   return hashlib.md5 (name).hexdigest ()
 
 class Data:
+
+  # NOTE: all membervariables are overridden in the constructor __init__ !
   name = ""
   coord = (0,0) 
 
@@ -26,6 +28,9 @@ class Data:
   def __init__ (self, name, coords):
     self.name = name
     self.coords = coords
+    self.data = {}
+    self.cache = {}
+    self.incomplete = {}
 
   def availableCategories (self):
     return self.data.keys ()
@@ -34,6 +39,7 @@ class Data:
     self.data[category] = data
     dates = data.keys()
     dates.sort()
+    # TODO min und max date einfuegen
     '''
     _minDate = dates.min()
     _maxDate = dates.max()
