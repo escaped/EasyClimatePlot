@@ -86,19 +86,30 @@ class CacheManager(Singleton):
     def hash(self, str):
         return hashlib.md5(str).hexdigest()
     
-    def load(self, module, id, starttime, endtime):
-        obj = None
-        for key in self.index[module][id]:
-            if key[0] <= starttime and endtime <= key[1]:
-                f = open(os.path.join(config.CACHEDIR, module, self.index[module][id][key]), "r")
-                obj = cPickle.load(f)
-                f.close()
-                break
-        return obj
-                
     
-    def save(self, obj, module, id, starttime, endtime):
-        filename = self.hash(str(id)+starttime+endtime)
+    
+    def load(self, module, id, starttime = None, endtime = None):
+        obj = None
+        
+        if starttime == None or endtime == None:
+            f = open(os.path.join(config.CACHEDIR, module, self.index[module][str(id)]), "r")
+            obj = cPickle.load(f)
+            f.close()
+        
+        else:
+            for key in self.index[module][str(id)]:
+                if key[0] <= starttime and endtime <= key[1]:
+                    f = open(os.path.join(config.CACHEDIR, module, self.index[module][str(id)][key]), "r")
+                    obj = cPickle.load(f)
+                    f.close()
+                    break
+        return obj
+    
+    def save(self, obj, module, id, starttime = None, endtime = None):
+        if starttime == None or endtime == None:
+            filename = self.hash(str(id))
+        else:
+            filename = self.hash(str(id)+starttime+endtime)
         
         #create dirs if not exist
         dir = os.path.join(config.CACHEDIR, module)
@@ -110,9 +121,20 @@ class CacheManager(Singleton):
         f.close()
         
         # add to index
-        self.index[module][id][(starttime,endtime)] = filename
+        if starttime == None or endtime == None:
+            self.index[module][str(id)] = filename
+        else:
+            self.index[module][str(id)][(starttime,endtime)] = filename
         self.saveIndex()
     
+    def hashExists(self, module, id, starttime = None, endtime = None):
+        if starttime == None or endtime == None:
+            if isinstance(self.index[module][str(id)], str):
+                return 1
+        else:
+            if isinstance(self.index[module][str(id)][(starttime,endtime)], str):
+                return 1
+        return 0
     
 
 # call test function
