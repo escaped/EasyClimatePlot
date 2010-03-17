@@ -10,24 +10,24 @@ from singletonmixin import Singleton
 def test():
     cache = CacheManager.getInstance()
     import data
-    d1 = data.Data('33','coord')
+    d1 = data.Data('32','coord')
     d2 = data.Data('34','coord')
 
     dd = utils.Dict()
     for i in range(1966,2010):
-        dd['temp'][str(i)+'1033'] = 10
-        dd['precipitation'][str(i)+'1033'] = 20
+        dd['temp'][str(i)+'1032'] = 10
+        dd['precipitation'][str(i)+'1032'] = 20
         if 1985 <= i and i <= 1990:
-            dd['wind'][str(i)+'1033'] = 33  
+            dd['wind'][str(i)+'1032'] = 32  
     
     d1.addCategory('temp', dd['temp'])    
     d1.addCategory('precipitation', dd['precipitation'])
     
-    cache.save(d1, "noaa", 33, '19661033', '20101033')
+    cache.save(d1, "noaa", 32, '19661032', '20101032')
     cache.loadIndex()
-    d1_1 = cache.load('noaa', 33, '19661033', '20101033')
-    d1_2 = cache.load('noaa', 33, '19701033', '20001033')
-    d1_3 = cache.load('noaa', 33, '19701033', '20121033')
+    d1_1 = cache.load('noaa', 32, '19661032', '20101032')
+    d1_2 = cache.load('noaa', 32, '19701032', '20001032')
+    d1_3 = cache.load('noaa', 32, '19701032', '20121032')
     
     print "d1 ist:"
     print d1._getData()
@@ -41,11 +41,11 @@ def test():
     
     d2.addCategory('wind', dd['wind'])
     
-    cache.save(d2, "noaa", 34, '19851033', '19901033')
+    cache.save(d2, "noaa", 34, '19851032', '19901032')
     cache.loadIndex()
-    d2_1 = cache.load('noaa', 34, '19851033', '19901033')
-    d2_2 = cache.load('noaa', 34, '19851033', '19901033')
-    d2_3 = cache.load('noaa', 34, '19701033', '19901033')
+    d2_1 = cache.load('noaa', 34, '19851032', '19901032')
+    d2_2 = cache.load('noaa', 34, '19851032', '19901032')
+    d2_3 = cache.load('noaa', 34, '19701032', '19901032')
     
     print "d2 ist:"
     print d2.data
