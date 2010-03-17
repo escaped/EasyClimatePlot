@@ -5,55 +5,6 @@ import hashlib
 import utils
 from singletonmixin import Singleton
 
-def test():
-    cache = CacheManager.getInstance()
-    import data
-    d1 = data.Data('31','coord')
-    d2 = data.Data('34','coord')
-
-    dd = utils.Dict()
-    for i in range(1966,2010):
-        dd['temp'][str(i)+'1031'] = 10
-        dd['precipitation'][str(i)+'1031'] = 20
-        if 1985 <= i and i <= 1990:
-            dd['wind'][str(i)+'1031'] = 31  
-    
-    d1.addCategory('temp', dd['temp'])    
-    d1.addCategory('precipitation', dd['precipitation'])
-    
-    cache.save(d1, "noaa", 31, '19661031', '20101031')
-    cache.loadIndex()
-    d1_1 = cache.load('noaa', 31, '19661031', '20101031')
-    d1_2 = cache.load('noaa', 31, '19701031', '20001031')
-    d1_3 = cache.load('noaa', 31, '19701031', '20121031')
-    
-    print "d1 ist:"
-    print d1._getData()
-    print "dumps;"
-    print d1_1
-    print d1_1._getData()
-    print
-    print d1_2._getData()
-    print
-    print d1_3
-    
-    d2.addCategory('wind', dd['wind'])
-    
-    cache.save(d2, "noaa", 34, '19851031', '19901031')
-    cache.loadIndex()
-    d2_1 = cache.load('noaa', 34, '19851031', '19901031')
-    d2_2 = cache.load('noaa', 34, '19851031', '19901031')
-    d2_3 = cache.load('noaa', 34, '19701031', '19901031')
-    
-    print "d2 ist:"
-    print d2.data
-    print "dumps;"
-    print d2_1._getData()
-    print
-    print d2_2._getData()
-    print
-    print d2_3
-
 class CacheManager(Singleton):
     
     index = utils.Dict()
@@ -137,6 +88,54 @@ class CacheManager(Singleton):
                 return 1
         return 0
     
+def test():
+    cache = CacheManager.getInstance()
+    import data
+    d1 = data.Data('31','coord')
+    d2 = data.Data('34','coord')
+
+    dd = utils.Dict()
+    for i in range(1966,2010):
+        dd['temp'][str(i)+'1031'] = 10
+        dd['precipitation'][str(i)+'1031'] = 20
+        if 1985 <= i and i <= 1990:
+            dd['wind'][str(i)+'1031'] = 31  
+    
+    d1.addCategory('temp', dd['temp'])    
+    d1.addCategory('precipitation', dd['precipitation'])
+    
+    cache.save(d1, "noaa", 31, '19661031', '20101031')
+    cache.loadIndex()
+    d1_1 = cache.load('noaa', 31, '19661031', '20101031')
+    d1_2 = cache.load('noaa', 31, '19701031', '20001031')
+    d1_3 = cache.load('noaa', 31, '19701031', '20121031')
+    
+    print "d1 ist:"
+    print d1._getData()
+    print "dumps;"
+    print d1_1
+    print d1_1._getData()
+    print
+    print d1_2._getData()
+    print
+    print d1_3
+    
+    d2.addCategory('wind', dd['wind'])
+    
+    cache.save(d2, "noaa", 34, '19851031', '19901031')
+    cache.loadIndex()
+    d2_1 = cache.load('noaa', 34, '19851031', '19901031')
+    d2_2 = cache.load('noaa', 34, '19851031', '19901031')
+    d2_3 = cache.load('noaa', 34, '19701031', '19901031')
+    
+    print "d2 ist:"
+    print d2.data
+    print "dumps;"
+    print d2_1._getData()
+    print
+    print d2_2._getData()
+    print
+    print d2_3
 
 # call test function
 if __name__ == "__main__":

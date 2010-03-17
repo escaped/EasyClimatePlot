@@ -9,6 +9,7 @@ class Dict(defaultdict):
         return dict.__repr__(self)
     
 # http://code.activestate.com/recipes/82465/
+# TODO licensing. is it allowed to use this code _as is_ ?
 def _mkdir(newdir):
     """works the way a good mkdir should :)
         - already exists, silently complete
