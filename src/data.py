@@ -1,4 +1,5 @@
 import cPickle
+import datetime
 import hashlib
 import os
 import calendar
@@ -18,8 +19,8 @@ class Data:
   data = {}
   cache = {}
 
-  minDate = "YYYYMMDD"
-  maxDate = "YYYYMMDD"
+  minDate = datetime.date (datetime.MAXYEAR, 1, 1)
+  maxDate = datetime.date (datetime.MINYEAR, 1, 1)
 
   # lists incomplete data
   incomplete = {}
@@ -39,17 +40,26 @@ class Data:
     self.data[category] = data
     dates = data.keys()
     dates.sort()
-    # TODO min und max date einfuegen
-    '''
-    _minDate = dates.min()
-    _maxDate = dates.max()
+
+    # convert dates to integer
+    dates = [int (x) for x in dates]
+
+    # convert
+    mi = int (min (dates))
+    ma = int (max (dates))
+    # TODO das sollte wohl irgendwo anders hin?
+    try:
+      _minDate = datetime.date (mi % 10000, mi % 10000 / 100, mi % 100) 
+      _maxDate = datetime.date (ma % 10000, ma % 10000 / 100, ma % 100)
+    except ValueError:
+      print mi, mi % 100
+      exit
     
     if _minDate < self.minDate:
         self.minDate = _minDate
     
     if _maxDate > self.maxDate:
         self.maxDate = _maxDate
-    '''
 
   def save (self, path):
     pass
