@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from plugin import Plugin
 
+import cachemanager
 import contour
 import config
 import socket
@@ -64,7 +65,16 @@ class NOAA (Plugin):
   data = {}
 
   def downloadData (self, start=1929, end=2011):
-    # check if subdir tmp/noaa exists
+    # check cache
+    cache = cachemanager.CacheManager.getInstance()
+    
+    if cache.hashExists("noaa", self.station_number, start, end):
+        print "Data found in cache... loading!"
+        self.data = cache.load("noaa", self.station_number, start, end)
+        return 
+    else:
+        print "Data not found in cache... "
+    
     # createDataModel - read station data from ish-history
     self.data = data.Data (str(self.station_number), (0,0))
     # download data to tmp/noaa using ftp
@@ -164,10 +174,13 @@ class NOAA (Plugin):
     
     # save to dataObject                
     for type in CAT:
-        self.data.addCategory(type, values[type])
- 
-    # saveModelToCacheWithHashIndexFile
+        if type != 'date' and len(values[type].keys()) > 0:
+            print type
+            print values[type]
+            self.data.addCategory(type, values[type])
+
     # self.data.save ("cache")
+    cache.save(self.data, "noaa", self.station_number, start, end)
   
   def getData (self):
     return self.data

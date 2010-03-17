@@ -103,13 +103,14 @@ class CacheManager(Singleton):
                     obj = cPickle.load(f)
                     f.close()
                     break
+        print obj
         return obj
     
     def save(self, obj, module, id, starttime = None, endtime = None):
         if starttime == None or endtime == None:
             filename = self.hash(str(id))
         else:
-            filename = self.hash(str(id)+starttime+endtime)
+            filename = self.hash(str(id)+str(starttime)+str(endtime))
         
         #create dirs if not exist
         dir = os.path.join(config.CACHEDIR, module)
