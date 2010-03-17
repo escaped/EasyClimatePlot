@@ -2,7 +2,7 @@ import cPickle
 import hashlib
 import os
 import calendar
-import multidict
+import utils
 
 categories = ['temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
 def hashName (name):
