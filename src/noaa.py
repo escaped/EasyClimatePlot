@@ -288,6 +288,14 @@ class NOAA (Plugin):
 
     return stations
 
+class NOAA_Control:
+  '''This will be the controller sometime..'''
+  pass
+
+class NOAA_GUI:
+  '''This will be the GUI sometime..'''
+  pass
+
 
 # test routine
 if __name__ == "__main__":

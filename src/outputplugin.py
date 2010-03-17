@@ -1,6 +1,6 @@
 class OutputPlugin (object):
   dataObjects = {}
-  def setDataObjects (self, dataObjects):
+  def setDataObjects (self, dataObjects = {}):
     self.dataObjects = dataObjects
 
   def getUserOptions (self):

@@ -3,7 +3,6 @@
 import Gnuplot
 import os
 
-
 import config
 
 class WalterLieth:
