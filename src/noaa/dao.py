@@ -42,6 +42,17 @@ class NOAA (Plugin):
   # check cache
   cache = cachemanager.CacheManager.getInstance()
 
+  def __init__ (self):
+    # initialise list of stations, of it exists in the cache
+    # TODO FRENZEL kannst du das hier auf den cachemanager umschwenken? ich verstehe den
+    # nicht ganz, bekomme komische exceptions.
+    try:
+      f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
+      self.listOfStations = cPickle.load (f)
+      f.close ()
+    except IOError:
+      self.listOfStations = None 
+
   def downloadData (self, start=1929, end=2011):
     
     if self.cache.hashExists("noaa", self.station_number, start, end):
@@ -204,27 +215,30 @@ class NOAA (Plugin):
     # TODO we should cache the resulting list
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
-    if not os.path.exists (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME)):
-      # get ish-history
-      self.getCountryList ()
+    if not self.listOfStations:
+      if not os.path.exists (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME)):
+        # get ish-history
+        self.getCountryList ()
 
-      # read ish-history
-      file = open (os.path.join(config.CACHEDIR ,"noaa", "ish-history.txt"), 'r')
-      content = file.readlines ()
-      file.close ()
-      # delete unneeded lines
-      del content[0:20]
+        # read ish-history
+        file = open (os.path.join(config.CACHEDIR ,"noaa", "ish-history.txt"), 'r')
+        content = file.readlines ()
+        file.close ()
+        # delete unneeded lines
+        del content[0:20]
 
-      stations = [weatherstation.WeatherStation (line) for line in content]
-      f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
-      cPickle.dump(stations, f)
-      f.close ()
-    else:
-      f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
-      stations = cPickle.load (f)
-      f.close ()
-    
-    return stations
+        self.listOfStations = [weatherstation.WeatherStation (line) for line in content]
+        try:
+          f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
+          cPickle.dump(self.listOfStations, f)
+        finally:
+          f.close ()
+      else:
+        f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
+        self.listOfStations = cPickle.load (f)
+        f.close ()
+
+    return self.listOfStations
 
   def searchStationsByStationID (self, stationid, wban = False):
     '''Search stations by station id, where station id is a regular
