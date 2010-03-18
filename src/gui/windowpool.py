@@ -22,6 +22,9 @@ class WindowPool:
     # TODO exceptions needed?
     return self.windows[self.indices[id]]
 
+  def getWindowIndex (self, window):
+    return self.indices.index (window)
+
   def getListOfWindows (self):
     '''arbitrarily ordered list of the values from self.windows'''
     return self.windows.values ()

@@ -39,7 +39,7 @@ class MainWindow (wx.Frame):
     self.notebook = wx.Notebook (self)
     # das hinzufügen sollte dynamisch vollzogen werden
 
-    from noaa.noaa_workflow import NOAA_Workflow
+    from noaa.noaa import NOAA_Workflow
     workflow = NOAA_Workflow (self.notebook)
     self.notebook.AddPage (workflow, "Download")
     workflow.Create ()

@@ -6,6 +6,20 @@ import wx
 
 from windowpool import WindowPool
 
+class Hook (wx.Panel):
+  '''Hook is an abstract base class implementing basic functions used by the
+  workflow panel. NOTE: Every panel which is added to a workflow should inherit this
+  class!'''
+
+  def deactivate (self):
+    '''things to do before switching this panel. Returns true if switching is forbidden
+    (e.g. because of missing values).'''
+    return True
+
+  def activate (self):
+    '''Things to do after switching to this panel. Returns false if something went wrong
+    (for example if the last panel missed some values).'''
+    return True
 
 class Workflow (wx.Panel):
   def createSubPanels (self):
@@ -46,11 +60,29 @@ class Workflow (wx.Panel):
       i.Show (False)
 
     # switch to first subpanel
-    self.switchSubPanel (self.currentNumber)
+    self.switchSubPanelByID (self.currentNumber)
 
     self.SetSizerAndFit (self.mainSizer)
 
-  def switchSubPanel (self, number):
+  def switchSubPanel (self, newPanel):
+    if self.currentPanel:
+      # try to deactivate the panel. if something goes wrong, do nothing.
+      if self.currentPanel.deactivate ():
+        self.mainSizer.Detach (self.currentPanel)
+        self.currentPanel.Show (False)
+      else: return
+
+    # try to activate the panel. if something goes wrong, return to the last panel
+    if newPanel.activate ():
+      self.currentPanel = newPanel
+
+    self.mainSizer.Add (self.currentPanel, pos = (0,0))
+    self.currentPanel.Show (True)
+    self.mainSizer.Layout ()
+
+    self.Layout ()
+
+  def switchSubPanelByID (self, number):
     if number < self.pool.lower_bound or number > self.pool.upper_bound:
       # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
       raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
@@ -66,17 +98,11 @@ class Workflow (wx.Panel):
     else:
       self.forward.Enable ()
 
-    if self.currentPanel:
-      self.mainSizer.Detach (self.currentPanel)
-      self.currentPanel.Show (False)
+    self.switchSubPanel (self.pool [number])
 
-    self.currentPanel = self.pool [number]
-
-    self.mainSizer.Add (self.currentPanel, pos = (0,0))
-    self.currentPanel.Show (True)
-    self.mainSizer.Layout ()
-
-    self.Layout ()
+  def switchSubPanelByName  (self, name):
+    self.switchSubPanel (self.pool [name])
+    self.currentNumber = self.pool.getWindowIndex ()
 
   def getSubPanelByName (self, name):
     return self.subPanelsByName[name]
@@ -85,8 +111,8 @@ class Workflow (wx.Panel):
   # event handling
   #########
   def onBack (self, e):
-    self.switchSubPanel (self.currentNumber - 1)
+    self.switchSubPanelByID (self.currentNumber - 1)
   
   def onForward (self, e):
-    self.switchSubPanel (self.currentNumber + 1)
+    self.switchSubPanelByID (self.currentNumber + 1)
 
