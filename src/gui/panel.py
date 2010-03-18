@@ -36,6 +36,15 @@ class WindowPool:
     '''arbitrarily ordered list of the values from self.windows'''
     return self.windows.values ()
 
+  def __getitem__ (self, index):
+    '''Return the window to window belonging to index. If index is an integer, it is
+    handled as the normal index. If it is a string, we assume that it refers to the name
+    of the window.'''
+    try:
+      return self.windows[self.indices[index]]
+    except TypeError:
+      return self.windows[index]
+
 class Workflow (wx.Panel):
   def createSubPanels (self):
     self.pool.addWindow ("1", Panel1 (self, 1))
@@ -102,7 +111,7 @@ class Workflow (wx.Panel):
       self.mainSizer.Detach (self.currentPanel)
       self.currentPanel.Show (False)
 
-    self.currentPanel = self.pool.getWindowByID (number)
+    self.currentPanel = self.pool [number]
 
     self.mainSizer.Add (self.currentPanel, pos = (0,0))
     self.currentPanel.Show (True)
