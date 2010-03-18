@@ -212,7 +212,6 @@ class NOAA (Plugin):
       sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
 
   def listAvailableStations (self):
-    # TODO we should cache the resulting list
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
     if not self.listOfStations:
