@@ -14,12 +14,16 @@ import os
 import re
 import sys
 
+# MVC
+from control import Control
+from gui import GUI
+
 # time: used to sleep while downloading via FTP
 import time
 import weatherstation
 
-#noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # XXX
+# noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib hat ein problem mit namensauflsung
 noaa_url="205.167.25.101"
 
@@ -289,11 +293,11 @@ class NOAA (Plugin):
 
     return stations
 
-class NOAA_Control:
+class NOAA_Control (Control):
   '''This will be the controller sometime..'''
   pass
 
-class NOAA_GUI:
+class NOAA_GUI (GUI):
   '''This will be the GUI sometime..'''
   pass
 
