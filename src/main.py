@@ -2,9 +2,11 @@
 
 import sys
 
+from control.control import Control
+from control.gui import GUI
+
 print '''
 Nice userinterface
-
 '''
 
 def dowhile (text, condition):

@@ -15,8 +15,8 @@ import re
 import sys
 
 # MVC
-from control import Control
-from gui import GUI
+from control.control import Control
+from gui.gui import GUI
 
 # time: used to sleep while downloading via FTP
 import time
