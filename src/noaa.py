@@ -262,14 +262,6 @@ class NOAA (Plugin):
 
     return stations
 
-class NOAA_Control (Control):
-  '''This will be the controller sometime..'''
-  pass
-
-class NOAA_GUI (GUI):
-  '''This will be the GUI sometime..'''
-  pass
-
 
 # test routine
 def example ():
