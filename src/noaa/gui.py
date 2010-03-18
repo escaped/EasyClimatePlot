@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''GUI workflow for NOAA download'''
 
 import wx
@@ -51,15 +52,25 @@ class SearchResults (Hook, wx.Panel):
     self.parent = parent
     self.noaa = dao.NOAA ()
 
+    self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
+    self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
+    item = wx.ListItem ()
+    item.SetText ("hallo")
+
+    sizer_5 = wx.StaticBoxSizer(self.sizer_5_staticbox, wx.HORIZONTAL)
+    sizer_5.Add(self.lctChooseStation, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    self.SetSizer(sizer_5)
+    sizer_5.Fit(self)
+    self.Layout()
+
   def activate (self):
     # get the values of the last panel
     stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
     if stationNumber:
-      print self.noaa.searchStationsByStationID (str(stationNumber))
-    else:
-      print self.noaa.searchStationsByStationID ("35.*")
+      for item in self.noaa.searchStationsByStationID (str(stationNumber)):
+        print item.station_name
 
-
+    return True
 
 class NOAA_Workflow (Workflow):
   def createSubPanels (self):

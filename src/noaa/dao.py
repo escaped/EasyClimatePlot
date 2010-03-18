@@ -221,7 +221,6 @@ class NOAA (Plugin):
       f.close ()
     else:
       f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
-      f.read ()
       stations = cPickle.load (f)
       f.close ()
     

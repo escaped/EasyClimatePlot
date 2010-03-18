@@ -54,6 +54,7 @@ class CacheManager(Singleton):
                     obj = cPickle.load(f)
                     f.close()
                     break
+        # TODO ist der print noch ntig?
         print obj
         return obj
     
