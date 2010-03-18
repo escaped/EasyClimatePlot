@@ -74,7 +74,6 @@ class SearchResults (Hook, wx.Panel):
     else:
       del self.results[id]
   def deactivate (self):
-    for item in self.lctChooseStation
     return True
 
   def activate (self):
@@ -86,7 +85,7 @@ class SearchResults (Hook, wx.Panel):
     if stationNumber:
       self.searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
       for item in self.searchResults:
-        self.lctChooseStation.AppendAndEnsureVisible (item.station_name)
+        self.lctChooseStation.AppendAndEnsureVisible (item["station_name"])
     return True
 
 class Empty (Hook, wx.Panel):

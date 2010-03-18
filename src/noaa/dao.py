@@ -226,7 +226,7 @@ class NOAA (Plugin):
         # delete unneeded lines
         del content[0:20]
 
-        self.listOfStations = [weatherstation.WeatherStation (line) for line in content]
+        self.listOfStations = [weatherstation.weatherStationDictionary (line) for line in content]
         try:
           f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
           cPickle.dump(self.listOfStations, f)
@@ -245,10 +245,10 @@ class NOAA (Plugin):
     the usaf station id, which might isn't what you want.'''
     reg = re.compile (str(stationid))
     if wban:
-      return filter (lambda x: reg.search (str (x.wban)),
+      return filter (lambda x: reg.search (str (x["wban"])),
           self.listAvailableStations ())
     else:
-      return filter (lambda x: reg.search (str (x.usaf)),
+      return filter (lambda x: reg.search (str (x["usaf"])),
           self.listAvailableStations ())
 
   def searchStationsByCountryCode (self, countrycode, use_FIPS = True):

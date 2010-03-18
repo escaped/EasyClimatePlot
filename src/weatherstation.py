@@ -53,6 +53,7 @@ def weatherStationDictionary (line):
     station["elev"]         = float(line[int (fields["ELEV"][0]):int(fields["ELEV"][1])])
   except ValueError:
     # If this happens, one of the upper values was empty. We don't care about that.
+    pass
 
   return station
 
