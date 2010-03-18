@@ -3,11 +3,10 @@
 import sys
 
 from control.control import Control
-from control.gui import GUI
+import gui.window
 
-print '''
-Nice userinterface
-'''
+gui.window.ShowMainWindow ()
+exit ()
 
 def dowhile (text, condition):
   choose = 0

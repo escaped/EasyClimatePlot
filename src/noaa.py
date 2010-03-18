@@ -16,7 +16,7 @@ import sys
 
 # MVC
 from control.control import Control
-from gui.gui import GUI
+from gui.panel import View
 
 # time: used to sleep while downloading via FTP
 import time
