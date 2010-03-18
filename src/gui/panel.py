@@ -5,53 +5,29 @@
 import wx
 
 class Panel1 (wx.Panel):
-  def __init__ (self, parent):
+  def __init__ (self, parent, text):
     wx.Panel.__init__ (self, parent)
-    self.lbltext = wx.StaticText(self, label="Panel 1")
-class Panel2 (wx.Panel):
-  def __init__ (self, parent):
-    wx.Panel.__init__ (self, parent)
-    self.lbltext = wx.StaticText(self, label="Panel 2")
-
+    self.lbltext = wx.StaticText(self, label=str (text))
 
 class Workflow (wx.Panel):
   def createSubPanels (self):
-    #self.subPanels.append (Panel1 (self))
-    #self.subPanels.append (Panel1 (self))
-    #self.subPanels.append (Panel1 (self))
-    #self.subPanels.append (Panel1 (self))
-    raise NotImplementedError, "Please implement in deriving classes"
+    self.subPanelsByName[1] = Panel1 (self, 1)
+    self.subPanelsByName[2] = Panel1 (self, 2)
+    self.subPanelsByName[3] = Panel1 (self, 3)
+    #raise NotImplementedError, "Please implement in deriving classes"
 
+  #########
+  # constructor
+  #########
   def __init__ (self, parent):
     wx.Panel.__init__ (self, parent)
     self.currentPanel  = None
     self.currentNumber = 0
+    # subPanels collection as a simple list
     self.subPanels = []
-
-  def switchSubPanel (self, number):
-    if number < 0 or number > len (self.subPanels):
-      # throw a bad exception
-      # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
-      raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
-    self.currentNumber = number
-
-    if number - 1 < 0:
-      self.back.Disable ()
-    else:
-      self.back.Enable ()
-
-    if number + 1 > len (self.subPanels):
-      self.forward.Disable ()
-    else:
-      self.forward.Enable ()
-
-    if self.currentPanel:
-      self.mainSizer.Detach (self.currentPanel)
-      self.currentPanel.Show (False)
-    self.currentPanel = self.subPanels[number]
-    self.mainSizer.Add (self.currentPanel, pos = (0,0))
-    self.mainSizer.Layout ()
-
+    # subPanels collection as an assoc. array -
+    # this one has to be filled in createSubPanels
+    self.subPanelsByName = {}
 
   def Create (self):
     # sizers
@@ -74,11 +50,54 @@ class Workflow (wx.Panel):
     # create the subpanels
     self.createSubPanels ()
 
+    # create the list of subpanels
+    # TODO make sure, that the order is preserved!
+    self.subPanels = [self.subPanelsByName[i] for i in self.subPanelsByName]
+
+    # make sure, that none of the subpanels is shown
+    for panel in self.subPanels:
+      panel.Show (False)
+
     # switch to first subpanel
     self.switchSubPanel (self.currentNumber)
 
     self.SetSizerAndFit (self.mainSizer)
 
+  def switchSubPanel (self, number):
+    if number < 0 or number > len (self.subPanels):
+      # throw a bad exception
+      # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
+      raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
+    self.currentNumber = number
+
+    if number - 1 < 0:
+      self.back.Disable ()
+    else:
+      self.back.Enable ()
+
+    if number + 2 > len (self.subPanels):
+      self.forward.Disable ()
+    else:
+      self.forward.Enable ()
+
+    if self.currentPanel:
+      self.mainSizer.Detach (self.currentPanel)
+      self.currentPanel.Show (False)
+
+    self.currentPanel = self.subPanels[number]
+
+    self.mainSizer.Add (self.currentPanel, pos = (0,0))
+    self.currentPanel.Show (True)
+    self.mainSizer.Layout ()
+
+    self.Layout ()
+
+  def getSubPanelByName (self, name):
+    return self.subPanelsByName[name]
+
+  #########
+  # event handling
+  #########
   def onBack (self, e):
     self.switchSubPanel (self.currentNumber - 1)
   
