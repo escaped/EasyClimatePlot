@@ -22,39 +22,9 @@ from gui import GUI
 import time
 import weatherstation
 
-# XXX
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
-# ftplib hat ein problem mit namensauflsung
+# ftplib doesn't seem to resolv the upper url right
 noaa_url="205.167.25.101"
-
-def example ():
-  no = NOAA ()
-  no.station_number = 37735
-  no.use_usaf = True
-  no.getCountryList ()
-  no.downloadData (1969, 2011)
-  # plot
-  import walterlieth
-  data = no.getData ()
-  w = walterlieth.WalterLieth (
-        data.getData ("temp", "m"),
-        data.getData ("precipitation", "m")
-      )
-  w.process ()
-  c = contour.Contour (
-        data.getData ("temp", "m"),
-        data.getData ("temp", "m"),
-        data.getData ("temp", "m")
-      )
-  c.process ()
-
-  return no
-
-def searchStations ():
-  n = NOAA ()
-  # print n.searchStationsByLonLat ((-99999,-999999),(-99999,-999999))
-  for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
-    print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
 
 def fileExistsInCache (f):
   f = os.path.basename (f)
@@ -303,6 +273,35 @@ class NOAA_GUI (GUI):
 
 
 # test routine
+def example ():
+  no = NOAA ()
+  no.station_number = 37735
+  no.use_usaf = True
+  no.getCountryList ()
+  no.downloadData (1969, 2011)
+  # plot
+  import walterlieth
+  data = no.getData ()
+  w = walterlieth.WalterLieth (
+        data.getData ("temp", "m"),
+        data.getData ("precipitation", "m")
+      )
+  w.process ()
+  c = contour.Contour (
+        data.getData ("temp", "m"),
+        data.getData ("temp", "m"),
+        data.getData ("temp", "m")
+      )
+  c.process ()
+
+  return no
+
+def searchStations ():
+  n = NOAA ()
+  # print n.searchStationsByLonLat ((-99999,-999999),(-99999,-999999))
+  for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
+    print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
+
 if __name__ == "__main__":
   example ()
   #searchStations ()
