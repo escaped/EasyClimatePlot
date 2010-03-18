@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
+
 '''Submodules should use panels to interact with the user.'''
 
-import time
-
 import wx
+
 class NOAA_Panel (wx.Panel):
   '''The NOAA panel can dynamically switch it's subpanels.'''
   def __init__ (self, parent):
@@ -30,16 +31,17 @@ class NOAA_Panel (wx.Panel):
 
   def switch (self, panel):
     # switch current_panel to panel
-    self.grid.Detach (self.current_panel)
+    self.grid.Remove (self.current_panel)
     self.current_panel.Show (False)
     self.grid.Add (panel, pos = (0,1))
     self.current_panel = panel
     self.current_panel.Show (True)
-    self.grid.Layout ()
 
   def onClick (self, e):
     self.switch (self.pan2)
-    self.parent.Layout ()
+    self.grid.Remove (self.button)
+    self.button.Destroy ()
+    self.grid.Layout ()
 
 
 class Panel1 (wx.Panel):
@@ -51,20 +53,74 @@ class Panel2 (wx.Panel):
     wx.Panel.__init__ (self, parent)
     self.lbltext = wx.StaticText(self, label="Panel 2")
 
-class StartDownloadPanel (wx.Panel):
-  '''Let the user choose wether to download from noaa or from nasa.'''
+
+class Workflow (wx.Panel):
+  def createSubPanels (self):
+    self.subPanels = []
+    self.subPanels.append (Panel1 (self))
+    self.subPanels.append (Panel1 (self))
+    self.subPanels.append (Panel1 (self))
+    self.subPanels.append (Panel1 (self))
+    #raise NotImplementedError, "Please implement in deriving classes"
+
   def __init__ (self, parent):
     wx.Panel.__init__ (self, parent)
+    self.currentPanel  = None
+    self.currentNumber = 0
 
-    # sizer
-    grid = wx.GridBagSizer (hgap = 1, vgap = 2)
+  def switchSubPanel (self, number):
+    if number < 0 or number > len (self.subPanels):
+      # throw a bad exception
+      raise IdiotError
+    self.currentNumber = number
 
-    # buttons
-    noaaButton = wx.Button (self, wx.ID_ANY, label = "NOAA")
-    nasaButton = wx.Button (self, wx.ID_ANY, label = "NASA")
+    if number - 1 < 0:
+      self.back.Disable ()
+    else:
+      self.back.Enable ()
 
-    grid.Add (noaaButton, pos = (0,0))
-    grid.Add (nasaButton, pos = (1,0))
+    if number + 1 > len (self.subPanels):
+      self.forward.Disable ()
+    else:
+      self.forward.Enable ()
 
-    self.SetSizerAndFit (grid)
+    if self.currentPanel:
+      self.mainSizer.Detach (self.currentPanel)
+      self.currentPanel.Show (False)
+    self.currentPanel = self.subPanels[number]
+    self.mainSizer.Add (self.currentPanel, pos = (0,0))
+    self.mainSizer.Layout ()
+
+
+  def Create (self):
+    # sizers
+    self.mainSizer = wx.GridBagSizer (hgap = 1, vgap = 2)
+    self.buttonSizer = wx.GridBagSizer (hgap = 2, vgap = 1)
+
+    self.mainSizer.Add (self.buttonSizer, pos = (1,0))
+
+    # back and forward buttons
+    self.back = wx.Button (self, label = "Zurück")
+    self.forward = wx.Button (self, label = "Weiter")
+
+    self.Bind (wx.EVT_BUTTON, self.onBack, self.back)
+    self.Bind (wx.EVT_BUTTON, self.onForward, self.forward)
+
+    # add buttons to buttonSizer
+    self.buttonSizer.Add (self.back, pos = (0,0))
+    self.buttonSizer.Add (self.forward, pos = (0,1))
+
+    # create the subpanels
+    self.createSubPanels ()
+
+    # switch to first subpanel
+    self.switchSubPanel (self.currentNumber)
+
+    self.SetSizerAndFit (self.mainSizer)
+
+  def onBack (self, e):
+    self.switchSubPanel (self.currentNumber - 1)
+  
+  def onForward (self, e):
+    self.switchSubPanel (self.currentNumber + 1)
 

@@ -40,7 +40,9 @@ class MainWindow (wx.Frame):
     # das hinzufügen sollte dynamisch vollzogen werden
 
     import panel
-    self.notebook.AddPage (panel.NOAA_Panel (self.notebook), "Download")
+    workflow = panel.Workflow (self.notebook)
+    self.notebook.AddPage (workflow, "Download")
+    workflow.Create ()
     self.notebook.AddPage (MainPanel (self.notebook), "Plot")
     self.notebook.AddPage (MainPanel (self.notebook), "Export")
 
