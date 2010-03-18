@@ -37,8 +37,6 @@ class CacheManager(Singleton):
     def hash(self, str):
         return hashlib.md5(str).hexdigest()
     
-    
-    
     def load(self, module, id, starttime = None, endtime = None):
         obj = None
         
@@ -96,7 +94,7 @@ def test():
     d2 = data.Data('34','coord')
 
     dd = utils.Dict()
-    for i in range(1966,2010):
+    for i in xrange(1966,2010):
         dd['temp'][str(i)+'1031'] = 10
         dd['precipitation'][str(i)+'1031'] = 20
         if 1985 <= i and i <= 1990:
