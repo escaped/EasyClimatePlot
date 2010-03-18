@@ -14,6 +14,8 @@ import os
 import re
 import sys
 
+import cPickle
+
 # MVC
 from control.control import Control
 
@@ -215,10 +217,11 @@ class NOAA (Plugin):
 
       stations = [weatherstation.WeatherStation (line) for line in content]
       f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
-      cPickle.dump(f, stations)
+      cPickle.dump(stations, f)
       f.close ()
     else:
       f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
+      f.read ()
       stations = cPickle.load (f)
       f.close ()
     
@@ -228,7 +231,7 @@ class NOAA (Plugin):
     '''Search stations by station id, where station id is a regular
     expression. NOTE: If wban = False, then you are searching with 
     the usaf station id, which might isn't what you want.'''
-    reg = re.compile (str (stationid))
+    reg = re.compile (str(stationid))
     if wban:
       return filter (lambda x: reg.search (str (x.wban)),
           self.listAvailableStations ())

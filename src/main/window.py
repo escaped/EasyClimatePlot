@@ -2,6 +2,8 @@
 
 import wx
 
+from noaa.gui import NOAA_Workflow
+
 def ShowMainWindow ():
   app = wx.App (False)
   mw  = MainWindow ()
@@ -39,7 +41,7 @@ class MainWindow (wx.Frame):
     self.notebook = wx.Notebook (self)
     # das hinzufügen sollte dynamisch vollzogen werden
 
-    from noaa.noaa import NOAA_Workflow
+    # TODO anders machen
     workflow = NOAA_Workflow (self.notebook)
     self.notebook.AddPage (workflow, "Download")
     workflow.Create ()

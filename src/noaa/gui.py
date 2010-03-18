@@ -1,10 +1,9 @@
 '''GUI workflow for NOAA download'''
 
 import wx
-from gui.panel import Workflow,Hook
+from main.panel import Workflow,Hook
 
-import noaa_dao
-
+import dao
 
 class SearchPanel (Hook, wx.Panel):
   def __init__(self, parent):
@@ -49,10 +48,17 @@ class SearchPanel (Hook, wx.Panel):
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, parent):
     wx.Panel.__init__ (self, parent)
+    self.parent = parent
+    self.noaa = dao.NOAA ()
 
   def activate (self):
     # get the values of the last panel
-    print "done"
+    stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
+    if stationNumber:
+      print self.noaa.searchStationsByStationID (str(stationNumber))
+    else:
+      print self.noaa.searchStationsByStationID ("35.*")
+
 
 
 class NOAA_Workflow (Workflow):
