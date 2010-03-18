@@ -56,22 +56,23 @@ class Panel2 (wx.Panel):
 
 class Workflow (wx.Panel):
   def createSubPanels (self):
-    self.subPanels = []
-    self.subPanels.append (Panel1 (self))
-    self.subPanels.append (Panel1 (self))
-    self.subPanels.append (Panel1 (self))
-    self.subPanels.append (Panel1 (self))
-    #raise NotImplementedError, "Please implement in deriving classes"
+    #self.subPanels.append (Panel1 (self))
+    #self.subPanels.append (Panel1 (self))
+    #self.subPanels.append (Panel1 (self))
+    #self.subPanels.append (Panel1 (self))
+    raise NotImplementedError, "Please implement in deriving classes"
 
   def __init__ (self, parent):
     wx.Panel.__init__ (self, parent)
     self.currentPanel  = None
     self.currentNumber = 0
+    self.subPanels = []
 
   def switchSubPanel (self, number):
     if number < 0 or number > len (self.subPanels):
       # throw a bad exception
-      raise IdiotError
+      # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
+      raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
     self.currentNumber = number
 
     if number - 1 < 0:
