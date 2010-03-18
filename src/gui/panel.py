@@ -4,53 +4,12 @@
 
 import wx
 
-class Panel1 (wx.Panel):
-  def __init__(self, parent, text):
-    wx.Panel.__init__ (self, parent)
-    self.lbltext = wx.StaticText(self, label=str (text))
+from windowpool import WindowPool
 
-# TODO should this be some kind of singleton?
-class WindowPool:
-  def __init__(self):
-    self.windows = {}
-    self.indices = []
-    self.count   = 0
-    self.lower_bound = 0
-    self.upper_bound = 0
-
-  def addWindow (self, name, window):
-    self.windows[name] = window
-    self.indices.append (name)
-    self.count += 1
-    self.upper_bound += 1
-
-  def getWindowByName (self, name):
-    # TODO exceptions needed?
-    return self.windows[name]
-
-  def getWindowByID (self, id):
-    # TODO exceptions needed?
-    return self.windows[self.indices[id]]
-
-  def getListOfWindows (self):
-    '''arbitrarily ordered list of the values from self.windows'''
-    return self.windows.values ()
-
-  def __getitem__ (self, index):
-    '''Return the window to window belonging to index. If index is an integer, it is
-    handled as the normal index. If it is a string, we assume that it refers to the name
-    of the window.'''
-    try:
-      return self.windows[self.indices[index]]
-    except TypeError:
-      return self.windows[index]
 
 class Workflow (wx.Panel):
   def createSubPanels (self):
-    self.pool.addWindow ("1", Panel1 (self, 1))
-    self.pool.addWindow ("2", Panel1 (self, 2))
-    self.pool.addWindow ("3", Panel1 (self, 3))
-    #raise NotImplementedError, "Please implement in deriving classes"
+    raise NotImplementedError, "Please implement in deriving classes"
 
   #########
   # constructor
