@@ -36,3 +36,23 @@ class WeatherStation (object):
     except ValueError:
       # If this happens, one of the upper values was empty. We don't care about that.
       pass
+
+def weatherStationDictionary (line):
+  station = {}
+  station["usaf"]         = line[int (fields["USAF"][0])        :int(fields["USAF"][1])]
+  station["wban"]         = line[int (fields["WBAN"][0])        :int(fields["WBAN"][1])]
+  station["station_name"] = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])]
+  station["ctry_wmo"]     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])]
+  station["ctry_fips"]    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])]
+  station["lat"]          = 0
+  station["lon"]          = 0
+  station["elev"]         = 0
+  try:
+    station["lat"]          = float(line[int (fields["LAT"][0]) :int(fields["LAT"][1])]) / 1000
+    station["lon"]          = float(line[int (fields["LON"][0]) :int(fields["LON"][1])]) / 1000
+    station["elev"]         = float(line[int (fields["ELEV"][0]):int(fields["ELEV"][1])])
+  except ValueError:
+    # If this happens, one of the upper values was empty. We don't care about that.
+
+  return station
+
