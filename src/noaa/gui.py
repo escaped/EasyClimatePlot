@@ -53,9 +53,9 @@ class SearchResults (Hook, wx.Panel):
     self.noaa = dao.NOAA ()
 
     self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
-    self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
-    item = wx.ListItem ()
-    item.SetText ("hallo")
+    #self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
+    # TODO ListBox ist nicht so hübsch.
+    self.lctChooseStation = wx.ListBox (self)
 
     sizer_5 = wx.StaticBoxSizer(self.sizer_5_staticbox, wx.HORIZONTAL)
     sizer_5.Add(self.lctChooseStation, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
@@ -68,7 +68,7 @@ class SearchResults (Hook, wx.Panel):
     stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
     if stationNumber:
       for item in self.noaa.searchStationsByStationID (str(stationNumber)):
-        print item.station_name
+        self.lctChooseStation.AppendAndEnsureVisible (item.station_name)
 
     return True
 
