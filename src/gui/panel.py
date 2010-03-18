@@ -5,15 +5,42 @@
 import wx
 
 class Panel1 (wx.Panel):
-  def __init__ (self, parent, text):
+  def __init__(self, parent, text):
     wx.Panel.__init__ (self, parent)
     self.lbltext = wx.StaticText(self, label=str (text))
 
+# TODO should this be some kind of singleton?
+class WindowPool:
+  def __init__(self):
+    self.windows = {}
+    self.indices = []
+    self.count   = 0
+    self.lower_bound = 0
+    self.upper_bound = 0
+
+  def addWindow (self, name, window):
+    self.windows[name] = window
+    self.indices.append (name)
+    self.count += 1
+    self.upper_bound += 1
+
+  def getWindowByName (self, name):
+    # TODO exceptions needed?
+    return self.windows[name]
+
+  def getWindowByID (self, id):
+    # TODO exceptions needed?
+    return self.windows[self.indices[id]]
+
+  def getListOfWindows (self):
+    '''arbitrarily ordered list of the values from self.windows'''
+    return self.windows.values ()
+
 class Workflow (wx.Panel):
   def createSubPanels (self):
-    self.subPanelsByName[1] = Panel1 (self, 1)
-    self.subPanelsByName[2] = Panel1 (self, 2)
-    self.subPanelsByName[3] = Panel1 (self, 3)
+    self.pool.addWindow ("1", Panel1 (self, 1))
+    self.pool.addWindow ("2", Panel1 (self, 2))
+    self.pool.addWindow ("3", Panel1 (self, 3))
     #raise NotImplementedError, "Please implement in deriving classes"
 
   #########
@@ -23,11 +50,7 @@ class Workflow (wx.Panel):
     wx.Panel.__init__ (self, parent)
     self.currentPanel  = None
     self.currentNumber = 0
-    # subPanels collection as a simple list
-    self.subPanels = []
-    # subPanels collection as an assoc. array -
-    # this one has to be filled in createSubPanels
-    self.subPanelsByName = {}
+    self.pool = WindowPool ()
 
   def Create (self):
     # sizers
@@ -50,13 +73,9 @@ class Workflow (wx.Panel):
     # create the subpanels
     self.createSubPanels ()
 
-    # create the list of subpanels
-    # TODO make sure, that the order is preserved!
-    self.subPanels = [self.subPanelsByName[i] for i in self.subPanelsByName]
-
     # make sure, that none of the subpanels is shown
-    for panel in self.subPanels:
-      panel.Show (False)
+    for i in self.pool.getListOfWindows ():
+      i.Show (False)
 
     # switch to first subpanel
     self.switchSubPanel (self.currentNumber)
@@ -64,18 +83,17 @@ class Workflow (wx.Panel):
     self.SetSizerAndFit (self.mainSizer)
 
   def switchSubPanel (self, number):
-    if number < 0 or number > len (self.subPanels):
-      # throw a bad exception
+    if number < self.pool.lower_bound or number > self.pool.upper_bound:
       # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
       raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
     self.currentNumber = number
 
-    if number - 1 < 0:
+    if number - 1 < self.pool.lower_bound:
       self.back.Disable ()
     else:
       self.back.Enable ()
 
-    if number + 2 > len (self.subPanels):
+    if number + 2 > self.pool.upper_bound:
       self.forward.Disable ()
     else:
       self.forward.Enable ()
@@ -84,7 +102,7 @@ class Workflow (wx.Panel):
       self.mainSizer.Detach (self.currentPanel)
       self.currentPanel.Show (False)
 
-    self.currentPanel = self.subPanels[number]
+    self.currentPanel = self.pool.getWindowByID (number)
 
     self.mainSizer.Add (self.currentPanel, pos = (0,0))
     self.currentPanel.Show (True)
