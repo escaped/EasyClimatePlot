@@ -51,11 +51,12 @@ class SearchResults (Hook, wx.Panel):
     wx.Panel.__init__ (self, parent)
     self.parent = parent
     self.noaa = dao.NOAA ()
+    self.results = []
 
     self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
     #self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
-    # TODO ListBox ist nicht so hübsch.
-    self.lctChooseStation = wx.ListBox (self)
+    # TODO ListBox ist nicht so hübsch. hier sollte ein wxGrid verwendet werden,oder?
+    self.lctChooseStation = wx.CheckListBox (self)
 
     sizer_5 = wx.StaticBoxSizer(self.sizer_5_staticbox, wx.HORIZONTAL)
     sizer_5.Add(self.lctChooseStation, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
@@ -63,17 +64,43 @@ class SearchResults (Hook, wx.Panel):
     sizer_5.Fit(self)
     self.Layout()
 
+    # bind to check event
+    self.Bind (wx.EVT_CHECKLISTBOX, self.onCheck, self.lctChooseStation)
+
+  def onCheck (self, e):
+    id = self.lctChooseStation.GetSelections ()
+    if self.lctChooseStation.IsChecked (id):
+      self.results.append (self.searchResults[id])
+    else:
+      del self.results[id]
+  def deactivate (self):
+    for item in self.lctChooseStation
+    return True
+
   def activate (self):
     # get the values of the last panel
+    # TODO use other options as well
+    # TODO performance issues?
     stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
+    self.searchResults = []
     if stationNumber:
-      for item in self.noaa.searchStationsByStationID (str(stationNumber)):
+      self.searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
+      for item in self.searchResults:
         self.lctChooseStation.AppendAndEnsureVisible (item.station_name)
-
     return True
+
+class Empty (Hook, wx.Panel):
+  def __init__ (self, parent):
+    wx.Panel.__init__ (self, parent)
+    self.parent = parent
+
+  def activate (self):
+    for item in self.parent.pool["SearchResults"].results:
+      print item.station_name, item.usaf
 
 class NOAA_Workflow (Workflow):
   def createSubPanels (self):
     self.pool.addWindow ("Search", SearchPanel (self))
     self.pool.addWindow ("SearchResults", SearchResults (self))
+    self.pool.addWindow ("Empty", Empty (self))
     
