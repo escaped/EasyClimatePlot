@@ -13,8 +13,8 @@ class WalterLieth:
   prcp = []
 
   def __init__ (self, temp, prcp, plot_title = "", output_filename = "output.eps"):
-    self.temp = zip (range (1,13), temp)
-    self.prcp = zip (range (1,13), prcp)
+    self.temp = zip (xrange (1,13), temp)
+    self.prcp = zip (xrange (1,13), prcp)
     self.plot_title = plot_title
 
   def process (self):
