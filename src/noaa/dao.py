@@ -52,6 +52,9 @@ class NOAA (Plugin):
       f.close ()
     except IOError:
       self.listOfStations = None 
+    # TODO die länderlisten sollten auch unbedingt gecached werden
+    self.ctry_wmo_list = set ()
+    self.ctry_fips_list = set ()
 
   def downloadData (self, start=1929, end=2011):
     
@@ -179,7 +182,7 @@ class NOAA (Plugin):
     # read station number and remove \n
     self.station_number = sys.stdin.readline ().rstrip ()
 
-  def getCountryList (self):
+  def downloadCountryList (self):
     '''This method downloads the file ish-history.txt from the NOAA FTP. That file
     contains all stations, which are listed and for which some data exist on the FTP.'''
     self.retrieveListOfFiles (["ish-history.txt"])
@@ -211,20 +214,28 @@ class NOAA (Plugin):
     except socket.error:
       sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
 
+  def getFileContents (self, filename):
+    file = open (os.path.join(config.CACHEDIR ,"noaa", filename), 'r')
+    content = file.readlines ()
+    file.close ()
+
+    return content
+
+  def getIshHistory (self):
+    # get ish-history
+    self.downloadCountryList ()
+    # read ish-history
+    content = getFileContents ("ish-history.txt")
+    # delete unneeded lines
+    del content[0:20]
+    return content
+    
   def listAvailableStations (self):
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
     if not self.listOfStations:
       if not os.path.exists (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME)):
-        # get ish-history
-        self.getCountryList ()
-
-        # read ish-history
-        file = open (os.path.join(config.CACHEDIR ,"noaa", "ish-history.txt"), 'r')
-        content = file.readlines ()
-        file.close ()
-        # delete unneeded lines
-        del content[0:20]
+        content = self.getIshHistory ()
 
         self.listOfStations = [weatherstation.weatherStationDictionary (line) for line in content]
         try:
@@ -277,6 +288,19 @@ class NOAA (Plugin):
 
     return stations
 
+  def getCountryList (self, FIPS=True):
+    '''Get a list of the available country IDs. Use FIPS or WMO IDs.'''
+    retrieveListOfFiles (["country-list.txt"])
+    content = getFileContents ("country-list.txt"])
+    # TODO use split and something
+    #for line in content:
+    #  self.ctry_fips_list.add (''.join(line[46:48]))
+    #  self.ctry_wmo_list.add  (''.join(line[43:45]))
+
+    #if FIPS:
+    #  return self.ctry_fips_list
+    #return self.ctry_wmo_list
+
 
 # test routine
 def example ():
@@ -308,6 +332,13 @@ def searchStations ():
   for station in n.searchStationsByLonLat   ((41.000, 43.0000),(38.000, 50.0000)):
     print station.station_name, station.usaf, station.ctry_fips, station.lat, station.lon
 
+def listCountries ():
+  n = NOAA ()
+  for ctry in n.getCountryList ():
+    print ctry
+
+
 if __name__ == "__main__":
-  example ()
+  #example ()
   #searchStations ()
+  listCountries ()
