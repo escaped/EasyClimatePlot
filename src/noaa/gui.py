@@ -99,9 +99,9 @@ class SearchResults (Hook, wx.Panel):
         if self.parent.pool["Search"].USAF (): 
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
         else:
-          searchResults = self.noaa.searchStationsByStationID (str(stationNumber), false)
+          searchResults = self.noaa.searchStationsByStationID (str(stationNumber), False)
         self.lctChooseStation.AddManyData (searchResults,
-          ["station_name", "ctry_fips", "usaf"])
+          ["station_name", "ctry_fips", "usaf", "wban"])
       self.searchComplete = True
     return True
 
