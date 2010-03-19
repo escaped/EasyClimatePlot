@@ -291,7 +291,7 @@ class NOAA (Plugin):
   def getCountryList (self, FIPS=True):
     '''Get a list of the available country IDs. Use FIPS or WMO IDs.'''
     retrieveListOfFiles (["country-list.txt"])
-    content = getFileContents ("country-list.txt"])
+    content = getFileContents (["country-list.txt"])
     # TODO use split and something
     #for line in content:
     #  self.ctry_fips_list.add (''.join(line[46:48]))
