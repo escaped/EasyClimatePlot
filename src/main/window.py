@@ -45,8 +45,8 @@ class MainWindow (wx.Frame):
     workflow = NOAA_Workflow (self.notebook)
     self.notebook.AddPage (workflow, "Download")
     workflow.Create ()
-    self.notebook.AddPage (MainPanel (self.notebook), "Plot")
-    self.notebook.AddPage (MainPanel (self.notebook), "Export")
+    self.notebook.AddPage (EmptyPanel (self.notebook), "Plot")
+    self.notebook.AddPage (EmptyPanel (self.notebook), "Export")
 
     self.Show ()
 
@@ -61,6 +61,6 @@ class MainWindow (wx.Frame):
     mbox.ShowModal ()
     mbox.Destroy ()
 
-class MainPanel (wx.Panel):
-  def __init__ (self, parent):
-    wx.Panel.__init__ (self, parent)
+class EmptyPanel (wx.Panel):
+  def __init__ (self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)

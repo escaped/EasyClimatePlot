@@ -7,8 +7,8 @@ from main.panel import Workflow,Hook
 import dao
 
 class SearchPanel (Hook, wx.Panel):
-  def __init__(self, parent):
-    wx.Panel.__init__ (self, parent)
+  def __init__(self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)
 
     self.sizer_1_staticbox = wx.StaticBox(self, -1, "Suche")
     self.lblStationsnummer = wx.StaticText(self, -1, "Stationsnummer:")
@@ -47,9 +47,9 @@ class SearchPanel (Hook, wx.Panel):
     self.Layout()
 
 class SearchResults (Hook, wx.Panel):
-  def __init__ (self, parent):
-    wx.Panel.__init__ (self, parent)
-    self.parent = parent
+  def __init__ (self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
     self.noaa = dao.NOAA ()
     self.results = []
 
@@ -89,9 +89,9 @@ class SearchResults (Hook, wx.Panel):
     return True
 
 class Empty (Hook, wx.Panel):
-  def __init__ (self, parent):
-    wx.Panel.__init__ (self, parent)
-    self.parent = parent
+  def __init__ (self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
 
   def activate (self):
     for item in self.parent.pool["SearchResults"].results:

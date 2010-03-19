@@ -28,8 +28,8 @@ class Workflow (wx.Panel):
   #########
   # constructor
   #########
-  def __init__ (self, parent):
-    wx.Panel.__init__ (self, parent)
+  def __init__(self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)
     self.currentPanel  = None
     self.currentNumber = 0
     self.pool = WindowPool ()
