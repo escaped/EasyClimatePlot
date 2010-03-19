@@ -64,3 +64,4 @@ class MainWindow (wx.Frame):
 class EmptyPanel (wx.Panel):
   def __init__ (self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
+

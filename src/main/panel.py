@@ -70,6 +70,7 @@ class Workflow (wx.Panel):
       if self.currentPanel.deactivate ():
         self.mainSizer.Detach (self.currentPanel)
         self.currentPanel.Show (False)
+        # TODO: should disable every thing in the subpanel..
       else: return
 
     # try to activate the panel. if something goes wrong, return to the last panel
@@ -102,7 +103,7 @@ class Workflow (wx.Panel):
 
   def switchSubPanelByName  (self, name):
     self.switchSubPanel (self.pool [name])
-    self.currentNumber = self.pool.getWindowIndex ()
+    self.currentNumber = self.pool.getWindowIndex (name)
 
   def getSubPanelByName (self, name):
     return self.subPanelsByName[name]
