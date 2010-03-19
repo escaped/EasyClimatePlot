@@ -2,6 +2,7 @@
 '''GUI workflow for NOAA download'''
 
 import wx
+import wxcustom.datachecklistbox as dcl
 from main.panel import Workflow,Hook
 
 import dao
@@ -57,7 +58,7 @@ class SearchResults (Hook, wx.Panel):
     self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
     #self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
     # TODO CheckListBox ist nicht so hübsch. hier sollte ein wxGrid verwendet werden,oder?
-    self.lctChooseStation = wx.CheckListBox (self)
+    self.lctChooseStation = dcl.DataCheckListbox (self)
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
@@ -72,21 +73,14 @@ class SearchResults (Hook, wx.Panel):
 
     self.searchComplete = False
 
-    # bind to check event
-    self.Bind (wx.EVT_CHECKLISTBOX, self.onCheck, self.lctChooseStation)
-
   def onClear (self, e):
     self.results = []
     self.searchComplete = False
+    self.lctChooseStation.clear ()
     self.parent.switchSubPanelByName ("Search")
 
-  def onCheck (self, e):
-    # NOTE: e.GetInt returns the actual index of the selected item,
-    # not like lctChooseStation.GetSelections () ...
-    if self.lctChooseStation.IsChecked (e.GetInt ()):
-      self.results.append (self.searchResults[e.GetInt ()])
-    else:
-      del self.results[self.results.index (self.searchResults[e.GetInt ()])]
+  def getSelectedStations (self):
+    return self.lctChooseStation.getSelected ()
 
   def activate (self):
     self.lctChooseStation.Show (True)
@@ -95,11 +89,10 @@ class SearchResults (Hook, wx.Panel):
     # TODO performance issues?
     if not self.searchComplete:
       stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
-      self.searchResults = []
       if stationNumber:
-        self.searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
-        for item in self.searchResults:
-          self.lctChooseStation.AppendAndEnsureVisible (item["station_name"])
+        searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
+        self.lctChooseStation.AddManyData (searchResults,
+          ["station_name", "ctry_fips", "usaf"])
       self.searchComplete = True
     return True
 
@@ -119,7 +112,7 @@ class DownloadData (Hook, wx.Panel):
   def onDownload (self, e):
     # TODO vll sollte man noaa doch anders aufbauen
     print "downloading.."
-    for station in self.parent.pool["SearchResults"].results:
+    for station in self.parent.pool["SearchResults"].getSelectedStations ():
       self.noaa.station_number = station["usaf"]
       self.noaa.use_usaf = True
       self.noaa.downloadData (1990, 2000)
