@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import wx
 
+# TODO column names
+
 class DataCheckListbox (wx.CheckListBox):
   '''Inherits from DataCheckListbox. This class should work similar to a .Net
   DataGridView.'''
