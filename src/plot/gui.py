@@ -1,7 +1,47 @@
 # -*- coding: utf-8 -*-
 
-from main.panel import Wizard
+from main.panel import Hook, ViewControl, Wizard
 
-class PlotIntro (Wizard):
+import wx
+
+class PlotIntro (ViewControl):
+  def createSubPanels (self):
+    self.pool.addWindow ("ChooseType", PlotType (self))
+    self.pool.addWindow ("WalterFlow", WalterFlow (self))
+
+class WalterFlow (Hook, Wizard):
   def createSubPanels (self):
     pass
+
+  def __init__ (self, *args, **kwargs):
+    Wizard.__init__ (self, *args, **kwargs)
+
+    self.static = wx.StaticBox (self, -1, "muahahaha")
+
+
+class PlotType (Hook, wx.Panel):
+  def __init__ (self, *args, **kwargs):
+    wx.Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
+    
+    # self.sizer
+    self.sizer = wx.BoxSizer (wx.VERTICAL)
+
+    # three buttons (hehe..)
+    self.walterlieth = wx.Button (self, -1, label="Walter-Lieth Klimadiagramm")
+    self.contour     = wx.Button (self, -1, label="Isoplethendiagramm")
+    self.googlemap   = wx.Button (self, -1, label="Stationen auf Karte einzeichnen")
+
+    self.sizer.Add (self.walterlieth)
+    self.sizer.Add (self.contour)
+    self.sizer.Add (self.googlemap)
+
+    self.SetSizer (self.sizer)
+
+    self.Bind (wx.EVT_BUTTON, self.onWalterLieth, self.walterlieth)
+
+  def onWalterLieth (self, e):
+    self.parent.switchSubPanelByName ("WalterFlow")
+    
+
+

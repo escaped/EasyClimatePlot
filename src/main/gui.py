@@ -45,10 +45,12 @@ class MainWindow (wx.Frame):
     # TODO anders machen
     workflow = NOAA_Wizard (self.notebook)
     self.notebook.AddPage (workflow, "Download")
-    workflow.Create ()
+    workflow.initSubPanel ()
 
     plot = PlotIntro (self.notebook)
     self.notebook.AddPage (plot , "Plot")
+    plot.initSubPanel ()
+
     self.notebook.AddPage (EmptyPanel (self.notebook), "Export")
 
     self.Show ()

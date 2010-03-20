@@ -21,7 +21,7 @@ class Hook (wx.Panel):
     (for example if the last panel missed some values).'''
     return True
 
-class View (wx.Panel):
+class ViewControl (wx.Panel):
   def createSubPanels (self):
     raise NotImplementedError, "Please implement in deriving classes"
 
@@ -34,21 +34,21 @@ class View (wx.Panel):
     self.currentNumber = 0
     self.pool = WindowPool ()
 
-  def Create (self):
     # sizers
     self.mainSizer = wx.BoxSizer (wx.VERTICAL)
 
     # create the subpanels
     self.createSubPanels ()
 
-    # make sure, that none of the subpanels is shown
     for i in self.pool.getListOfWindows ():
       i.Show (False)
 
+    self.SetSizer (self.mainSizer)
+
+  def initSubPanel (self):
+    '''Switch to first subpanel. Call this method as soon as everything is initialized!'''
     # switch to first subpanel
     self.switchSubPanelByID (self.currentNumber)
-
-    self.SetSizer (self.mainSizer)
 
   def switchSubPanel (self, newPanel):
     if self.currentPanel:
@@ -79,21 +79,16 @@ class View (wx.Panel):
   def switchSubPanelByID (self, number):
     self.switchSubPanel (self.pool [number])
 
-class Wizard (View):
-  #########
-  # constructor
-  #########
+class Wizard (ViewControl):
   def __init__(self, *args, **kwargs):
-    View.__init__ (self, *args, **kwargs)
+    ViewControl.__init__ (self, *args, **kwargs)
+
     # back and forward buttons
     self.back = wx.Button (self, label = "Zurück")
     self.forward = wx.Button (self, label = "Weiter")
 
     self.Bind (wx.EVT_BUTTON, self.onBack, self.back)
     self.Bind (wx.EVT_BUTTON, self.onForward, self.forward)
-
-  def Create (self):
-    View.Create (self)
 
     # additional sizer
     self.buttonSizer = wx.BoxSizer (wx.HORIZONTAL)
@@ -103,9 +98,6 @@ class Wizard (View):
     # add buttons to buttonSizer
     self.buttonSizer.Add (self.back)
     self.buttonSizer.Add (self.forward)
-
-    # switch to first subpanel
-    self.switchSubPanelByID (self.currentNumber)
 
   def switchSubPanelByID (self, number):
     if number < self.pool.lower_bound or number > self.pool.upper_bound:
@@ -123,7 +115,7 @@ class Wizard (View):
     else:
       self.forward.Enable ()
 
-    View.switchSubPanelByID (self, number)
+    ViewControl.switchSubPanelByID (self, number)
 
   #########
   # event handling
