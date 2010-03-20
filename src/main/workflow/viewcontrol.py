@@ -46,12 +46,9 @@ class ViewControl (wx.Panel):
     if newPanel.activate ():
       self.currentPanel = newPanel
 
-    self.mainSizer.Add (self.currentPanel, wx.EXPAND)
+    self.mainSizer.Insert (0, self.currentPanel, wx.EXPAND)
     self.mainSizer.Fit (self)
     self.currentPanel.Show (True)
-    self.mainSizer.Layout ()
-
-    self.Layout ()
 
   def switchSubPanelByName  (self, name):
     self.switchSubPanel (self.pool [name])
