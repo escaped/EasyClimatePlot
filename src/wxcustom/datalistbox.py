@@ -21,11 +21,7 @@ class DataCheckListbox (wx.ListCtrl):
     self.columns = columns
     self.__createcolumns__ (columns)
 
-    # bind to events
-    self.Bind (wx.EVT_LIST_ITEM_SELECTED, self.__onSelect__)
-
-  def __onSelect__ (self, e):
-    pass
+    self.data = []
 
   def __createcolumns__ (self, columns):
     for id, column in zip (xrange (0, len (columns)), columns):
@@ -37,6 +33,7 @@ class DataCheckListbox (wx.ListCtrl):
 
   # keys: the list of needed keys in the _right_ order
   def AddManyData (self, dataDictList, keys):
+    self.data.extend (dataDictList)
     # set max_rows, change if need be
     for id, item in zip (xrange (0, len (dataDictList)), dataDictList):
       index = self.InsertStringItem(MAX_ROWS, "empty")
@@ -48,15 +45,22 @@ class DataCheckListbox (wx.ListCtrl):
       self.SetItemData(index, id)
 
   def getSelected (self):
-    pass
+    # TODO endlosschleife entfernen
+    selected = []
+    i = self.GetNextSelected (-1)
+    while i != -1:
+      selected.append (self.data[i])
+      i = self.GetNextSelected (-1)
+    return selected
 
   def clear (self):
     pass
 
 # usage test
+
 if __name__ == "__main__":
   app = wx.App (False)
-  frame = wx.Frame (None)
+  frame = wx.Frame (None, size= (-1,300))
   dcl = DataCheckListbox (frame, ["name", "age", "weight"])
 
   data = [
@@ -69,6 +73,12 @@ if __name__ == "__main__":
   ]
   # add data
   dcl.AddManyData (data, ["age", "name", "weight"])
+
+  # event
+  # if one is selected, print all selected
+  def f (event):
+    print dcl.getSelected ()
+  dcl.Bind (wx.EVT_LIST_ITEM_SELECTED, lambda x: f(x))
 
   frame.Show ()
   app.MainLoop ()
