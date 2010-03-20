@@ -16,9 +16,6 @@ import sys
 
 import cPickle
 
-# MVC
-from control.control import Control
-
 # time: used to sleep while downloading via FTP
 import time
 import datastructures.weatherstation
