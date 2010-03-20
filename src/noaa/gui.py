@@ -2,10 +2,13 @@
 '''GUI workflow for NOAA download'''
 
 import wx
-import wxcustom.datachecklistbox as dcl
+import wxcustom.datalistbox as dlb
 from main.panel import Workflow,Hook
 
 import dao
+
+# global variables
+COLUMNS = ["Station Name", "USAF ID", "Lon", "Lat"]
 
 class SearchPanel (Hook, wx.Panel):
   def __init__(self, *args, **kwargs):
@@ -63,7 +66,7 @@ class SearchResults (Hook, wx.Panel):
     self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
     #self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
     # TODO CheckListBox ist nicht so hübsch. hier sollte ein wxGrid verwendet werden,oder?
-    self.lctChooseStation = dcl.DataCheckListbox (self)
+    self.lctChooseStation = dlb.DataListBox (self, COLUMNS)
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
