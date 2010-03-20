@@ -3,7 +3,8 @@
 
 import wx
 import wxcustom.datalistbox as dlb
-from main.panel import Wizard,Hook
+from main.workflow.wizard import Wizard
+from main.workflow.hook import Hook
 
 import dao
 
