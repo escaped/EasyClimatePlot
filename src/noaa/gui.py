@@ -58,7 +58,6 @@ class SearchPanel (Hook, wx.Panel):
 
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
-    # TODO this needs a button to clear the search
     wx.Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
     self.noaa = dao.NOAA ()
@@ -76,7 +75,7 @@ class SearchResults (Hook, wx.Panel):
     sizer_main.Add (self.clearButton, 1)
 
     self.SetSizer(sizer_main)
-    sizer_main.Fit(self)
+   # sizer_main.Fit(self)
     self.Layout()
 
     self.searchComplete = False
@@ -98,6 +97,7 @@ class SearchResults (Hook, wx.Panel):
     if not self.searchComplete:
       stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
       # TODO search something..
+      searchResults = []
       if stationNumber:
         if self.parent.pool["Search"].USAF (): 
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
@@ -105,7 +105,7 @@ class SearchResults (Hook, wx.Panel):
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber), False)
         self.lctChooseStation.AddManyData (searchResults,
           ["station_name", "ctry_fips", "usaf", "lon", "lat"])
-      self.searchComplete = True
+      if searchResults != []: self.searchComplete = True
     return True
 
 class DownloadData (Hook, wx.Panel):
