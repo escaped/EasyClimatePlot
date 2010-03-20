@@ -47,6 +47,8 @@ class ViewControl (wx.Panel):
       self.currentPanel = newPanel
 
     self.mainSizer.Insert (0, self.currentPanel, wx.EXPAND)
+    self.mainSizer.Layout ()
+    # TODO resize funktioniert nicht richtig
     self.mainSizer.Fit (self)
     self.currentPanel.Show (True)
 

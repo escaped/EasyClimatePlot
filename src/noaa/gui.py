@@ -10,17 +10,28 @@ import dao
 
 # global variables
 COLUMNS = ["Station Name", "Country", "USAF ID", "Lon", "Lat"]
+COMBOBOX_LIMIT = 15
 
 class SearchPanel (Hook, wx.Panel):
   def __init__(self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
+
+    # TODO NOAA objekt sollte global sein. das kostet sonst einfach zuviel zeit.
+    self.noaa = dao.NOAA ()
 
     self.stbSearchBox = wx.StaticBox(self, -1, "Suche")
     self.lblStationsnummer = wx.StaticText(self, -1, "Stationsnummer:")
     self.txtStationNumber = wx.TextCtrl(self, -1, "")
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
     self.lblRegion = wx.StaticText(self, -1, "Region")
-    self.cboRegion = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+    self.lsbRegion = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+
+    # fill combobox with countries available at NOAA
+    for item in self.noaa.getCountryList ():
+      # we associate each item with the given country code
+      # TODO per GetClientData bekommt man dann den richtigen ländercode
+      self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
+
     self.lblLatLon1 = wx.StaticText(self, -1, "Lat/Lon")
     self.txtLat1 = wx.TextCtrl(self, -1, "")
     self.txtLon1 = wx.TextCtrl(self, -1, "")
@@ -38,7 +49,7 @@ class SearchPanel (Hook, wx.Panel):
     sizer_2.Add(self.selectIDType, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
     sizer_1.Add(sizer_2, 1, wx.EXPAND, 0)
     sizer_3.Add(self.lblRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 8)
-    sizer_3.Add(self.cboRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    sizer_3.Add(self.lsbRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
     sizer_1.Add(sizer_3, 1, wx.EXPAND, 0)
     sizer_4.Add(self.lblLatLon1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
     sizer_4.Add(self.txtLat1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
