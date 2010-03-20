@@ -15,10 +15,10 @@ class DataCheckListbox (wx.CheckListBox):
     self.selected = []
 
     # bind to event
-    self.Bind (wx.EVT_CHECKLISTBOX, self.onCheck, self)
+    self.Bind (wx.EVT_CHECKLISTBOX, self.__onSelect__, self)
     self.Layout ()
 
-  def onCheck (self, e):
+  def __onSelect__ (self, e):
     # NOTE: e.GetInt returns the actual index of the selected item,
     # not like lctChooseStation.GetSelections () ...
     if self.IsChecked (e.GetInt ()):
