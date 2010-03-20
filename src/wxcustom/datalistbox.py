@@ -39,7 +39,7 @@ class DataListBox (wx.ListCtrl):
       index = self.InsertStringItem(MAX_ROWS, "empty")
       i = 0
       for key in keys:
-        self.SetStringItem (index, i, item[key])
+        self.SetStringItem (index, i, str(item[key]))
         i += 1
       # needed by GetItemData()
       self.SetItemData(index, id)

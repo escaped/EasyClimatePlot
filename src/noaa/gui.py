@@ -8,7 +8,7 @@ from main.panel import Workflow,Hook
 import dao
 
 # global variables
-COLUMNS = ["Station Name", "USAF ID", "Lon", "Lat"]
+COLUMNS = ["Station Name", "Country", "USAF ID", "Lon", "Lat"]
 
 class SearchPanel (Hook, wx.Panel):
   def __init__(self, *args, **kwargs):
@@ -58,7 +58,6 @@ class SearchPanel (Hook, wx.Panel):
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
     # TODO this needs a button to clear the search
-    # TODO das sieht einfach kacke aus.
     wx.Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
     self.noaa = dao.NOAA ()
@@ -71,7 +70,7 @@ class SearchResults (Hook, wx.Panel):
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
     self.Bind (wx.EVT_BUTTON, self.onClear, self.clearButton)
 
-    sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.HORIZONTAL)
+    sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.VERTICAL)
     sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
     sizer_main.Add (self.clearButton, 1)
 
@@ -104,7 +103,7 @@ class SearchResults (Hook, wx.Panel):
         else:
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber), False)
         self.lctChooseStation.AddManyData (searchResults,
-          ["station_name", "ctry_fips", "usaf", "wban"])
+          ["station_name", "ctry_fips", "usaf", "lon", "lat"])
       self.searchComplete = True
     return True
 
@@ -113,13 +112,18 @@ class DownloadData (Hook, wx.Panel):
     wx.Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
 
+    self.sizer = wx.BoxSizer ()
+
     # TODO auswahl für jahr muss noch rein
 
     self.noaa = dao.NOAA ()
 
     self.downloadButton = wx.Button (self, -1, "Daten herunterladen..")
+    self.sizer.Add (self.downloadButton)
+
+    self.SetSizer (self.sizer)
+    self.sizer.Fit (self)
     self.Bind (wx.EVT_BUTTON, self.onDownload, self.downloadButton)
-    self.Layout ()
 
   def onDownload (self, e):
     # TODO vll sollte man noaa doch anders aufbauen

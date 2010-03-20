@@ -77,7 +77,7 @@ class Workflow (wx.Panel):
     if newPanel.activate ():
       self.currentPanel = newPanel
 
-    self.mainSizer.Add (self.currentPanel, wx.SHAPED|wx.EXPAND)
+    self.mainSizer.Add (self.currentPanel, wx.EXPAND)
     self.currentPanel.Show (True)
     self.mainSizer.Layout ()
 
