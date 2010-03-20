@@ -18,6 +18,7 @@ class CacheManager(Singleton):
         if os.path.isfile(self.indexFilename):
             self.loadIndex()
     
+    # TODO enhance exception handling - don't catch _everything_
     def loadIndex(self):
         try:
             f = open(self.indexFilename, "r")
