@@ -36,10 +36,10 @@ class Workflow (wx.Panel):
 
   def Create (self):
     # sizers
-    self.mainSizer = wx.GridBagSizer ()
-    self.buttonSizer = wx.GridBagSizer ()
+    self.mainSizer = wx.BoxSizer (wx.VERTICAL)
+    self.buttonSizer = wx.BoxSizer (wx.HORIZONTAL)
 
-    self.mainSizer.Add (self.buttonSizer, pos = (1,0))
+    self.mainSizer.Add (self.buttonSizer)
 
     # back and forward buttons
     self.back = wx.Button (self, label = "Zurück")
@@ -49,8 +49,8 @@ class Workflow (wx.Panel):
     self.Bind (wx.EVT_BUTTON, self.onForward, self.forward)
 
     # add buttons to buttonSizer
-    self.buttonSizer.Add (self.back, pos = (0,0))
-    self.buttonSizer.Add (self.forward, pos = (0,1))
+    self.buttonSizer.Add (self.back)
+    self.buttonSizer.Add (self.forward)
 
     # create the subpanels
     self.createSubPanels ()
@@ -77,7 +77,7 @@ class Workflow (wx.Panel):
     if newPanel.activate ():
       self.currentPanel = newPanel
 
-    self.mainSizer.Add (self.currentPanel, pos = (0,0))
+    self.mainSizer.Add (self.currentPanel, wx.SHAPED|wx.EXPAND)
     self.currentPanel.Show (True)
     self.mainSizer.Layout ()
 
