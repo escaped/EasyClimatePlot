@@ -21,7 +21,7 @@ class Hook (wx.Panel):
     (for example if the last panel missed some values).'''
     return True
 
-class Workflow (wx.Panel):
+class View (wx.Panel):
   def createSubPanels (self):
     raise NotImplementedError, "Please implement in deriving classes"
 
@@ -37,20 +37,6 @@ class Workflow (wx.Panel):
   def Create (self):
     # sizers
     self.mainSizer = wx.BoxSizer (wx.VERTICAL)
-    self.buttonSizer = wx.BoxSizer (wx.HORIZONTAL)
-
-    self.mainSizer.Add (self.buttonSizer)
-
-    # back and forward buttons
-    self.back = wx.Button (self, label = "Zurück")
-    self.forward = wx.Button (self, label = "Weiter")
-
-    self.Bind (wx.EVT_BUTTON, self.onBack, self.back)
-    self.Bind (wx.EVT_BUTTON, self.onForward, self.forward)
-
-    # add buttons to buttonSizer
-    self.buttonSizer.Add (self.back)
-    self.buttonSizer.Add (self.forward)
 
     # create the subpanels
     self.createSubPanels ()
@@ -70,21 +56,56 @@ class Workflow (wx.Panel):
       if self.currentPanel.deactivate ():
         self.mainSizer.Detach (self.currentPanel)
         self.currentPanel.Show (False)
-        # TODO: should disable every thing in the subpanel..
       else: return
 
     # try to activate the panel. if something goes wrong, return to the last panel
     if newPanel.activate ():
       self.currentPanel = newPanel
 
-    self.mainSizer.Detach (self.buttonSizer)
     self.mainSizer.Add (self.currentPanel, wx.EXPAND)
     self.mainSizer.Fit (self)
-    self.mainSizer.Add (self.buttonSizer)
     self.currentPanel.Show (True)
     self.mainSizer.Layout ()
 
     self.Layout ()
+
+  def switchSubPanelByName  (self, name):
+    self.switchSubPanel (self.pool [name])
+    self.currentNumber = self.pool.getWindowIndex (name)
+
+  def getSubPanelByName (self, name):
+    return self.subPanelsByName[name]
+
+  def switchSubPanelByID (self, number):
+    self.switchSubPanel (self.pool [number])
+
+class Wizard (View):
+  #########
+  # constructor
+  #########
+  def __init__(self, *args, **kwargs):
+    View.__init__ (self, *args, **kwargs)
+    # back and forward buttons
+    self.back = wx.Button (self, label = "Zurück")
+    self.forward = wx.Button (self, label = "Weiter")
+
+    self.Bind (wx.EVT_BUTTON, self.onBack, self.back)
+    self.Bind (wx.EVT_BUTTON, self.onForward, self.forward)
+
+  def Create (self):
+    View.Create (self)
+
+    # additional sizer
+    self.buttonSizer = wx.BoxSizer (wx.HORIZONTAL)
+
+    self.mainSizer.Add (self.buttonSizer)
+
+    # add buttons to buttonSizer
+    self.buttonSizer.Add (self.back)
+    self.buttonSizer.Add (self.forward)
+
+    # switch to first subpanel
+    self.switchSubPanelByID (self.currentNumber)
 
   def switchSubPanelByID (self, number):
     if number < self.pool.lower_bound or number > self.pool.upper_bound:
@@ -102,14 +123,7 @@ class Workflow (wx.Panel):
     else:
       self.forward.Enable ()
 
-    self.switchSubPanel (self.pool [number])
-
-  def switchSubPanelByName  (self, name):
-    self.switchSubPanel (self.pool [name])
-    self.currentNumber = self.pool.getWindowIndex (name)
-
-  def getSubPanelByName (self, name):
-    return self.subPanelsByName[name]
+    View.switchSubPanelByID (self, number)
 
   #########
   # event handling

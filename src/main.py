@@ -3,7 +3,7 @@
 import sys
 
 from control.control import Control
-import main.window
+import main.gui
 
-main.window.ShowMainWindow ()
+main.gui.ShowMainWindow ()
 exit ()

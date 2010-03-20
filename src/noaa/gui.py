@@ -3,7 +3,7 @@
 
 import wx
 import wxcustom.datalistbox as dlb
-from main.panel import Workflow,Hook
+from main.panel import Wizard,Hook
 
 import dao
 
@@ -133,7 +133,7 @@ class DownloadData (Hook, wx.Panel):
       self.noaa.use_usaf = True
       self.noaa.downloadData (1990, 2000)
 
-class NOAA_Workflow (Workflow):
+class NOAA_Wizard (Wizard):
   def createSubPanels (self):
     self.pool.addWindow ("Search", SearchPanel (self))
     self.pool.addWindow ("SearchResults", SearchResults (self))
