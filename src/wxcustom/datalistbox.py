@@ -57,7 +57,8 @@ class DataListBox (wx.ListCtrl):
     return [self.data[i] for i in selected]
 
   def clear (self):
-    pass
+    self.data = []
+    self.DeleteAllItems ()
 
 # usage test
 
