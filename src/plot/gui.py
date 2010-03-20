@@ -2,22 +2,14 @@
 
 from main.panel import Hook, ViewControl, Wizard
 
+import plot.walterlieth.gui as pwg
+
 import wx
 
 class PlotIntro (ViewControl):
   def createSubPanels (self):
     self.pool.addWindow ("ChooseType", PlotType (self))
-    self.pool.addWindow ("WalterFlow", WalterFlow (self))
-
-class WalterFlow (Hook, Wizard):
-  def createSubPanels (self):
-    pass
-
-  def __init__ (self, *args, **kwargs):
-    Wizard.__init__ (self, *args, **kwargs)
-
-    self.static = wx.StaticBox (self, -1, "muahahaha")
-
+    self.pool.addWindow ("WalterLiethWizard", pwg.WalterLiethWizard (self))
 
 class PlotType (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
@@ -41,7 +33,5 @@ class PlotType (Hook, wx.Panel):
     self.Bind (wx.EVT_BUTTON, self.onWalterLieth, self.walterlieth)
 
   def onWalterLieth (self, e):
-    self.parent.switchSubPanelByName ("WalterFlow")
-    
-
+    self.parent.switchSubPanelByName ("WalterLiethWizard")
 

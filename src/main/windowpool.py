@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 
-# TODO should this be some kind of singleton?
+# TODO should use some kind of a logging facility
 class WindowPool:
   def __init__(self):
     self.windows = {}
@@ -16,10 +17,13 @@ class WindowPool:
 
   def getWindowByName (self, name):
     # TODO exceptions needed?
-    return self.windows[name]
+    try:
+      return self.windows[name]
+    except KeyError:
+      print "View %s does not exist" %name
+      raise
 
   def getWindowByID (self, id):
-    # TODO exceptions needed?
     return self.windows[self.indices[id]]
 
   def getWindowIndex (self, window):
@@ -36,5 +40,10 @@ class WindowPool:
     try:
       return self.windows[self.indices[index]]
     except TypeError:
-      return self.windows[index]
+      try:
+        return self.windows[index]
+      except KeyError:
+        print "View %s does not exist" %name
+        raise
+
 
