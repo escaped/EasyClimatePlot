@@ -36,8 +36,8 @@ class Workflow (wx.Panel):
 
   def Create (self):
     # sizers
-    self.mainSizer = wx.GridBagSizer (hgap = 1, vgap = 2)
-    self.buttonSizer = wx.GridBagSizer (hgap = 2, vgap = 1)
+    self.mainSizer = wx.GridBagSizer ()
+    self.buttonSizer = wx.GridBagSizer ()
 
     self.mainSizer.Add (self.buttonSizer, pos = (1,0))
 

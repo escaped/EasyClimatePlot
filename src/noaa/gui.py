@@ -58,25 +58,25 @@ class SearchPanel (Hook, wx.Panel):
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
     # TODO this needs a button to clear the search
+    # TODO das sieht einfach kacke aus.
     wx.Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
     self.noaa = dao.NOAA ()
     self.results = []
 
-    self.sizer_5_staticbox = wx.StaticBox(self, -1, u"Station wählen")
-    #self.lctChooseStation = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.SUNKEN_BORDER)
-    # TODO CheckListBox ist nicht so hübsch. hier sollte ein wxGrid verwendet werden,oder?
+    self.sizer_searchstation = wx.StaticBox(self, -1, u"Station wählen")
     self.lctChooseStation = dlb.DataListBox (self, COLUMNS)
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
     self.Bind (wx.EVT_BUTTON, self.onClear, self.clearButton)
 
-    sizer_5 = wx.StaticBoxSizer(self.sizer_5_staticbox, wx.HORIZONTAL)
-    sizer_5.Add(self.lctChooseStation, 1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
-    self.SetSizer(sizer_5)
-    sizer_5.Add (self.clearButton, 1)
-    sizer_5.Fit(self)
+    sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.HORIZONTAL)
+    sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    sizer_main.Add (self.clearButton, 1)
+
+    self.SetSizer(sizer_main)
+    sizer_main.Fit(self)
     self.Layout()
 
     self.searchComplete = False
