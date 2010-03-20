@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import wx
+import main.splashscreen
 
 from noaa.gui import NOAA_Wizard
 from plot.gui import PlotIntro
 
 def ShowMainWindow ():
   app = wx.App (False)
+  splash = main.splashscreen.Splashy ()
   mw  = MainWindow ()
   app.MainLoop ()
 
