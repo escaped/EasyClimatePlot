@@ -45,13 +45,14 @@ class DataCheckListbox (wx.ListCtrl):
       self.SetItemData(index, id)
 
   def getSelected (self):
-    # TODO endlosschleife entfernen
     selected = []
-    i = self.GetNextSelected (-1)
+    i = self.GetFirstSelected ()
     while i != -1:
-      selected.append (self.data[i])
-      i = self.GetNextSelected (-1)
-    return selected
+      selected.append (i)
+      i = self.GetNextItem (i,
+             wx.LIST_NEXT_ALL,
+             wx.LIST_STATE_SELECTED)
+    return [data[i] for i in selected]
 
   def clear (self):
     pass
