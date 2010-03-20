@@ -62,7 +62,7 @@ class Workflow (wx.Panel):
     # switch to first subpanel
     self.switchSubPanelByID (self.currentNumber)
 
-    self.SetSizerAndFit (self.mainSizer)
+    self.SetSizer (self.mainSizer)
 
   def switchSubPanel (self, newPanel):
     if self.currentPanel:
@@ -77,7 +77,10 @@ class Workflow (wx.Panel):
     if newPanel.activate ():
       self.currentPanel = newPanel
 
+    self.mainSizer.Detach (self.buttonSizer)
     self.mainSizer.Add (self.currentPanel, wx.EXPAND)
+    self.mainSizer.Fit (self)
+    self.mainSizer.Add (self.buttonSizer)
     self.currentPanel.Show (True)
     self.mainSizer.Layout ()
 

@@ -15,7 +15,9 @@ class DataListBox (wx.ListCtrl):
   def __init__ (self, parent, columns = None):
     '''Parameter: columns = list of column names (strings)'''
     # TODO style anpassen
-    wx.ListCtrl.__init__ (self, parent, style = wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_HRULES)
+    # TODO size ist kacke. geht das nicht anders?
+    wx.ListCtrl.__init__ (self, parent, style =
+        wx.LC_REPORT|wx.SUNKEN_BORDER|wx.LC_HRULES, size = (400, 100))
 
     # create columns
     self.columns = columns
