@@ -21,7 +21,7 @@ from control.control import Control
 
 # time: used to sleep while downloading via FTP
 import time
-import weatherstation
+import datastructures.weatherstation
 
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib doesn't seem to resolv the upper url right

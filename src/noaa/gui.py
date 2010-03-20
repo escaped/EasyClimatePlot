@@ -27,6 +27,8 @@ class SearchPanel (Hook, wx.Panel):
     self.lsbRegion = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
 
     # fill combobox with countries available at NOAA
+    self.lsbRegion.Append ("", None) # Empty if none chosen
+    
     for item in self.noaa.getCountryList ():
       # we associate each item with the given country code
       # TODO per GetClientData bekommt man dann den richtigen ländercode
