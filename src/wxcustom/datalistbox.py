@@ -8,8 +8,8 @@ import wx
 # TODO ist das nötig?
 MAX_ROWS = 1000
 
-class DataCheckListbox (wx.ListCtrl):
-  '''Inherits from DataCheckListbox. This class should work similar to a .Net
+class DataListBox (wx.ListCtrl):
+  '''Inherits from DataListBox. This class should work similar to a .Net
   DataGridView.'''
 
   def __init__ (self, parent, columns = None):
@@ -52,7 +52,7 @@ class DataCheckListbox (wx.ListCtrl):
       i = self.GetNextItem (i,
              wx.LIST_NEXT_ALL,
              wx.LIST_STATE_SELECTED)
-    return [data[i] for i in selected]
+    return [self.data[i] for i in selected]
 
   def clear (self):
     pass
@@ -62,7 +62,7 @@ class DataCheckListbox (wx.ListCtrl):
 if __name__ == "__main__":
   app = wx.App (False)
   frame = wx.Frame (None, size= (-1,300))
-  dcl = DataCheckListbox (frame, ["name", "age", "weight"])
+  dcl = DataListBox (frame, ["name", "age", "weight"])
 
   data = [
       {"name" : 'Heidi Kalumpa'    , "age" : '36', "weight" : '127'},
