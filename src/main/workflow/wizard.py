@@ -27,20 +27,20 @@ class Wizard (ViewControl):
   def switchSubPanelByID (self, number):
     if number < self.pool.lower_bound or number > self.pool.upper_bound:
       # TODO hier sollte eine sinnvolle Fehlermeldung erscheinen
-      raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")
-    self.currentNumber = number
+      raise IndexError ("Hier sollte eine sinnvolle Fehlermeldung stehen")   
 
-    if number - 1 < self.pool.lower_bound:
-      self.back.Disable ()
-    else:
-      self.back.Enable ()
+    if ViewControl.switchSubPanelByID (self, number):
+      self.currentNumber = number
+      if number - 1 < self.pool.lower_bound:
+        self.back.Disable ()
+      else:
+        self.back.Enable ()
 
-    if number + 2 > self.pool.upper_bound:
-      self.forward.Disable ()
-    else:
-      self.forward.Enable ()
-
-    ViewControl.switchSubPanelByID (self, number)
+      if number + 2 > self.pool.upper_bound:
+        self.forward.Disable ()
+      else:
+        self.forward.Enable ()
+      # TODO Update LAyout
 
   #########
   # event handling

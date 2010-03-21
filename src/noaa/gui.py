@@ -68,6 +68,60 @@ class SearchPanel (Hook, wx.Panel):
   def USAF (self):
     '''Did the user select USAF station ID?'''
     return self.selectIDType.GetStringSelection () == "USAF"
+  
+  def deactivate(self):
+    ''' Check Input '''
+    
+    # check emptyness
+    station = False 
+    region = False
+    coord = False
+    
+    if len(self.txtStationNumber.GetValue().strip()) == 0:
+      station = True      
+    if len(self.lsbRegion.GetValue().strip()) == 0:
+      region = True      
+    if len(self.txtLat1.GetValue().strip()) == 0 and len(self.txtLat2.GetValue().strip()) == 0 and len(self.txtLon1.GetValue().strip()) == 0 and len(self.txtLon2.GetValue().strip()) == 0:
+      coord = True
+      
+    # at least one field should be filled
+    if station and region and coord:
+      mbox = wx.MessageDialog (self, "Error", "Fill at least one field.", wx.OK)
+      mbox.ShowModal ()
+      mbox.Destroy ()
+      return False
+    
+    if not station:
+      try:
+        int(self.txtStationNumber.GetValue())
+      except:
+        mbox = wx.MessageDialog (self, "Error", "Check Stationumber.", wx.OK)
+        mbox.ShowModal ()
+        mbox.Destroy ()
+        return False
+    elif not region:
+      mbox = wx.MessageDialog (self, "Error", "Check Region.", wx.OK)
+      mbox.ShowModal ()
+      mbox.Destroy ()
+      return False
+    elif not coord:  
+      try:
+        int(self.txtLat1.GetValue())
+        int(self.txtLat2.GetValue())
+        int(self.txtLon1.GetValue())
+        int(self.txtLon2.GetValue())
+      except:
+        mbox = wx.MessageDialog (self, "Error", "Check coords", wx.OK)
+        mbox.ShowModal ()
+        mbox.Destroy ()
+        return False
+
+    return True
+      
+      
+      
+    
+    
 
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):

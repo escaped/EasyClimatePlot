@@ -14,7 +14,7 @@ def ShowMainWindow ():
 
 class MainWindow (wx.Frame):
   def __init__ (self):
-    wx.Frame.__init__(self, None, title='Klimadaten')
+    wx.Frame.__init__(self, None, title='Klimadaten', pos=(0,0), size=(800,600))
 
 
     ######

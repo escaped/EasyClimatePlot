@@ -40,7 +40,8 @@ class ViewControl (wx.Panel):
       if self.currentPanel.deactivate ():
         self.mainSizer.Detach (self.currentPanel)
         self.currentPanel.Show (False)
-      else: return
+      else: 
+        return False
 
     # try to activate the panel. if something goes wrong, return to the last panel
     if newPanel.activate ():
@@ -51,13 +52,16 @@ class ViewControl (wx.Panel):
     # TODO resize funktioniert nicht richtig
     self.mainSizer.Fit (self)
     self.currentPanel.Show (True)
+    
+    return True
 
   def switchSubPanelByName  (self, name):
-    self.switchSubPanel (self.pool [name])
+    bool = self.switchSubPanel (self.pool [name])
     self.currentNumber = self.pool.getWindowIndex (name)
+    return bool
 
   def getSubPanelByName (self, name):
     return self.subPanelsByName[name]
 
   def switchSubPanelByID (self, number):
-    self.switchSubPanel (self.pool [number])
+    return self.switchSubPanel (self.pool [number])
