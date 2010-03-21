@@ -24,11 +24,11 @@ class WeatherStation (object):
   # ctor parses one line of ish-history.txt
   # TODO das geht sicher mit weniger code
   def __init__(self, line):
-    self.usaf         = line[int (fields["USAF"][0])        :int(fields["USAF"][1])]
-    self.wban         = line[int (fields["WBAN"][0])        :int(fields["WBAN"][1])]
-    self.station_name = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])]
-    self.ctry_wmo     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])]
-    self.ctry_fips    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])]
+    self.usaf         = line[int (fields["USAF"][0])        :int(fields["USAF"][1])].strip()
+    self.wban         = line[int (fields["WBAN"][0])        :int(fields["WBAN"][1])].strip()
+    self.station_name = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])].strip()
+    self.ctry_wmo     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])].strip()
+    self.ctry_fips    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])].strip()
     try:
       self.lat          = float(line[int (fields["LAT"][0]) :int(fields["LAT"][1])]) / 1000
       self.lon          = float(line[int (fields["LON"][0]) :int(fields["LON"][1])]) / 1000
@@ -39,11 +39,11 @@ class WeatherStation (object):
 
 def weatherStationDictionary (line):
   station = {}
-  station["usaf"]         = line[int (fields["USAF"][0])        :int(fields["USAF"][1])]
-  station["wban"]         = line[int (fields["WBAN"][0])        :int(fields["WBAN"][1])]
-  station["station_name"] = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])]
-  station["ctry_wmo"]     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])]
-  station["ctry_fips"]    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])]
+  station["usaf"]         = line[int (fields["USAF"][0])        :int(fields["USAF"][1])].strip()
+  station["wban"]         = line[int (fields["WBAN"][0])        :int(fields["WBAN"][1])].strip()
+  station["station_name"] = line[int (fields["STATION NAME"][0]):int(fields["STATION NAME"][1])].strip()
+  station["ctry_wmo"]     = line[int (fields["CTRY WMO"][0])    :int(fields["CTRY WMO"][1])].strip()
+  station["ctry_fips"]    = line[int (fields["CTRY FIPS"][0])   :int(fields["CTRY FIPS"][1])].strip()
   station["lat"]          = 0
   station["lon"]          = 0
   station["elev"]         = 0
