@@ -43,7 +43,7 @@ class WindowPool:
       try:
         return self.windows[index]
       except KeyError:
-        print "View %s does not exist" %name
+        print "View %s does not exist" %index
         raise
 
 

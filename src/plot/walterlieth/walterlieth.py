@@ -97,7 +97,7 @@ class WalterLieth:
     g('set nomultiplot')
 
     # TODO save to file
-    g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
+    #g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
     g.close ()
 
   def getUserInput (self):

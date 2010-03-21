@@ -8,9 +8,8 @@ import socket
 import data
 import ftplib
 import gzip
-import main
 import utils
-import os
+import os.path
 import re
 import sys
 
@@ -18,7 +17,7 @@ import cPickle
 
 # time: used to sleep while downloading via FTP
 import time
-import datastructures.weatherstation
+import datastructures.weatherstation as weatherstation
 
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib doesn't seem to resolv the upper url right
@@ -173,12 +172,6 @@ class NOAA (Plugin):
   def getData (self):
     return self.data
 
-  def getUserInput (self):
-    self.use_usaf = main.dowhile ("Do you want to use USAF station ID? Yes/No [Default: Y]", ['Y','N'])
-    print 'Please insert stationnumber: ',
-    # read station number and remove \n
-    self.station_number = sys.stdin.readline ().rstrip ()
-
   def downloadCountryList (self):
     '''This method downloads the file ish-history.txt from the NOAA FTP. That file
     contains all stations, which are listed and for which some data exist on the FTP.'''
@@ -222,7 +215,7 @@ class NOAA (Plugin):
     # get ish-history
     self.downloadCountryList ()
     # read ish-history
-    content = getFileContents ("ish-history.txt")
+    content = self.getFileContents ("ish-history.txt")
     # delete unneeded lines
     del content[0:20]
     return content

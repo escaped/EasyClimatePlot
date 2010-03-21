@@ -108,7 +108,7 @@ class SearchResults (Hook, wx.Panel):
     # TODO use other options as well
     # TODO performance issues?
     if not self.searchComplete:
-      stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue ()
+      stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue()
       # TODO search something..
       searchResults = []
       if stationNumber:
@@ -116,9 +116,11 @@ class SearchResults (Hook, wx.Panel):
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
         else:
           searchResults = self.noaa.searchStationsByStationID (str(stationNumber), False)
-        self.lctChooseStation.AddManyData (searchResults,
-          ["station_name", "ctry_fips", "usaf", "lon", "lat"])
-      if searchResults != []: self.searchComplete = True
+        
+      if searchResults != []: 
+        self.searchComplete = True
+        self.lctChooseStation.AddManyData (searchResults, ["station_name", "ctry_fips", "usaf", "lon", "lat"])
+
     return True
 
 class DownloadData (Hook, wx.Panel):
@@ -138,6 +140,7 @@ class DownloadData (Hook, wx.Panel):
     self.SetSizer (self.sizer)
     self.sizer.Fit (self)
     self.Bind (wx.EVT_BUTTON, self.onDownload, self.downloadButton)
+    self.Layout()
 
   def onDownload (self, e):
     # TODO vll sollte man noaa doch anders aufbauen
