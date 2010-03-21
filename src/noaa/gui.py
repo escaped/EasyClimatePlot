@@ -88,7 +88,7 @@ class SearchResults (Hook, wx.Panel):
     sizer_main.Add (self.clearButton, 1)
 
     self.SetSizer(sizer_main)
-   # sizer_main.Fit(self)
+    # sizer_main.Fit(self)
     self.Layout()
 
     self.searchComplete = False

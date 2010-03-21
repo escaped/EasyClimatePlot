@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from main.panel import Hook, ViewControl, Wizard
+from main.panel import Hook, Wizard
 import wx
 
 class WalterLiethWizard (Hook, Wizard):

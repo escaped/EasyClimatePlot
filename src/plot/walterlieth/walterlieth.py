@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import Gnuplot
-import os
-
-import config
 
 class WalterLieth:
   ouput_filename = ""

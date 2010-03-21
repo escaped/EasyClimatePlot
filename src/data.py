@@ -1,16 +1,9 @@
-import cPickle
 import datetime
-import hashlib
-import os
 import calendar
-import utils
 
 categories = ['temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
-def hashName (name):
-  return hashlib.md5 (name).hexdigest ()
 
 class Data:
-
   # NOTE: all membervariables are overridden in the constructor __init__ !
   name = ""
   coord = (0,0) 
@@ -61,10 +54,6 @@ class Data:
     
     if _maxDate > self.maxDate:
         self.maxDate = _maxDate
-
-  def save (self, path):
-    pass
-    # cPickle.dump(self, open(os.path.join (path, hashName (self.name)),'w+'))
     
   def _getData(self):
       return self.data
@@ -94,7 +83,3 @@ class Data:
             
         
     return None
-
-def loadDataObject (path, name):
-    pass
-  # return cPickle.load(os.path.join (path, hashName (name)))
