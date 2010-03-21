@@ -224,19 +224,13 @@ class NOAA (Plugin):
     '''This method parses ish-history.txt, creates a WeatherStation object for each line
     and returns a list of all available WeatherStations contained in ish-history.txt.'''
     if not self.listOfStations:
-      if not os.path.exists (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME)):
+      if not self.cache.hashExists("noaa", "stations"):
         content = self.getIshHistory ()
-
         self.listOfStations = [weatherstation.weatherStationDictionary (line) for line in content]
-        try:
-          f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "w")
-          cPickle.dump(self.listOfStations, f)
-        finally:
-          f.close ()
+        self.cache.save(self.listOfStations, "noaa", "stations")
+
       else:
-        f = open (os.path.join (config.CACHEDIR, config.STATION_LIST_CACHE_FILENAME), "r")
-        self.listOfStations = cPickle.load (f)
-        f.close ()
+        self.listOfStations = self.cache.load("noaa", "stations")
 
     return self.listOfStations
 
