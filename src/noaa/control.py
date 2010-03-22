@@ -18,7 +18,11 @@ class Control (object):
 
   def __subscribe__ (self):
     for key, event in self.view.events.items ():
-      event += getattr (self, "on" + key)
+      try:
+        event += getattr (self, "on" + key)
+      except AttributeError:
+        # TODO debugging facility
+        print "please implement on%s for event %s" %(key, key)
 
 
 class NOAA_Control (Control):
