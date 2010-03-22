@@ -99,7 +99,8 @@ class SearchPanel (Hook, wx.Panel):
     
     if not station:
       try:
-        int(self.txtStationNumber.GetValue())
+        # TODO hier vielleicht ein regex? die stationsnummer darf ein regex sein!
+        (self.txtStationNumber.GetValue())
         # TODO bitte genauere exceptions verwenden
       except:
         mbox = wx.MessageDialog (self, "Error", "Check Stationumber.", wx.OK)
