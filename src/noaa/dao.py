@@ -234,6 +234,13 @@ class NOAA (Plugin):
 
     return self.listOfStations
 
+  def searchStationsByRegion (self, region, stationSet = None):
+    '''Search stations by region, whereby region is a FIPS country id.'''
+    if stationSet: stations = stationSet
+    else: stations = self.listAvailableStations ()
+
+    return filter (lambda x: x["ctry_fips"] == region, stations)
+
   def searchStationsByStationID (self, stationid, usaf = True, stationSet = None):
     '''Search stations by station id, where station id is a regular
     expression. NOTE: If wban = False, then you are searching with 
@@ -271,10 +278,10 @@ class NOAA (Plugin):
     else: stations = self.listAvailableStations ()
 
     # filter stations in the west, northwest or north of the ul
-    stations = filter (lambda x: x.lat <= ul[0] and x.lon >= ul[1],
+    stations = filter (lambda x: x["lat"] <= ul[0] and x["lon"] >= ul[1],
                                       stations)
     # filter stations in the south, southeast or east of the lr
-    stations = filter (lambda x: x.lat >= lr[0] and x.lon <= lr[1],
+    stations = filter (lambda x: x["lat"] >= lr[0] and x["lon"] <= lr[1],
                                       stations)
 
     return stations

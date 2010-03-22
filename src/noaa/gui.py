@@ -27,14 +27,15 @@ class SearchPanel (Hook, wx.Panel):
     self.txtStationNumber = wx.TextCtrl(self, -1, "")
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
     self.lblRegion = wx.StaticText(self, -1, "Region")
-    self.lsbRegion = wx.ComboBox(self, -1, choices=[], style=wx.CB_DROPDOWN)
+    # TODO die sortierung stimmt noch nicht.
+    self.lsbRegion = wx.ComboBox(self, -1, choices=[], 
+        style=wx.CB_DROPDOWN|wx.CB_READONLY|wx.CB_SORT)
 
     # fill combobox with countries available at NOAA
     self.lsbRegion.Append ("", None) # Empty if none chosen
     
     for item in self.noaa.getCountryList ():
       # we associate each item with the given country code
-      # TODO per GetClientData bekommt man dann den richtigen ländercode
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
 
     self.lblLatLon1 = wx.StaticText(self, -1, "Lat/Lon")
@@ -111,10 +112,15 @@ class SearchPanel (Hook, wx.Panel):
         mbox.Destroy ()
         return False
     elif not region:
-      mbox = wx.MessageDialog (self, "Error", "Check Region.", wx.OK)
-      mbox.ShowModal ()
-      mbox.Destroy ()
-      return False
+      try:
+        # TODO nothing can go wrong here, right?
+        pass
+      except:
+        mbox = wx.MessageDialog (self, "Error", "Check Region.", wx.OK)
+        mbox.ShowModal ()
+        mbox.Destroy ()
+        return False
+      return True
     elif not coord:  
       try:
         int(self.txtLat1.GetValue())
@@ -170,21 +176,35 @@ class SearchResults (Hook, wx.Panel):
     if not self.searchComplete:
       stations = self.noaa.listAvailableStations ()
 
+      # get data from previous view
+      searchView = self.parent.pool["Search"]
+
+      stationNumber = searchView.txtStationNumber.GetValue()
+      region        = searchView.lsbRegion.GetClientData (searchView.lsbRegion.GetSelection ())
+      ul, lr = ((searchView.txtLat1, searchView.txtLon1),
+                        (searchView.txtLat2, searchView.txtLon2))
+
       # compose the possible functions
-      stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue()
       searchFunctions = [lambda x: x] 
 
-      # TODO search something..
       searchResults = []
       if stationNumber:
         if self.parent.pool["Search"].USAF (): 
           searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
-                                              str (stationNumber)))
+                                              str (stationNumber), True))
         else:
           searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
                                               str (stationNumber),
                                               False))
-      searchResults = functional.compose (*searchFunctions)(stations)
+      if region != "":
+        searchFunctions.append (ft.partial (self.noaa.searchStationsByRegion, region))
+
+      if ul and lr:
+        searchFunctions.append (ft.partial (self.noaa.searchStationsByLonLat, ul, lr))
+
+      # see: http://docs.python.org/howto/functional.html#the-functional-module
+      multi_compose = ft.partial(reduce, functional.compose)
+      searchResults = multi_compose (searchFunctions)(stations)
       if searchResults != []: 
         self.searchComplete = True
         self.lctChooseStation.AddManyData (searchResults, ["station_name", "ctry_fips", "usaf", "lon", "lat"])
