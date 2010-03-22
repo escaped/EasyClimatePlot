@@ -54,6 +54,6 @@ def weatherStationDictionary (line):
   except ValueError:
     # If this happens, one of the upper values was empty. We don't care about that.
     pass
-
+  # TODO validate station
   return station
 

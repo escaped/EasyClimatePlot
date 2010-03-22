@@ -116,6 +116,9 @@ class Wizard (ViewControl):
       self.forward.Enable ()
 
     ViewControl.switchSubPanelByID (self, number)
+    
+  def switchSubPanelByName  (self, name):
+    self.switchSubPanelByID (self.pool [name])
 
   #########
   # event handling

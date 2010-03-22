@@ -63,9 +63,9 @@ class SearchPanel (Hook, wx.Panel):
 
     # combine all
     mainSizer = wx.StaticBoxSizer(self.stbSearchBox, wx.VERTICAL)
-    mainSizer.Add(stationNrSizer, 1, wx.EXPAND, 0)
-    mainSizer.Add(regionSizer, 1, wx.EXPAND, 0)
-    mainSizer.Add(coordSizer, 1, wx.EXPAND, 0)
+    mainSizer.Add(stationNrSizer, 0, wx.EXPAND, 0)
+    mainSizer.Add(regionSizer, 0, wx.EXPAND, 0)
+    mainSizer.Add(coordSizer, 0, wx.EXPAND, 0)
     
     self.SetSizer(mainSizer)
 
@@ -145,7 +145,7 @@ class SearchResults (Hook, wx.Panel):
 
     sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.VERTICAL)
     sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
-    sizer_main.Add (self.clearButton, 1)
+    sizer_main.Add (self.clearButton, 0)
 
     self.SetSizer(sizer_main)
     self.Layout()
