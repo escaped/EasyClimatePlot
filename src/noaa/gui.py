@@ -10,6 +10,7 @@ import functional
 import functools as ft
 
 import dao
+import control
 
 from wxcustom.panel import Panel
 
@@ -80,8 +81,9 @@ class SearchPanel (Panel):
   def USAF (self):
     '''Did the user select USAF station ID?'''
     return self.selectIDType.GetStringSelection () == "USAF"
-  
+ 
   def deactivate(self):
+    Panel.deactivate (self)
     ''' Check Input '''
     
     # check emptyness
@@ -232,7 +234,8 @@ class DownloadData (Panel):
 
     self.SetSizer (self.sizer)
     self.sizer.Fit (self)
-    self.Bind (wx.EVT_BUTTON, self.onDownload, self.downloadButton)
+    self.Bind (wx.EVT_BUTTON, self["onDownload"], self.downloadButton)
+    self["onDownload"].handle (self.onDownload)
     self.Layout()
 
   def onDownload (self, e):
@@ -248,4 +251,7 @@ class NOAA_Wizard (Wizard):
     self.pool.addWindow ("Search", SearchPanel (self))
     self.pool.addWindow ("SearchResults", SearchResults (self))
     self.pool.addWindow ("Download", DownloadData (self))
+    
+    # TODO das gehört nicht hierher
+    self.control = control.NOAA_Control (self.pool["Search"])
     

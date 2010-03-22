@@ -1,6 +1,6 @@
 from event import Event
 
-class EventPool:
+class EventPool (object):
   '''A datastructure that contains subscribable events.'''
   def __init__ (self):
     self.events = {}
