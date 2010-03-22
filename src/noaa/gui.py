@@ -100,6 +100,7 @@ class SearchPanel (Hook, wx.Panel):
     if not station:
       try:
         int(self.txtStationNumber.GetValue())
+        # TODO bitte genauere exceptions verwenden
       except:
         mbox = wx.MessageDialog (self, "Error", "Check Stationumber.", wx.OK)
         mbox.ShowModal ()
@@ -116,6 +117,7 @@ class SearchPanel (Hook, wx.Panel):
         int(self.txtLat2.GetValue())
         int(self.txtLon1.GetValue())
         int(self.txtLon2.GetValue())
+        # TODO bitte genauere exceptions verwenden
       except:
         mbox = wx.MessageDialog (self, "Error", "Check coords", wx.OK)
         mbox.ShowModal ()
