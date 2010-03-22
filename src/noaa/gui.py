@@ -31,12 +31,10 @@ class SearchPanel (Panel):
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
     self.lblRegion = wx.StaticText(self, -1, "Region")
     # TODO die sortierung stimmt noch nicht.
-    self.lsbRegion = wx.ComboBox(self, -1, choices=[], 
+    self.lsbRegion = wx.ComboBox(self, -1, choices=[""], 
         style=wx.CB_DROPDOWN|wx.CB_READONLY|wx.CB_SORT)
 
     # fill combobox with countries available at NOAA
-    self.lsbRegion.Append ("", None) # Empty if none chosen
-    
     for item in self.noaa.getCountryList ():
       # we associate each item with the given country code
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
