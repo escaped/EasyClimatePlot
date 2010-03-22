@@ -11,11 +11,13 @@ import functools as ft
 
 import dao
 
+from wxcustom.panel import Panel
+
 # global variables
 COLUMNS = ["Station Name", "Country", "USAF ID", "Lon", "Lat"]
 COMBOBOX_LIMIT = 15
 
-class SearchPanel (Hook, wx.Panel):
+class SearchPanel (Panel):
   def __init__(self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
 
@@ -74,7 +76,7 @@ class SearchPanel (Hook, wx.Panel):
     self.SetSizer(mainSizer)
 
     self.Layout()
-
+    
   def USAF (self):
     '''Did the user select USAF station ID?'''
     return self.selectIDType.GetStringSelection () == "USAF"
@@ -136,9 +138,9 @@ class SearchPanel (Hook, wx.Panel):
 
     return True
 
-class SearchResults (Hook, wx.Panel):
+class SearchResults (Panel):
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
     self.noaa = dao.NOAA ()
     self.results = []
@@ -148,7 +150,9 @@ class SearchResults (Hook, wx.Panel):
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
-    self.Bind (wx.EVT_BUTTON, self.onClear, self.clearButton)
+    self.Bind (wx.EVT_BUTTON, self["clearButton"], self.clearButton)
+
+    self["clearButton"].handle (self.onClear)
 
     sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.VERTICAL)
     sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
@@ -212,9 +216,9 @@ class SearchResults (Hook, wx.Panel):
 
     return True
 
-class DownloadData (Hook, wx.Panel):
+class DownloadData (Panel):
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
 
     self.sizer = wx.BoxSizer ()
