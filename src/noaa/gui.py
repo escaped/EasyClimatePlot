@@ -6,7 +6,7 @@ import wxcustom.datalistbox as dlb
 from main.workflow.wizard import Wizard
 from main.workflow.hook import Hook
 
-from noaa.validators import IntegerValidator, NumberValidator
+from main.validators import IntegerValidator, NumberValidator
 
 import functional
 import functools as ft

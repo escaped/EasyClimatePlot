@@ -54,7 +54,6 @@ class NumberValidator (TextCtrlValidator):
   def __init__(self, range = None, canEmpty = True):
     TextCtrlValidator.__init__(self, canEmpty)
     self.range = range
-    print self.range
     
   def Clone(self):
     return NumberValidator(self.range, self.canEmpty)
