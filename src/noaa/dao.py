@@ -234,38 +234,45 @@ class NOAA (Plugin):
 
     return self.listOfStations
 
-  def searchStationsByStationID (self, stationid, wban = False):
+  def searchStationsByStationID (self, stationid, wban = False, stationSet = None):
     '''Search stations by station id, where station id is a regular
     expression. NOTE: If wban = False, then you are searching with 
     the usaf station id, which might isn't what you want.'''
+    if stationSet: stations = stationSet
+    else: stations = self.listAvailableStations ()
+
     reg = re.compile (str(stationid))
     if wban:
-      return filter (lambda x: reg.search (str (x["wban"])),
-          self.listAvailableStations ())
+      return filter (lambda x: reg.search (str (x["wban"])), stations)
     else:
-      return filter (lambda x: reg.search (str (x["usaf"])),
-          self.listAvailableStations ())
+      return filter (lambda x: reg.search (str (x["usaf"])), stations)
 
-  def searchStationsByCountryCode (self, countrycode, use_FIPS = True):
+  def searchStationsByCountryCode (self, countrycode, use_FIPS = True, stationSet = None):
     '''Search stations by country code. The country code can be either a historical WMO
     country ID (with use_FIPS = False), or a FIPS country ID.'''
+    if stationSet:
+      stations = stationSet
+    else:
+      stations = self.listAvailableStations ()
 
     # TODO do we need to search according to regex?
     if use_FIPS:
-      return filter (lambda x: x.ctry_fips == countrycode, self.listAvailableStations ())
+      return filter (lambda x: x.ctry_fips == countrycode, stations)
     else:
-      return filter (lambda x: x.ctry_wmo == countrycode, self.listAvailableStations ())
+      return filter (lambda x: x.ctry_wmo == countrycode, stations)
 
   # ul: upper left
   # lr: lower right
-  def searchStationsByLonLat (self, ul, lr):
+  def searchStationsByLonLat (self, ul, lr, stationSet = None):
     '''Search stations by Latitude and Longitude. Format: (lat, lon) = (+/-nn.nnnn,
     +/-nnn.nnnn). The first argument of the method is left upper corner and the second
     argument is the right lower corner of a rectangle.'''
+    if stationSet: stations = stationSet
+    else: stations = self.listAvailableStations ()
 
     # filter stations in the west, northwest or north of the ul
     stations = filter (lambda x: x.lat <= ul[0] and x.lon >= ul[1],
-                                      self.listAvailableStations ())
+                                      stations)
     # filter stations in the south, southeast or east of the lr
     stations = filter (lambda x: x.lat >= lr[0] and x.lon <= lr[1],
                                       stations)
