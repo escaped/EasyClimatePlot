@@ -28,9 +28,6 @@ class TextCtrlValidator (wx.PyValidator):
     """
     return TextCtrlValidator(self.canEmpty)
   
-  def isEmpty(self, v):
-    return len(v) == 0
-  
   def checkValue(self, v):
     if not self.canEmpty and len(v) == 0:
       self.errorMessage = "Field cannot be empty"
@@ -57,21 +54,23 @@ class NumberValidator (TextCtrlValidator):
   def __init__(self, range = None, canEmpty = True):
     TextCtrlValidator.__init__(self, canEmpty)
     self.range = range
+    print self.range
     
   def Clone(self):
     return NumberValidator(self.range, self.canEmpty)
   
   def checkValue(self, v):
-    if TextCtrlValidator.checkValue(self, v) and not self.isEmpty(v):
-      try:
-        float(v)
-      except ValueError:
-        self.errorMessage = "Please enter an number."
-        return False
+    if TextCtrlValidator.checkValue(self, v):
+      if len(v) != 0:
+        try:
+          float(v)
+        except ValueError:
+          self.errorMessage = "Please enter an number."
+          return False
     
-      if self.range != None and (min(self.range[0], self.range[1]) < int(v) or int(v) > max(self.range[0], self.range[1])):
-        self.errorMessage = "Number not in range %(self.range)"
-        return False        
+        if self.range != None and (float(v) < min(self.range[0], self.range[1]) or max(self.range[0], self.range[1]) < float(v)):
+          self.errorMessage = "%f not in range (%f, %f)" %(float(v), self.range[0], self.range[1])
+          return False        
       return True    
     return False
   
@@ -84,11 +83,12 @@ class IntegerValidator (NumberValidator):
     return IntegerValidator(self.range, self.canEmpty)
   
   def checkValue(self, v):
-    if NumberValidator.checkValue(self, v) and not self.isEmpty(v):
-      try:
-        int(v)
-      except ValueError:
-        self.errorMessage = "Please enter an integer."
-        return False
+    if NumberValidator.checkValue(self, v):
+      if len(v) != 0:
+        try:
+          int(v)
+        except ValueError:
+          self.errorMessage = "Please enter an integer."
+          return False
       return True
     return False

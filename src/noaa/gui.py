@@ -89,7 +89,7 @@ class SearchPanel (Panel):
       station = True      
     if len(self.lsbRegion.GetValue().strip()) == 0:
       region = True      
-    if len(self.txtLat1.GetValue().strip()) == 0 and len(self.txtLat2.GetValue().strip()) == 0 and len(self.txtLon1.GetValue().strip()) == 0 and len(self.txtLon2.GetValue().strip()) == 0:
+    if len(self.txtLat1.GetValue().strip()) == 0 or len(self.txtLat2.GetValue().strip()) == 0 or len(self.txtLon1.GetValue().strip()) == 0 or len(self.txtLon2.GetValue().strip()) == 0:
       coord = True
       
     # at least one field should be filled
