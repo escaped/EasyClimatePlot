@@ -234,7 +234,7 @@ class NOAA (Plugin):
 
     return self.listOfStations
 
-  def searchStationsByStationID (self, stationid, wban = False, stationSet = None):
+  def searchStationsByStationID (self, stationid, usaf = True, stationSet = None):
     '''Search stations by station id, where station id is a regular
     expression. NOTE: If wban = False, then you are searching with 
     the usaf station id, which might isn't what you want.'''
@@ -242,10 +242,10 @@ class NOAA (Plugin):
     else: stations = self.listAvailableStations ()
 
     reg = re.compile (str(stationid))
-    if wban:
-      return filter (lambda x: reg.search (str (x["wban"])), stations)
-    else:
+    if usaf:
       return filter (lambda x: reg.search (str (x["usaf"])), stations)
+    else:
+      return filter (lambda x: reg.search (str (x["wban"])), stations)
 
   def searchStationsByCountryCode (self, countrycode, use_FIPS = True, stationSet = None):
     '''Search stations by country code. The country code can be either a historical WMO

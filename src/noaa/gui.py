@@ -6,6 +6,9 @@ import wxcustom.datalistbox as dlb
 from main.workflow.wizard import Wizard
 from main.workflow.hook import Hook
 
+import functional
+import functools as ft
+
 import dao
 
 # global variables
@@ -165,15 +168,23 @@ class SearchResults (Hook, wx.Panel):
     # TODO use other options as well
     # TODO performance issues?
     if not self.searchComplete:
+      stations = self.noaa.listAvailableStations ()
+
+      # compose the possible functions
       stationNumber = self.parent.pool["Search"].txtStationNumber.GetValue()
+      searchFunctions = [lambda x: x] 
+
       # TODO search something..
       searchResults = []
       if stationNumber:
         if self.parent.pool["Search"].USAF (): 
-          searchResults = self.noaa.searchStationsByStationID (str(stationNumber))
+          searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
+                                              str (stationNumber)))
         else:
-          searchResults = self.noaa.searchStationsByStationID (str(stationNumber), False)
-        
+          searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
+                                              str (stationNumber),
+                                              False))
+      searchResults = functional.compose (*searchFunctions)(stations)
       if searchResults != []: 
         self.searchComplete = True
         self.lctChooseStation.AddManyData (searchResults, ["station_name", "ctry_fips", "usaf", "lon", "lat"])
