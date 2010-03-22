@@ -41,27 +41,33 @@ class SearchPanel (Hook, wx.Panel):
     self.txtLat2 = wx.TextCtrl(self, -1, "")
     self.txtLon2 = wx.TextCtrl(self, -1, "")
 
+    # sizer for StationNumber
+    stationNrSizer = wx.BoxSizer(wx.HORIZONTAL)
+    stationNrSizer.Add(self.lblStationsnummer, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    stationNrSizer.Add(self.txtStationNumber, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    stationNrSizer.Add(self.selectIDType, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    
+    # sizer for Region
+    regionSizer = wx.BoxSizer(wx.HORIZONTAL)
+    regionSizer.Add(self.lblRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 8)
+    regionSizer.Add(self.lsbRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    
+    # sizer for coord
+    coordSizer = wx.BoxSizer(wx.HORIZONTAL)
+    coordSizer.Add(self.lblLatLon1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    coordSizer.Add(self.txtLat1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    coordSizer.Add(self.txtLon1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    coordSizer.Add(self.lblLatLon2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    coordSizer.Add(self.txtLat2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    coordSizer.Add(self.txtLon2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
 
-    sizer_1 = wx.StaticBoxSizer(self.stbSearchBox, wx.VERTICAL)
-    sizer_4 = wx.BoxSizer(wx.HORIZONTAL)
-    sizer_3 = wx.BoxSizer(wx.HORIZONTAL)
-    sizer_2 = wx.BoxSizer(wx.HORIZONTAL)
-    sizer_2.Add(self.lblStationsnummer, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_2.Add(self.txtStationNumber, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_2.Add(self.selectIDType, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_1.Add(sizer_2, 1, wx.EXPAND, 0)
-    sizer_3.Add(self.lblRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 8)
-    sizer_3.Add(self.lsbRegion, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
-    sizer_1.Add(sizer_3, 1, wx.EXPAND, 0)
-    sizer_4.Add(self.lblLatLon1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_4.Add(self.txtLat1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_4.Add(self.txtLon1, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_4.Add(self.lblLatLon2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_4.Add(self.txtLat2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_4.Add(self.txtLon2, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
-    sizer_1.Add(sizer_4, 1, wx.EXPAND, 0)
-    self.SetSizer(sizer_1)
-    sizer_1.Fit(self)
+    # combine all
+    mainSizer = wx.StaticBoxSizer(self.stbSearchBox, wx.VERTICAL)
+    mainSizer.Add(stationNrSizer, 1, wx.EXPAND, 0)
+    mainSizer.Add(regionSizer, 1, wx.EXPAND, 0)
+    mainSizer.Add(coordSizer, 1, wx.EXPAND, 0)
+    
+    self.SetSizer(mainSizer)
 
     self.Layout()
 
@@ -142,7 +148,6 @@ class SearchResults (Hook, wx.Panel):
     sizer_main.Add (self.clearButton, 1)
 
     self.SetSizer(sizer_main)
-    #sizer_main.Fit(self)
     self.Layout()
 
     self.searchComplete = False

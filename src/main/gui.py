@@ -14,7 +14,7 @@ def ShowMainWindow ():
 
 class MainWindow (wx.Frame):
   def __init__ (self):
-    wx.Frame.__init__(self, None, title='Klimadaten', pos=(0,0), size=(800,600))
+    wx.Frame.__init__(self, None, title='Klimadaten')
 
 
     ######
@@ -55,6 +55,7 @@ class MainWindow (wx.Frame):
 
     self.notebook.AddPage (EmptyPanel (self.notebook), "Export")
 
+    self.Layout()
     self.Show ()
 
   def onClose (self, e):
