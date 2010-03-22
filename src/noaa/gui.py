@@ -123,11 +123,6 @@ class SearchPanel (Hook, wx.Panel):
         return False
 
     return True
-      
-      
-      
-    
-    
 
 class SearchResults (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
