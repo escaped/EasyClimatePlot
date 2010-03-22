@@ -46,6 +46,9 @@ class ViewControl (wx.Panel):
     # try to activate the panel. if something goes wrong, return to the last panel
     if newPanel.activate ():
       self.currentPanel = newPanel
+    else:
+      # TODO better use a debug facility
+      print "Activate of newPanel didn't return True"
 
     self.mainSizer.Insert (0, self.currentPanel, wx.EXPAND)
     self.mainSizer.Layout ()

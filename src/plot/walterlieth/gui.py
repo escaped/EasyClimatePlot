@@ -26,19 +26,50 @@ class SearchResultsView (Hook, wx.Panel):
   cache = cachemanager.CacheManager.getInstance()
   def __init__ (self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
+
+    self.noaa_results = self.cache.index["noaa"]
+
+    self.static_box = wx.StaticBox(self, -1, u"Daten wählen")
+    self.lctChooseData = dlb.DataListBox (self, COLUMNS)
+
+    # clear button
+    self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
+    self.Bind (wx.EVT_BUTTON, self.onClear, self.clearButton)
+
+    sizer = wx.StaticBoxSizer(self.static_box, wx.VERTICAL)
+    sizer.Add(self.lctChooseData, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    sizer.Add (self.clearButton, 0)
+
+    self.SetSizer(sizer)
+    self.Layout()
+
+    self.searchComplete = False
+    wx.Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
+
     self.static = wx.StaticBox (self, -1, "Results")
+    self.static_box = wx.StaticBoxSizer (self.static, wx.VERTICAL)
 
-    self.sizer = wx.BoxSizer ()
-    self.sizer.Add (self.static)
+    self.lctSelectData = dlb.DataListBox (self, COLUMNS)
 
-    self.lctChooseStation = dlb.DataListBox (self, COLUMNS)
-    self.sizer.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    for key, item in self.noaa_results.items ():
+      for subkey, subitem in item.items ():
+        self.lctSelectData.AddData ({"ID": key, "YEARS" : subkey, "DATA": subitem}, COLUMNS)
 
-    # currently only lists every item from the cachemanager index and module noaa
-    noaa_results = self.cache.index["noaa"]
+    self.static_box.Add(self.lctSelectData, -1, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
 
-    self.SetSizer (self.sizer)
+    self.noaa_results = self.cache.index["noaa"]
+
+    self.SetSizer (self.static_box)
+    self.static_box.Fit (self)
     self.Layout ()
+
+  def activate (self):
+    # TODO implement search
+    return True
+
+  def onClear (self, e):
+    pass
 
 class PlotView (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):

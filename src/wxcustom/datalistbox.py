@@ -6,7 +6,7 @@
 import wx
 
 # TODO ist das nötig?
-MAX_ROWS = 1000
+MAX_ROWS = 10000
 
 class DataListBox (wx.ListCtrl):
   '''Inherits from DataListBox. This class should work similar to a .Net
@@ -31,7 +31,7 @@ class DataListBox (wx.ListCtrl):
 
   def AddData (self, dataDict, keys):
     '''Wraps AddManyData (dataDictList)'''
-    self.AddManyData ([dataDict])
+    self.AddManyData ([dataDict], keys)
 
   # keys: the list of needed keys in the _right_ order
   def AddManyData (self, dataDictList, keys):
