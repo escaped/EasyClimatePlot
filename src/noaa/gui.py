@@ -63,9 +63,9 @@ class SearchPanel (Hook, wx.Panel):
 
     # combine all
     mainSizer = wx.StaticBoxSizer(self.stbSearchBox, wx.VERTICAL)
-    mainSizer.Add(stationNrSizer, 1, wx.EXPAND, 0)
-    mainSizer.Add(regionSizer, 1, wx.EXPAND, 0)
-    mainSizer.Add(coordSizer, 1, wx.EXPAND, 0)
+    mainSizer.Add(stationNrSizer, 1, 0, 0)
+    mainSizer.Add(regionSizer, 1, 0, 0)
+    mainSizer.Add(coordSizer, 1, 0, 0)
     
     self.SetSizer(mainSizer)
 
