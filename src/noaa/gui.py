@@ -204,6 +204,7 @@ class SearchResults (Hook, wx.Panel):
 
       # see: http://docs.python.org/howto/functional.html#the-functional-module
       multi_compose = ft.partial(reduce, functional.compose)
+      # search 
       searchResults = multi_compose (searchFunctions)(stations)
       if searchResults != []: 
         self.searchComplete = True
