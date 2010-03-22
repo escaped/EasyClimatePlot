@@ -20,7 +20,7 @@ COMBOBOX_LIMIT = 15
 
 class SearchPanel (Panel):
   def __init__(self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
 
     # TODO NOAA objekt sollte global sein. das kostet sonst einfach zuviel zeit.
     self.noaa = dao.NOAA ()
