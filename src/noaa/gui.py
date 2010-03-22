@@ -6,6 +6,8 @@ import wxcustom.datalistbox as dlb
 from main.workflow.wizard import Wizard
 from main.workflow.hook import Hook
 
+from main.validators import IntegerValidator, NumberValidator
+
 import functional
 import functools as ft
 
@@ -25,9 +27,11 @@ class SearchPanel (Panel):
     # TODO NOAA objekt sollte global sein. das kostet sonst einfach zuviel zeit.
     self.noaa = dao.NOAA ()
 
+    # StationNumber
     self.stbSearchBox = wx.StaticBox(self, -1, "Suche")
-    self.lblStationsnummer = wx.StaticText(self, -1, "Stationsnummer:")
-    self.txtStationNumber = wx.TextCtrl(self, -1, "")
+    self.lblStationsnummer = wx.StaticText(self, -1, "Stationsnummer:")    
+    self.txtStationNumber = wx.TextCtrl(self, -1, "", validator = IntegerValidator())
+    
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
     self.lblRegion = wx.StaticText(self, -1, "Region")
     # TODO die sortierung stimmt noch nicht.
@@ -40,11 +44,11 @@ class SearchPanel (Panel):
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
 
     self.lblLatLon1 = wx.StaticText(self, -1, "Lat/Lon")
-    self.txtLat1 = wx.TextCtrl(self, -1, "")
-    self.txtLon1 = wx.TextCtrl(self, -1, "")
+    self.txtLat1 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-90,90)))
+    self.txtLon1 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-180,180)))
     self.lblLatLon2 = wx.StaticText(self, -1, "Lat/Lon")
-    self.txtLat2 = wx.TextCtrl(self, -1, "")
-    self.txtLon2 = wx.TextCtrl(self, -1, "")
+    self.txtLat2 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-90,90)))
+    self.txtLon2 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-180,180)))
 
     # sizer for StationNumber
     stationNrSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -79,64 +83,29 @@ class SearchPanel (Panel):
   def USAF (self):
     '''Did the user select USAF station ID?'''
     return self.selectIDType.GetStringSelection () == "USAF"
- 
-  def deactivate(self):
-    Panel.deactivate (self)
-    ''' Check Input '''
-    
-    # check emptyness
-    station = False 
-    region = False
-    coord = False
-    
+  
+  def Validate(self):
+    station = region = coord = False
     if len(self.txtStationNumber.GetValue().strip()) == 0:
       station = True      
     if len(self.lsbRegion.GetValue().strip()) == 0:
       region = True      
-    if len(self.txtLat1.GetValue().strip()) == 0 and len(self.txtLat2.GetValue().strip()) == 0 and len(self.txtLon1.GetValue().strip()) == 0 and len(self.txtLon2.GetValue().strip()) == 0:
+    if len(self.txtLat1.GetValue().strip()) == 0 or len(self.txtLat2.GetValue().strip()) == 0 or len(self.txtLon1.GetValue().strip()) == 0 or len(self.txtLon2.GetValue().strip()) == 0:
       coord = True
       
     # at least one field should be filled
     if station and region and coord:
-      mbox = wx.MessageDialog (self, "Error", "Fill at least one field.", wx.OK)
+      mbox = wx.MessageDialog (self, "Error", "Fill at least one FieldGroup.", wx.OK)
       mbox.ShowModal ()
       mbox.Destroy ()
       return False
     
-    if not station:
-      try:
-        # TODO hier vielleicht ein regex? die stationsnummer darf ein regex sein!
-        (self.txtStationNumber.GetValue())
-        # TODO bitte genauere exceptions verwenden
-      except:
-        mbox = wx.MessageDialog (self, "Error", "Check Stationumber.", wx.OK)
-        mbox.ShowModal ()
-        mbox.Destroy ()
-        return False
-    elif not region:
-      try:
-        # TODO nothing can go wrong here, right?
-        pass
-      except:
-        mbox = wx.MessageDialog (self, "Error", "Check Region.", wx.OK)
-        mbox.ShowModal ()
-        mbox.Destroy ()
-        return False
-      return True
-    elif not coord:  
-      try:
-        int(self.txtLat1.GetValue())
-        int(self.txtLat2.GetValue())
-        int(self.txtLon1.GetValue())
-        int(self.txtLon2.GetValue())
-        # TODO bitte genauere exceptions verwenden
-      except:
-        mbox = wx.MessageDialog (self, "Error", "Check coords", wx.OK)
-        mbox.ShowModal ()
-        mbox.Destroy ()
-        return False
-
-    return True
+    return Panel.Validate(self)
+  
+  def deactivate(self):
+    Panel.deactivate (self)
+    ''' Check Input '''
+    return self.Validate()
 
 class SearchResults (Panel):
   def __init__ (self, *args, **kwargs):
