@@ -41,6 +41,9 @@ class Wizard (ViewControl):
       else:
         self.forward.Enable ()
       # TODO Update LAyout
+  
+  def switchSubPanelByName  (self, name):
+    self.switchSubPanelByID (self.pool.getWindowIndex (name))
 
   #########
   # event handling
