@@ -40,7 +40,7 @@ class Wizard (ViewControl):
         self.forward.Disable ()
       else:
         self.forward.Enable ()
-      # TODO Update LAyout
+      # TODO Update Layout
   
   def switchSubPanelByName  (self, name):
     self.switchSubPanelByID (self.pool.getWindowIndex (name))
