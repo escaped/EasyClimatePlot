@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from main.panel import Hook, ViewControl, Wizard
+from main.workflow.hook import Hook
+from main.workflow.viewcontrol import ViewControl
+from main.workflow.wizard import Wizard
+
 
 import plot.walterlieth.gui as pwg
 

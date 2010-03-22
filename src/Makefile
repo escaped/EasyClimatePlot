@@ -4,3 +4,4 @@
 #
 clean:
 	for file in $$(find . -name "*.pyc"); do rm $$file; done
+	-rm core
