@@ -16,6 +16,8 @@ class WindowPool (object):
     self.count += 1
     self.upper_bound += 1
 
+    return window
+
   def getWindowByName (self, name):
     # TODO exceptions needed?
     try:
