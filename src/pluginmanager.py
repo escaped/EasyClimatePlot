@@ -33,7 +33,8 @@ class PluginManager(object):
     found test1
     []
     
-  ahhh... warum is die List leer -.-
+  ahhh... warum is die Liste leer? Da sollte die Klasse aus __init__.py drin sein, 
+  damit man sie instanzieren kann.
 '''        
 
         
