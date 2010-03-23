@@ -11,16 +11,16 @@ class Panel (Hook, wx.Panel, EventPool):
     EventPool.__init__ (self)
 
     # some basic events needed by every panel
-    self["activate"]
-    self["deactivate"]
+    self["Activate"]
+    self["Deactivate"]
 
   def activate (self):
     '''Every deriving class should call this function to fire the right event!'''
-    self["activate"].fire ()
+    self["Activate"].fire ()
     return True
 
   def deactivate (self):
     '''Every deriving class should call this function to fire the right event!'''
-    self["deactivate"].fire ()
+    self["Deactivate"].fire ()
     return True
 
