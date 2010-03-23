@@ -1,7 +1,7 @@
 '''control.py is responsible to create the gui views and it is used to access the dao.'''
 from mvc.control import Control
 
-from noaa import dao
+import dao
 import functional
 import functools as ft
 
