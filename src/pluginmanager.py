@@ -1,6 +1,5 @@
+import config
 import os
-
-PLUGINDIR = "plugins"
 
 class Plugin(object):
   def getName(self):
@@ -32,10 +31,10 @@ class PluginManager(object):
     
   def loadPlugins(self):
     print "loading plugins"
-    for dir in os.listdir(PLUGINDIR):
-      path = PLUGINDIR + os.sep + dir
+    for dir in os.listdir(config.PLUGINDIR):
+      path = config.PLUGINDIR + os.sep + dir
       if os.path.isdir(path) and os.path.isfile(path + os.sep + "__init__.py"):
-        __import__(PLUGINDIR + "." + dir, fromlist=[PLUGINDIR]);
+        __import__(config.PLUGINDIR + "." + dir, fromlist=[config.PLUGINDIR]);
     
     for plugin in WizardPlugin.__subclasses__():
       p = plugin()
