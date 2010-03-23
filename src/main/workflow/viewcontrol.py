@@ -2,7 +2,7 @@
 '''Submodules should use panels to interact with the user.'''
 
 import wx
-from main.windowpool import WindowPool
+from mvc.windowpool import WindowPool
 import hook
 
 class ViewControl (wx.Panel):
