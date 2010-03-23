@@ -16,9 +16,12 @@ class PluginSelection(Panel):
     self.pm = PluginManager.getInstance()
     
     # List
+    listSizer = wx.BoxSizer(wx.HORIZONTAL)
     self.list = wx.ListBox(choices=self.pm.getInputPlugins().keys(), parent=self, size=wx.Size(150, 200), style=0)
     self.list.Bind(wx.EVT_LISTBOX, self.OnListBox1Listbox)
     
+    listSizer.Add(wx.StaticLabel(self, -1, "Select Plugin:"), 0, wx.EXPAND, 0)
+    listSizer.Add(self.list, 0, wx.EXPAND, 0)
     # Infobox
     info = wx.StaticBox(self, -1, "Plugin Info", size=wx.Size(400,100))
     labelSizer = wx.GridSizer(4, 2, 2, 1)
