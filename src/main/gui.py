@@ -55,6 +55,7 @@ class MainWindow (wx.Frame):
     plot.initSubPanel ()
 
     self.notebook.AddPage (ExportIntro (self.notebook), "Export")
+    self.notebook.AddPage (EmptyPanel (self.notebook), "Daten verwalten")
 
     self.Layout()
     self.Show ()
