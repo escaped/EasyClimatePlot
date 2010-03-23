@@ -3,6 +3,7 @@
 
 import wx
 import wxcustom.datalistbox as dlb
+
 from main.workflow.wizard import Wizard
 from main.workflow.hook import Hook
 
