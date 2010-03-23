@@ -4,8 +4,8 @@
 import wx
 import wxcustom.datalistbox as dlb
 
-from main.workflow.wizard import Wizard
-from main.workflow.hook import Hook
+from mvc.workflow.wizard import Wizard
+from mvc.workflow.hook import Hook
 
 from main.validators import IntegerValidator, NumberValidator
 

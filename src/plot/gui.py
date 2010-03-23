@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from main.workflow.hook import Hook
-from main.workflow.viewcontrol import ViewControl
-from main.workflow.wizard import Wizard
+from mvc.workflow.hook import Hook
+from mvc.workflow.viewcontrol import ViewControl
+from mvc.workflow.wizard import Wizard
 
 
 import plot.walterlieth.gui as pwg

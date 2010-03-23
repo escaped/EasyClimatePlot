@@ -1,5 +1,5 @@
 import wx
-from main.workflow.hook import Hook
+from mvc.workflow.hook import Hook
 
 from eventhandling.eventpool import EventPool
 from eventhandling.event import Event

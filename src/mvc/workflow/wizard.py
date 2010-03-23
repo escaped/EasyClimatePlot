@@ -2,7 +2,7 @@
 '''Submodules should use panels to interact with the user.'''
 
 import wx
-from main.workflow.viewcontrol import ViewControl
+from mvc.workflow.viewcontrol import ViewControl
 
 class Wizard (ViewControl):
   def __init__(self, *args, **kwargs):

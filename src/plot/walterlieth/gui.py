@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from main.workflow.hook import Hook
-from main.workflow.wizard import Wizard
+from mvc.workflow.hook import Hook
+from mvc.workflow.wizard import Wizard
 
 import wx
 import wxcustom.datalistbox as dlb
