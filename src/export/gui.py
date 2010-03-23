@@ -12,7 +12,8 @@ import wx
 class ExportIntro (ViewControl):
   def createSubPanels (self):
     self.pool.addWindow ("ChooseType", PlotType (self))
-    self.pool.addWindow ("NOAA_Wizard", enb.NOAA (self))
+    # TODO
+    #self.pool.addWindow ("NOAA_Wizard", enb.NOAA (self))
 
 class PlotType (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
