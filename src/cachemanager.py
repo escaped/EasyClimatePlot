@@ -37,7 +37,8 @@ class CacheManager(Singleton):
     
     def hash(self, str):
         return hashlib.md5(str).hexdigest()
-    
+      
+    # TODO module should be the PluginName!
     def load(self, module, id, starttime = None, endtime = None):
         print "load obj for (%s, %s)" %(module, id)
         obj=None
