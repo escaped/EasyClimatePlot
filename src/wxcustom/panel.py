@@ -16,11 +16,10 @@ class Panel (Hook, wx.Panel, EventPool):
 
   def activate (self):
     '''Every deriving class should call this function to fire the right event!'''
-    self["Activate"].fire ()
-    return True
+    return self["Activate"].fire ()
 
   def deactivate (self):
     '''Every deriving class should call this function to fire the right event!'''
-    self["Deactivate"].fire ()
-    return True
+    return self["Deactivate"].fire ()
+    
 

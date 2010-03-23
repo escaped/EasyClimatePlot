@@ -18,8 +18,13 @@ class Event:
     return self
 
   def fire(self, *args, **kargs):
+    '''Fire returns True, if every handler returns True.'''
+    value = True
     for handler in self.handlers:
-      handler(*args, **kargs)
+      val = handler(*args, **kargs)
+      if not val and value: value = False
+
+    return value
 
   def getHandlerCount(self):
     return len(self.handlers)
