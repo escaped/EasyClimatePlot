@@ -77,36 +77,12 @@ class SearchPanel (Panel):
     mainSizer.Add(coordSizer, 0, wx.EXPAND, 0)
     
     self.SetSizer(mainSizer)
-
     self.Layout()
     
   def USAF (self):
     '''Did the user select USAF station ID?'''
     return self.selectIDType.GetStringSelection () == "USAF"
   
-  def Validate(self):
-    station = region = coord = False
-    if len(self.txtStationNumber.GetValue().strip()) == 0:
-      station = True      
-    if len(self.lsbRegion.GetValue().strip()) == 0:
-      region = True      
-    if len(self.txtLat1.GetValue().strip()) == 0 or len(self.txtLat2.GetValue().strip()) == 0 or len(self.txtLon1.GetValue().strip()) == 0 or len(self.txtLon2.GetValue().strip()) == 0:
-      coord = True
-      
-    # at least one field should be filled
-    if station and region and coord:
-      mbox = wx.MessageDialog (self, "Error", "Fill at least one FieldGroup.", wx.OK)
-      mbox.ShowModal ()
-      mbox.Destroy ()
-      return False
-    
-    return Panel.Validate(self)
-  
-  def deactivate(self):
-    Panel.deactivate (self)
-    ''' Check Input '''
-    return self.Validate()
-
 class SearchResults (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
@@ -119,9 +95,8 @@ class SearchResults (Panel):
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
-    self.Bind (wx.EVT_BUTTON, self["clearButton"], self.clearButton)
+    self.Bind (wx.EVT_BUTTON, self["Clear"], self.clearButton)
 
-    self["clearButton"].handle (self.onClear)
 
     sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.VERTICAL)
     sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
@@ -132,58 +107,8 @@ class SearchResults (Panel):
 
     self.searchComplete = False
 
-  def onClear (self, e):
-    self.results = []
-    self.searchComplete = False
-    self.lctChooseStation.clear ()
-    self.parent.switchSubPanelByName ("Search")
-
   def getSelectedStations (self):
     return self.lctChooseStation.getSelected ()
-
-  def activate (self):
-    self.lctChooseStation.Show (True)
-    # get the values of the last panel
-    # TODO use other options as well
-    # TODO performance issues?
-    if not self.searchComplete:
-      stations = self.noaa.listAvailableStations ()
-
-      # get data from previous view
-      searchView = self.parent.pool["Search"]
-
-      stationNumber = searchView.txtStationNumber.GetValue()
-      region        = searchView.lsbRegion.GetClientData (searchView.lsbRegion.GetSelection ())
-      ul, lr = ((searchView.txtLat1, searchView.txtLon1),
-                        (searchView.txtLat2, searchView.txtLon2))
-
-      # compose the possible functions
-      searchFunctions = [lambda x: x] 
-
-      searchResults = []
-      if stationNumber:
-        if self.parent.pool["Search"].USAF (): 
-          searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
-                                              str (stationNumber), True))
-        else:
-          searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
-                                              str (stationNumber),
-                                              False))
-      if region != "":
-        searchFunctions.append (ft.partial (self.noaa.searchStationsByRegion, region))
-
-      if ul and lr:
-        searchFunctions.append (ft.partial (self.noaa.searchStationsByLonLat, ul, lr))
-
-      # see: http://docs.python.org/howto/functional.html#the-functional-module
-      multi_compose = ft.partial(reduce, functional.compose)
-      # search 
-      searchResults = multi_compose (searchFunctions)(stations)
-      if searchResults != []: 
-        self.searchComplete = True
-        self.lctChooseStation.AddManyData (searchResults, ["station_name", "ctry_fips", "usaf", "lon", "lat"])
-
-    return True
 
 class DownloadData (Panel):
   def __init__ (self, *args, **kwargs):
@@ -201,17 +126,8 @@ class DownloadData (Panel):
 
     self.SetSizer (self.sizer)
     self.sizer.Fit (self)
-    self.Bind (wx.EVT_BUTTON, self["onDownload"], self.downloadButton)
-    self["onDownload"].handle (self.onDownload)
+    self.Bind (wx.EVT_BUTTON, self["Download"], self.downloadButton)
     self.Layout()
-
-  def onDownload (self, e):
-    # TODO vll sollte man noaa doch anders aufbauen
-    print "downloading.."
-    for station in self.parent.pool["SearchResults"].getSelectedStations ():
-      self.noaa.station_number = station["usaf"]
-      self.noaa.use_usaf = True
-      self.noaa.downloadData (1990, 2000)
 
 class NOAA_Wizard (Wizard):
   def createSubPanels (self):
@@ -220,5 +136,7 @@ class NOAA_Wizard (Wizard):
     self.pool.addWindow ("Download", DownloadData (self))
     
     # TODO das gehört nicht hierher
-    self.control = control.NOAA_Control (self.pool["Search"])
+    self.sc  = control.SearchControl (self.pool["Search"])
+    self.src = control.SearchResultsControl (self.pool["SearchResults"])
+    self.dc  = control.DownloadControl (self.pool["Download"])
     
