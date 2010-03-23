@@ -5,8 +5,11 @@ class NOAA(WizardPlugin):
   def getName(self):
     return "NOAA"
 
+  def getVersion(self):
+    return "0.6"
+  
   def getDescription(self):
-    return ""
+    return "Search and Download data from NOAA."
 
   def getAuthor(self):
     return "Magnus Mueller, Alexander Frenzel"

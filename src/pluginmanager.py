@@ -6,12 +6,15 @@ class Plugin(object):
   def getName(self):
     raise Exception("Not implemented")
   
+  def getVersion(self):
+    return ""
+  
   def getDescription(self):
     return ""
   
   def getAuthor(self):
-    raise Exception("Not implemented")
-
+    return ""
+    
 class WizardPlugin(Plugin):
   TYPE = {"input":0, "output":1}
   

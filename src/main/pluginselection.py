@@ -21,7 +21,7 @@ class PluginSelection(Panel):
     
     # Infobox
     info = wx.StaticBox(self, -1, "Plugin Info", size=wx.Size(400,100))
-    labelSizer = wx.GridSizer(4, 2, 5, 10)
+    labelSizer = wx.GridSizer(4, 2, 2, 1)
     
     labelSizer.Add(wx.StaticText(self, -1, "Name: "))
     self.lblName = wx.StaticText(self, -1, "")
@@ -61,7 +61,8 @@ class PluginSelection(Panel):
         return
       
       self.lblName.SetLabel(plugin.getName())
-      #self.lblVersion.SetLabel(plugin.getVersion())
+      self.lblVersion.SetLabel(plugin.getVersion())
+      self.lblAuthor.SetLabel(plugin.getAuthor())
       self.lblDescription.SetLabel(plugin.getDescription())   
     else:
       self.clearInfo()
@@ -70,3 +71,4 @@ class PluginSelection(Panel):
       self.lblName.SetLabel("")
       self.lblVersion.SetLabel("")
       self.lblDescription.SetLabel("")   
+      self.lblAuthor.SetLabel("")
