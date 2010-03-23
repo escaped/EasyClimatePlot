@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from control import PlotTypeControl
+
 from mvc.workflow.hook import Hook
 from mvc.workflow.viewcontrol import ViewControl
 from mvc.workflow.wizard import Wizard
+
+from wxcustom.panel import Panel
 
 
 import plot.walterlieth.gui as pwg
@@ -11,12 +15,16 @@ import wx
 
 class PlotIntro (ViewControl):
   def createSubPanels (self):
-    self.pool.addWindow ("ChooseType", PlotType (self))
+    ptview = PlotType (self)
+
+    self.pool.addWindow ("ChooseType", ptview)
+    choose_control = PlotTypeControl (ptview)
+
     self.pool.addWindow ("WalterLiethWizard", pwg.WalterLiethWizard (self))
 
-class PlotType (Hook, wx.Panel):
+class PlotType (Panel):
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
     
     # self.sizer
@@ -37,8 +45,7 @@ class PlotType (Hook, wx.Panel):
 
     self.SetSizer (self.sizer)
 
-    self.Bind (wx.EVT_BUTTON, self.onWalterLieth, self.walterlieth)
+    # bind events
+    self.Bind (wx.EVT_BUTTON, self["WalterLieth"], self.walterlieth)
 
-  def onWalterLieth (self, e):
-    self.parent.switchSubPanelByName ("WalterLiethWizard")
 
