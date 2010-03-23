@@ -89,6 +89,27 @@ class CacheManager(Singleton):
             if isinstance(self.index[module][str(id)][(starttime, endtime)], str):
                 return 1
         return 0
+
+    def delete (self, module, id, starttime = None, endtime = None):
+      print "deleteing %s" %id
+      index = self.index[module]
+      if starttime==None or endtime==None:
+          filename = index[str(id)]
+          del index[str(id)]
+      else:
+          filename = index[str(id)][(starttime, endtime)]
+          del index[str(id)][(starttime, endtime)]
+
+      # try to delete the file
+      dir=os.path.join(config.CACHEDIR, module)
+      try:
+        os.remove (os.path.join (dir,filename))
+      except AttributeError:
+        # we maybe received a dict? if not, nvm
+        for item in filename.values ():
+          os.remove (os.path.join (dir, item))
+
+      self.saveIndex ()
     
 def test():
     cache=CacheManager.getInstance()
@@ -139,6 +160,13 @@ def test():
     print
     print d2_3
 
+def delete ():
+  # delete the first cached item
+  cache = CacheManager.getInstance ()
+  print cache.index
+  cache.delete ('noaa', cache.index['noaa'].keys ()[0]) 
+
 # call test function
 if __name__=="__main__":
   test ()
+  delete ()
