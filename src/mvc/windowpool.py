@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # TODO should use some kind of a logging facility
-class WindowPool:
+class WindowPool (object):
+  '''Objects of this class offer a pool, which stores objects with a given key.'''
   def __init__(self):
     self.windows = {}
     self.indices = []
