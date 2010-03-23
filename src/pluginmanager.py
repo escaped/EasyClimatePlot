@@ -21,7 +21,7 @@ class WizardPlugin(Plugin):
   def getType(self):
     return None
   
-  def getWizard(self):
+  def getWizard(self, parent):
     raise Exception("Not implemented.")
   
 
