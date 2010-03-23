@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from plugin import Plugin
-
 import cachemanager
 import contour
 import config
@@ -17,7 +15,7 @@ import cPickle
 
 # time: used to sleep while downloading via FTP
 import time
-import datastructures.weatherstation as weatherstation
+import weatherstation
 
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib doesn't seem to resolv the upper url right
@@ -27,7 +25,7 @@ def fileExistsInCache (f):
   f = os.path.basename (f)
   return not os.path.exists (os.path.join (config.CACHEDIR ,"noaa", "%s" %f))
 
-class NOAA (Plugin):
+class NOAA (object):
   '''Objects of this class are used to access the NOAA FTP, search and download station
   data.'''
 
