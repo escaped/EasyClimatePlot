@@ -1,4 +1,5 @@
 import wx
+from wxcustom.error import ErrorMessage
 
 class TextCtrlValidator (wx.PyValidator):
   def __init__(self, canEmpty = True):
@@ -40,7 +41,7 @@ class TextCtrlValidator (wx.PyValidator):
     value = textCtrl.GetValue()
     
     if not self.checkValue(value):
-      wx.MessageBox(self.errorMessage, "Error")
+      ErrorMessage (self.errorMessage)
       textCtrl.SetBackgroundColour("pink") # does not work
       textCtrl.SetFocus()
       textCtrl.Refresh()
