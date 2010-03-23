@@ -95,10 +95,19 @@ class DownloadControl (Control):
     self.noaa = dao.NOAA ()
 
   def onDownload (self, *args, **kwargs):
+    fromYear = self.view.txtFrom.GetValue ()
+    toYear   = self.view.txtTo.GetValue ()
+
+    if len (fromYear) == 0: fromYear = None
+    else: fromYear = int (fromYear)
+    if len (toYear)   == 0: toYear   = None
+    else: toYear = int (toYear)
+
     for station in self.view.parent.pool["SearchResults"].getSelectedStations ():
+      # TODO we should use both usaf and wban!
       self.noaa.station_number = station["usaf"]
       self.noaa.use_usaf = True
-      self.noaa.downloadData (1990, 2000)
+      self.noaa.downloadData (fromYear, toYear)
 
   def onActivate (self, *args, **kwargs):
     return True

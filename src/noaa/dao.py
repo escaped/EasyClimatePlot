@@ -52,6 +52,7 @@ class NOAA (Plugin):
     self.ctry_wmo_list = set ()
     self.ctry_fips_list = set ()
 
+  # TODO end sollte vom aktuellen jahr abhängen.. ;)
   def downloadData (self, start=1929, end=2011):
     
     if self.cache.hashExists("noaa", self.station_number, start, end):
@@ -67,7 +68,7 @@ class NOAA (Plugin):
     files = []
     print 'Loading data: %d - %d' %(start, end)
 
-    for year in range (start, end + 1):
+    for year in xrange (start, end + 1):
       # should look like this:
       # decide wether to use WBAN or USAF
       # 998234-99999-2010.op.gz
