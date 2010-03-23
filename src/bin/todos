@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -eq 1 ]; then
+  CONTEXT=$1
+else
+  CONTEXT=1
+fi
+
+# find all todos in the current dir and it's subdirs
+grep "todo" -iR -n$CONTEXT --color=auto *

@@ -27,6 +27,10 @@ class PlotType (Hook, wx.Panel):
     self.contour     = wx.Button (self, -1, label="Isoplethendiagramm")
     self.googlemap   = wx.Button (self, -1, label="Stationen auf Karte einzeichnen")
 
+    # TODO disable for now
+    self.contour.Disable ()
+    self.googlemap.Disable ()
+
     self.sizer.Add (self.walterlieth)
     self.sizer.Add (self.contour)
     self.sizer.Add (self.googlemap)

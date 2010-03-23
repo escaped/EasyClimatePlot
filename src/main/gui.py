@@ -5,6 +5,7 @@ import main.splashscreen
 
 from noaa.gui import NOAA_Wizard
 from plot.gui import PlotIntro
+from export.gui import ExportIntro
 
 def ShowMainWindow ():
   app = wx.App (False)
@@ -53,7 +54,7 @@ class MainWindow (wx.Frame):
     self.notebook.AddPage (plot , "Plot")
     plot.initSubPanel ()
 
-    self.notebook.AddPage (EmptyPanel (self.notebook), "Export")
+    self.notebook.AddPage (ExportIntro (self.notebook), "Export")
 
     self.Layout()
     self.Show ()

@@ -1,5 +1,9 @@
 .PHONY: clean
 
+todos:
+	echo "Trying to find todos.."
+	sh ./bin/todos
+
 # make clean..
 #
 clean:
