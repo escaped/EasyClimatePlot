@@ -3,7 +3,7 @@
 import wx
 import main.splashscreen
 
-from noaa.gui import NOAA_Wizard
+from main.pluginselection import PluginSelection
 from plot.gui import PlotIntro
 from export.gui import ExportIntro
 
@@ -46,10 +46,13 @@ class MainWindow (wx.Frame):
     # das hinzufügen sollte dynamisch vollzogen werden
 
     # TODO anders machen
-    workflow = NOAA_Wizard (self.notebook)
-    self.notebook.AddPage (workflow, "Download")
-    workflow.initSubPanel ()
+    #workflow = NOAA_Wizard (self.notebook)
+    #self.notebook.AddPage (workflow, "Download")
+    #workflow.initSubPanel ()
 
+    selection = PluginSelection(self.notebook)
+    self.notebook.AddPage (selection, "Download")
+    
     plot = PlotIntro (self.notebook)
     self.notebook.AddPage (plot , "Plot")
     plot.initSubPanel ()

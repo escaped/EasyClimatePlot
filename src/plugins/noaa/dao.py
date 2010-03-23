@@ -306,19 +306,19 @@ def example ():
   no.getCountryList ()
   no.downloadData (1969, 2011)
   # plot
-  import walterlieth
-  data = no.getData ()
-  w = walterlieth.WalterLieth (
-        data.getData ("temp", "m"),
-        data.getData ("precipitation", "m")
-      )
-  w.process ()
-  c = contour.Contour (
-        data.getData ("temp", "m"),
-        data.getData ("temp", "m"),
-        data.getData ("temp", "m")
-      )
-  c.process ()
+  #import walterlieth
+  #data = no.getData ()
+  #w = walterlieth.WalterLieth (
+  #      data.getData ("temp", "m"),
+  #      data.getData ("precipitation", "m")
+  #    )
+  #w.process ()
+  #c = contour.Contour (
+  #      data.getData ("temp", "m"),
+  #      data.getData ("temp", "m"),
+  #      data.getData ("temp", "m")
+  #    )
+  #c.process ()
 
   return no
 

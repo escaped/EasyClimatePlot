@@ -1,3 +1,4 @@
+from singletonmixin import Singleton
 import config
 import os
 
@@ -24,12 +25,11 @@ class WizardPlugin(Plugin):
     raise Exception("Not implemented.")
   
 
-class PluginManager(object):
+class PluginManager(Singleton):
   def __init__(self):
     self.output = {}
     self.input = {}
     
-  def loadPlugins(self):
     print "loading plugins"
     for dir in os.listdir(config.PLUGINDIR):
       path = config.PLUGINDIR + os.sep + dir
@@ -41,10 +41,10 @@ class PluginManager(object):
       try: 
         print "Found Plugin: %s (Type: %d)" %(p.getName(), p.getType())
         if p.getType() == WizardPlugin.TYPE["input"]:
-          self.input[plugin] = p
+          self.input[p.getName()] = p
           print "added %s" %(plugin)
         elif p.getType() == WizardPlugin.TYPE["output"]:
-          self.output[plugin] = p 
+          self.output[p.getName()] = p 
           print "added %s" %(plugin)
         else:
           print "Unknown PluginType: %s by %s (%s)" %(p.getName, p.getAuthor, plugin)
