@@ -22,7 +22,7 @@ class Notebook (wx.Notebook):
     except KeyError:
       self.categories[category] = []
       self.categoryPages[category] = CategoryPage (self)
-      self.AddPage (self.categoryPages[category], str (category), wx.EXPAND)
+      self.AddPage (self.categoryPages[category], str (category))
 
       self.categories[category].append (item)
       self.categoryPages[category].insertString (str(item))
