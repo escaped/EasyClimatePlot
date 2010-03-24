@@ -96,15 +96,14 @@ class SearchResults (Panel):
     self.noaa = dao.NOAA ()
     self.results = []
 
-    self.sizer_searchstation = wx.StaticBox(self, -1, u"Station wählen")
+    self.title = wx.StaticBox(self, -1, u"Station wählen")
     self.lctChooseStation = dlb.DataListBox (self, COLUMNS)
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
     self.Bind (wx.EVT_BUTTON, self["Clear"], self.clearButton)
 
-
-    sizer_main = wx.StaticBoxSizer(self.sizer_searchstation, wx.VERTICAL)
+    sizer_main = wx.StaticBoxSizer(self.title, wx.VERTICAL)
     sizer_main.Add(self.lctChooseStation, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
     sizer_main.Add (self.clearButton, 0)
 
