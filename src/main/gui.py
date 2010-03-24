@@ -51,6 +51,7 @@ class MainWindow (wx.Frame):
     #workflow.initSubPanel ()
 
     selection = PluginSelectionWizard(self.notebook)
+    selection.initSubPanel ()
     self.notebook.AddPage (selection, "Download")
     
     plot = PlotIntro (self.notebook)
