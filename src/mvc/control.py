@@ -20,5 +20,5 @@ class Control (object):
         event += getattr (self, "on" + key)
       except AttributeError:
         # TODO debugging facility
-        print "please implement on%s for event %s" %(key, key)
+        print "please implement on%s for event %s in %s" %(key, key, self.__class__)
 

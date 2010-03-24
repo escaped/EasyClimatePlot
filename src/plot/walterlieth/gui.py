@@ -3,30 +3,33 @@ from mvc.workflow.hook import Hook
 from mvc.workflow.wizard import Wizard
 
 import wx
+from wxcustom.panel import Panel
 import wxcustom.datalistbox as dlb
 import cachemanager
+
+from control import SearchControl, SearchResultsControl, PlotControl
 
 COLUMNS = ["ID"]
 
 class WalterLiethWizard (Hook, Wizard):
   def createSubPanels (self):
-    self.pool.addWindow ("Search", SearchView (self))
-    self.pool.addWindow ("Results", SearchResultsView (self))
-    self.pool.addWindow ("Plot", PlotView (self))
+    self.searchcontrol = SearchControl (self.pool.addWindow ("Search", SearchView (self)))
+    self.searchresultscontrol = SearchResultsControl (self.pool.addWindow ("Results", SearchResultsView (self)))
+    self.plotcontrol = PlotControl (self.pool.addWindow ("Plot", PlotView (self)))
 
   def __init__ (self, *args, **kwargs):
     Wizard.__init__ (self, *args, **kwargs)
 
-class SearchView (Hook, wx.Panel):
+class SearchView (Panel):
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.static = wx.StaticBox (self, -1, "Search")
 
-class SearchResultsView (Hook, wx.Panel):
+class SearchResultsView (Panel):
   cache = cachemanager.CacheManager.getInstance()
 
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
 
     self.noaa_results = self.cache.index["noaa"]
@@ -39,7 +42,7 @@ class SearchResultsView (Hook, wx.Panel):
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
-    self.Bind (wx.EVT_BUTTON, self.onClear, self.clearButton)
+    self.Bind (wx.EVT_BUTTON, self["Clear"], self.clearButton)
     self.sizer.Add (self.clearButton, 0)
 
     self.SetSizer(self.sizer)
@@ -48,13 +51,7 @@ class SearchResultsView (Hook, wx.Panel):
 
     self.searchComplete = False
 
-  def activate (self):
-    return True
-
-  def onClear (self, e):
-    pass
-
-class PlotView (Hook, wx.Panel):
+class PlotView (Panel):
   def __init__ (self, *args, **kwargs):
-    wx.Panel.__init__ (self, *args, **kwargs)
+    Panel.__init__ (self, *args, **kwargs)
     self.static = wx.StaticBox (self, -1, "Plot")
