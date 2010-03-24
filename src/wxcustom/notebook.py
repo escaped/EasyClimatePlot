@@ -5,7 +5,9 @@ class Notebook (wx.Notebook):
 
   def __init__ (self, *args, **kwargs):
     wx.Notebook.__init__ (self, *args, **kwargs)
+    # TODO nur ein dict dafr
     self.categories = {}
+    self.categoryPages = {}
 
   def addItem (self, category, item):
     # item must be of type wx.Panel
@@ -13,19 +15,22 @@ class Notebook (wx.Notebook):
     if not isinstance (item, wx.Panel):
       raise TypeError, "The given item must be of type wx.Panel"
 
+    # "add" each item to a list..
     try:
       self.categories[category].append (item)
+      self.categoryPages[category].listctrl.Append (str(item))
     except KeyError:
       self.categories[category] = []
-      self.categories[category].append (item)
-      self.AddPage (CategoryPage (self), str (category))
+      self.categoryPages[category] = CategoryPage (self)
+      self.AddPage (self.categoryPages[category], str (category))
 
+      self.categories[category].append (item)
+      self.categoryPages[category].listctrl.InsertStringItem (str(item))
 
 class CategoryPage (wx.Panel):
   def __init__ (self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
-
-
+    self.listctrl = wx.ListCtrl (self)
 
 # usage test
 
