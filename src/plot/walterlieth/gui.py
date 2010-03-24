@@ -24,29 +24,35 @@ class SearchView (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
     self.static = wx.StaticBox (self, -1, "Search")
+    self.sizer = wx.StaticBoxSizer (self.static)
+
 
 class SearchResultsView (Panel):
   cache = cachemanager.CacheManager.getInstance()
 
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
+    self.static = wx.StaticBox (self, -1, "Plot")
+    self.sizer = wx.StaticBoxSizer (self.static)
     self.parent = args[0]
 
     self.noaa_results = self.cache.index["noaa"]
-    self.static_box = wx.StaticBox(self, -1, u"Daten wählen")
-    self.sizer = wx.StaticBoxSizer(self.static_box, wx.VERTICAL)
 
-    # datalistbox
     self.lctChooseData = dlb.DataListBox (self, COLUMNS)
-    self.sizer.Add(self.lctChooseData, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+
+    # TODO das sollte besser gemacht werden! => onActivate
+    for item in self.noaa_results.keys ():
+      self.lctChooseData.AddData ({"ID": item}, COLUMNS)
 
     # clear button
     self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
     self.Bind (wx.EVT_BUTTON, self["Clear"], self.clearButton)
-    self.sizer.Add (self.clearButton, 0)
 
-    self.SetSizer(self.sizer)
-    self.sizer.Fit (self)
+    sizer_main = wx.StaticBoxSizer(self.static, wx.VERTICAL)
+    sizer_main.Add(self.lctChooseData, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
+    sizer_main.Add (self.clearButton, 0)
+
+    self.SetSizer(sizer_main)
     self.Layout()
 
     self.searchComplete = False
@@ -55,3 +61,5 @@ class PlotView (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
     self.static = wx.StaticBox (self, -1, "Plot")
+    self.sizer = wx.StaticBoxSizer (self.static)
+
