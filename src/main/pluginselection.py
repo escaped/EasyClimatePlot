@@ -3,13 +3,52 @@ Created on Mar 23, 2010
 
 @author: alex
 '''
+from mvc.control import Control
+from mvc.workflow.wizard import Wizard
+
 import wx
 from wxcustom.panel import Panel
+from wxcustom.error import ErrorMessage
 
 from pluginmanager import PluginManager
 
+class NotEmptyValidator (wx.PyValidator):
+  def __init__(self, msg = "Field cannot be empty."):
+    wx.PyValidator.__init__(self)    
+    self.errorMsg = msg
+  
+  def TransferToWindow(self):
+    return True # Prevent wxDialog from complaining.
 
-class PluginSelection(Panel):
+  def TransferFromWindow(self):
+    return True # Prevent wxDialog from complaining.
+    
+  def Clone(self):
+    return NotEmptyValidator()
+  
+  def Validate(self, win):
+    item = self.GetWindow()
+    value = item.GetValue()
+    
+    if len(value) == 0:
+      ErrorMessage (self.errorMsg)
+      item.SetFocus()
+      return False
+    
+    return True
+
+class PluginSelectionControl (Control):
+  def __init__ (self, view):
+    Control.__init__ (self, view)
+    
+  def onDeactivate(self):
+    ''' Check Input '''
+    if self.view.Validate():
+      # TODO add views from Plugin
+      return True
+    return False
+  
+class PluginSelectionPanel(Panel):
   def __init__(self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
 
@@ -17,7 +56,7 @@ class PluginSelection(Panel):
     
     # List
     listSizer = wx.BoxSizer(wx.VERTICAL)
-    self.list = wx.ListBox(choices=self.pm.getInputPlugins().keys(), parent=self, size=wx.Size(150, 200), style=0)
+    self.list = wx.ListBox(choices=self.pm.getInputPlugins().keys(), parent=self, size=wx.Size(150, 200), validator=NotEmptyValidator("Please select a plugin."))
     self.list.Bind(wx.EVT_LISTBOX, self.OnListBox1Listbox)
     
     listSizer.Add(wx.StaticText(self, -1, "Select Plugin:"), 0, wx.EXPAND, 0)
@@ -43,7 +82,7 @@ class PluginSelection(Panel):
     labelSizer.Add(self.lblDescription)
     
     infoSizer = wx.StaticBoxSizer(info, wx.VERTICAL)
-    infoSizer.Add(labelSizer)
+    infoSizer.Add(labelSizer, 0, wx.EXPAND, 0)
     
     # put all together
     mainSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -75,3 +114,11 @@ class PluginSelection(Panel):
       self.lblVersion.SetLabel("")
       self.lblDescription.SetLabel("")   
       self.lblAuthor.SetLabel("")
+      
+class PluginSelectionWizard (Wizard):
+  def createSubPanels (self):
+    self.pool.addWindow ("PluginSelection", PluginSelectionPanel(self))
+    
+    # TODO das gehoert nicht hierher
+    self.psc = PluginSelectionControl (self.pool["PluginSelection"])
+    
