@@ -4,6 +4,7 @@ Created on Mar 23, 2010
 @author: alex
 '''
 from mvc.control import Control
+from mvc.workflow.hook import Hook
 from mvc.workflow.wizard import Wizard
 
 import wx
@@ -115,10 +116,11 @@ class PluginSelectionPanel(Panel):
       self.lblDescription.SetLabel("")   
       self.lblAuthor.SetLabel("")
       
-class PluginSelectionWizard (Wizard):
-  def createSubPanels (self):
-    self.pool.addWindow ("PluginSelection", PluginSelectionPanel(self))
+class PluginSelectionWizard (Hook, Wizard):
+  def __init__ (self, *args, **kwargs):
+    Wizard.__init__ (self, *args, **kwargs)
     
-    # TODO das gehoert nicht hierher
-    self.psc = PluginSelectionControl (self.pool["PluginSelection"])
+  def createSubPanels (self):
+    self.psc = PluginSelectionControl(self.pool.addWindow ("PluginSelection", PluginSelectionPanel(self)))
+    
     
