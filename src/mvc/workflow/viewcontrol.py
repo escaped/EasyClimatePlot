@@ -50,7 +50,7 @@ class ViewControl (wx.Panel):
       # TODO better use a debug facility
       print "activate () of newPanel didn't return True"
 
-    self.mainSizer.Insert (0, self.currentPanel, wx.EXPAND)
+    self.mainSizer.Insert (0, self.currentPanel, -1, wx.EXPAND, 0)
     self.mainSizer.Fit (self)
     # TODO resize funktioniert nicht richtig
     self.currentPanel.Show (True)
