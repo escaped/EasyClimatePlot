@@ -267,6 +267,33 @@ class NOAA (object):
     else:
       return filter (lambda x: x.ctry_wmo == countrycode, stations)
 
+  def exportStationsForBatchgeocode (self, listOfStations):
+    '''This method returns a string which can be used directly to map the stations via
+    http://www.batchgeocode.com/ .'''
+    stations = []
+    countries = self.getCountryListDict ()
+
+    # columns
+    stations.append (("Name", "Country", "Latitude", "Longitude", "Stationnumber"))
+
+    for item in listOfStations:
+      if item["lat"] == 0 or item["lon"] == 0 or item["station_name"].strip () == "":
+        continue
+      stations.append (
+          (item["station_name"].capitalize (),
+           countries[item["ctry_fips"]].capitalize (),
+           str (item["lat"]),
+           str (item["lon"]),
+           str (item["usaf"])
+          )
+        )
+
+    # create strings
+    stations = map ('\t'.join, stations)
+
+    return '\n'.join (stations)
+
+
   # ul: upper left
   # lr: lower right
   def searchStationsByLonLat (self, ul, lr, stationSet = None):
@@ -297,6 +324,14 @@ class NOAA (object):
       name = ' '.join (data[1:]) 
       countries.add ((id, name))
     return countries
+
+  def getCountryListDict (self, FIPS=True):
+    countries = {}
+    for key, item in self.getCountryList (FIPS):
+      countries[key] = item
+
+    return countries
+
 
 # test routine
 def example ():
@@ -333,8 +368,13 @@ def listCountries ():
   for ctry in n.getCountryList ():
     print ctry
 
+def batchGeoCode ():
+  n = NOAA ()
+  print n.exportStationsForBatchgeocode (n.searchStationsByStationID (1234))
+
 
 if __name__ == "__main__":
   #example ()
   #searchStations ()
-  listCountries ()
+  #listCountries ()
+  batchGeoCode ()
