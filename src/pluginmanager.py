@@ -4,7 +4,7 @@ import os
 
 class Plugin(object):
   def getName(self):
-    raise Exception("Not implemented")
+    raise NotImplementedError, "Not implemented"
   
   def getVersion(self):
     return ""
@@ -25,7 +25,7 @@ class WizardPlugin(Plugin):
     return None
   
   def getWizard(self, parent):
-    raise Exception("Not implemented.")
+    raise NotImplementedError, "Not implemented."
   
 
 class PluginManager(Singleton):
