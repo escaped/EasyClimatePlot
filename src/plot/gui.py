@@ -15,11 +15,8 @@ import wx
 
 class PlotIntro (ViewControl):
   def createSubPanels (self):
-    ptview = PlotType (self)
-
-    self.pool.addWindow ("ChooseType", ptview)
+    ptview = self.pool.addWindow ("ChooseType", PlotType (self))
     choose_control = PlotTypeControl (ptview)
-
     self.pool.addWindow ("WalterLiethWizard", pwg.WalterLiethWizard (self))
 
 class PlotType (Panel):

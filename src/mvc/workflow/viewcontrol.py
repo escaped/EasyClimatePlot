@@ -14,6 +14,7 @@ class ViewControl (wx.Panel):
   #########
   def __init__(self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
     self.currentPanel  = None
     self.currentNumber = 0
     self.pool = WindowPool ()
@@ -28,6 +29,7 @@ class ViewControl (wx.Panel):
       i.Show (False)
 
     self.SetSizer (self.mainSizer)
+    self.SetAutoLayout (True)
 
   def initSubPanel (self):
     '''Switch to first subpanel. Call this method as soon as everything is initialized!'''
@@ -50,10 +52,10 @@ class ViewControl (wx.Panel):
       # TODO better use a debug facility
       print "activate () of newPanel didn't return True"
 
-    self.mainSizer.Insert (0, self.currentPanel, wx.EXPAND)
+    self.mainSizer.Insert (0, self.currentPanel, -1, wx.EXPAND, 0)
     self.mainSizer.Fit (self)
-    # TODO resize funktioniert nicht richtig
     self.currentPanel.Show (True)
+    self.parent.Layout ()
     
     return True
 

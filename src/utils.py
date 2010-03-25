@@ -1,6 +1,7 @@
 import os
 from collections import defaultdict
 
+
 class Dict(defaultdict):
     def __init__(self, args = None):
         defaultdict.__init__(self, Dict)
