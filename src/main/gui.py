@@ -3,7 +3,7 @@
 import wx
 import main.splashscreen
 
-from main.pluginselection import PluginSelectionWizard
+from main.pluginselection import PluginSelection
 from plot.gui import PlotIntro
 from export.gui import ExportIntro
 
@@ -50,7 +50,7 @@ class MainWindow (wx.Frame):
     #self.notebook.AddPage (workflow, "Download")
     #workflow.initSubPanel ()
 
-    selection = PluginSelectionWizard(self.notebook)
+    selection = PluginSelection(self.notebook)
     selection.initSubPanel ()
     self.notebook.AddPage (selection, "Download")
     

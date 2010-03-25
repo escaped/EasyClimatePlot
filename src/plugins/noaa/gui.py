@@ -143,7 +143,7 @@ class DownloadData (Panel):
     self.Bind (wx.EVT_BUTTON, self["Download"], self.downloadButton)
     self.Layout()
 
-class NOAA_Wizard (Wizard):
+class NOAA_Wizard (Hook, Wizard):
   def createSubPanels (self):
     self.pool.addWindow ("Search", SearchPanel (self))
     self.pool.addWindow ("SearchResults", SearchResults (self))
