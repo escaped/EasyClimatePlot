@@ -12,5 +12,3 @@ webform/download/*
 .pydevproject
 lenkoran
 
-stats
-*.tgz
