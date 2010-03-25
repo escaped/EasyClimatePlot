@@ -94,6 +94,7 @@ class PluginSelectionControl (Control):
         else:
           plugin = self.pm.getInputPlugins()[pluginName]
       except KeyError:
+        # TODO hier wäre eine Warnung auch angebracht
         self.clearInfo()
         return
       
