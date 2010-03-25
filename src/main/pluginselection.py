@@ -79,6 +79,7 @@ class PluginSelectionControl (Control):
             
           self.vc.pool.addWindow (plugin.getName(), plugin.getWizard(self.vc))
           self.vc.switchSubPanelByName(plugin.getName())
+          selv.vc.pool[plugin.getName ()].initSubPanel ()
         except KeyError:
           print "unexpected error: no valid plugin selected"
       
