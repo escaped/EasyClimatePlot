@@ -15,7 +15,7 @@ class NOAA(WizardPlugin):
     return "Magnus Mueller, Alexander Frenzel"
  
   def getType(self):
-    return WizardPlugin.TYPE["input"]
+    return WizardPlugin.__type__["input"]
 
   def getWizard(self, parent):
     return gui.NOAA_Wizard(parent)
