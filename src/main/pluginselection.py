@@ -88,7 +88,7 @@ class PluginSelectionControl (Control):
     print "Selected: %s" %(pluginName)
     if pluginName != None:
       try: 
-        # TODO ist unabhŠngig vom Typ
+        # TODO ist unabhängig vom Typ
         if self.type == WizardPlugin.T_OUTPUT:
           plugin = self.pm.getOutputPlugins()[pluginName]
         else:
@@ -114,7 +114,7 @@ class PluginSelectionControl (Control):
     self.type = type
     self.onActivate()
   
-  
+# TODO beim rücksprung sollte man auch ein anderes plugin wählen können.  
 class PluginSelectionPanel(Panel):
   def __init__(self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)   
