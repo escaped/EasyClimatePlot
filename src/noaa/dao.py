@@ -273,20 +273,25 @@ class NOAA (Plugin):
     '''This method returns a string which can be used directly to map the stations via
     http://www.batchgeocode.com/ .'''
     stations = []
+    countries = self.getCountryListDict ()
 
     # columns
-    stations.append (("Name", "Latitude", "Longitude", "Stationnumber"))
+    stations.append (("Name", "Country", "Latitude", "Longitude", "Stationnumber"))
 
     for item in listOfStations:
       if item["lat"] == 0 or item["lon"] == 0 or item["station_name"].strip () == "":
         continue
       stations.append (
-          (item["station_name"], str (item["lat"]), str (item["lon"]), str
-            (item["usaf"]))
+          (item["station_name"].capitalize (),
+           countries[item["ctry_fips"]].capitalize (),
+           str (item["lat"]),
+           str (item["lon"]),
+           str (item["usaf"])
+          )
         )
 
     # create strings
-    stations = map ('|'.join, stations)
+    stations = map ('\t'.join, stations)
 
     return '\n'.join (stations)
 
@@ -321,6 +326,14 @@ class NOAA (Plugin):
       name = ' '.join (data[1:]) 
       countries.add ((id, name))
     return countries
+
+  def getCountryListDict (self, FIPS=True):
+    countries = {}
+    for key, item in self.getCountryList (FIPS):
+      countries[key] = item
+
+    return countries
+
 
 # test routine
 def example ():
