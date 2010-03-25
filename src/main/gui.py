@@ -45,19 +45,16 @@ class MainWindow (wx.Frame):
     self.notebook = wx.Notebook (self)
     # das hinzufügen sollte dynamisch vollzogen werden
 
-    # TODO anders machen
-    #workflow = NOAA_Wizard (self.notebook)
-    #self.notebook.AddPage (workflow, "Download")
-    #workflow.initSubPanel ()
-
-    selection = PluginSelection(self.notebook)
-    selection.initSubPanel ()
-    self.notebook.AddPage (selection, "Download")
+    import pluginmanager
+    # TODO eigentlich reicht eine Instanz!!!
+    selectionIn = PluginSelection(self.notebook,pluginmanager.WizardPlugin.T_INPUT)
+    selectionIn.initSubPanel()    
     
-    plot = PlotIntro (self.notebook)
-    self.notebook.AddPage (plot , "Plot")
-    plot.initSubPanel ()
-
+    selectionOut = PluginSelection(self.notebook,pluginmanager.WizardPlugin.T_OUTPUT)
+    selectionOut.initSubPanel()    
+    
+    self.notebook.AddPage (selectionIn, "Download")    
+    self.notebook.AddPage (selectionOut , "Plot")
     self.notebook.AddPage (ExportIntro (self.notebook), "Export")
     self.notebook.AddPage (EmptyPanel (self.notebook), "Daten verwalten")
 

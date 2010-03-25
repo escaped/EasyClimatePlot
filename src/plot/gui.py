@@ -9,7 +9,7 @@ from mvc.workflow.wizard import Wizard
 from wxcustom.panel import Panel
 
 
-import plot.walterlieth.gui as pwg
+import plugins.walterlieth.gui as pwg
 
 import wx
 

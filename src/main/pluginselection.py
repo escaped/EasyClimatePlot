@@ -10,7 +10,7 @@ import wx
 from wxcustom.panel import Panel
 from wxcustom.error import ErrorMessage
 
-from pluginmanager import PluginManager
+from pluginmanager import PluginManager, WizardPlugin
 
 class NotEmptyListBoxValidator (wx.PyValidator):
   def __init__(self, msg = "Field cannot be empty."):
@@ -38,12 +38,26 @@ class NotEmptyListBoxValidator (wx.PyValidator):
     return True
 
 class PluginSelectionControl (Control):
-  def __init__ (self, view, viewcontrol):
+  def __init__ (self, view, viewcontrol, type):
     Control.__init__ (self, view)
-    self.vc = viewcontrol
+    self.vc = viewcontrol    
+    self.pm = PluginManager.getInstance()
     
-    self.pm = PluginManager.getInstance()    
-    self.view.setPlugins(self.pm.getInputPlugins().keys())
+    if type in [WizardPlugin.T_INPUT, WizardPlugin.T_OUTPUT]:
+      self.type =  type  # TODO Parameter
+    else:
+      raise Exception("Invalid PluginType")
+    
+    
+  def onActivate(self):
+    if self.type == WizardPlugin.T_OUTPUT:
+      print "setting out"
+      self.view.setPlugins(self.pm.getOutputPlugins().keys())
+    else:
+      print "setting in"
+      self.view.setPlugins(self.pm.getInputPlugins().keys())
+      
+    return True
     
   def onDeactivate(self):
     ''' Check Input '''
@@ -56,7 +70,12 @@ class PluginSelectionControl (Control):
       pluginName = self.view.list.GetStringSelection()
       if pluginName != None:
         try: 
-          plugin = self.pm.getInputPlugins()[pluginName]
+          # TODO ist unabhängig vom Typ
+          if self.type == WizardPlugin.T_OUTPUT:
+            plugin = self.pm.getOutputPlugins()[pluginName]
+          else:
+            plugin = self.pm.getInputPlugins()[pluginName]
+            
           self.vc.pool.addWindow (plugin.getName(), plugin.getWizard(self.vc))
           self.vc.switchSubPanelByName(plugin.getName())
         except KeyError:
@@ -68,7 +87,11 @@ class PluginSelectionControl (Control):
     print "Selected: %s" %(pluginName)
     if pluginName != None:
       try: 
-        plugin = self.pm.getInputPlugins()[pluginName]
+        # TODO ist unabhängig vom Typ
+        if self.type == WizardPlugin.T_OUTPUT:
+          plugin = self.pm.getOutputPlugins()[pluginName]
+        else:
+          plugin = self.pm.getInputPlugins()[pluginName]
       except KeyError:
         self.clearInfo()
         return
@@ -85,6 +108,10 @@ class PluginSelectionControl (Control):
       self.view.lblVersion.SetLabel("")
       self.view.lblDescription.SetLabel("")   
       self.view.lblAuthor.SetLabel("")
+      
+  def setPluginType(self, type):
+    self.type = type
+    self.onActivate()
   
   
 class PluginSelectionPanel(Panel):
@@ -140,7 +167,11 @@ class PluginSelectionPanel(Panel):
     self.list.SetItems(plugins)
       
 class PluginSelection(ViewControl):
+  def __init__(self, *args, **kwargs):
+    self.type = args[1]
+    ViewControl.__init__(self, *args, **kwargs)
+      
   def createSubPanels (self):
-    self.psc = PluginSelectionControl(self.pool.addWindow ("PluginSelection", PluginSelectionPanel(self)), self)
+    self.psc = PluginSelectionControl(self.pool.addWindow ("PluginSelection", PluginSelectionPanel(self)), self, self.type)
     
     

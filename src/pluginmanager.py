@@ -16,7 +16,8 @@ class Plugin(object):
     return ""
     
 class WizardPlugin(Plugin):
-  __type__ = {"input":0, "output":1}
+  T_INPUT = 0
+  T_OUTPUT = 1
   
   def __init__(self):
     Plugin.__init__(self)
@@ -43,10 +44,10 @@ class PluginManager(Singleton):
       p = plugin()
       try: 
         print "Found Plugin: %s (Type: %d)" %(p.getName(), p.getType())
-        if p.getType() == WizardPlugin.__type__["input"]:
+        if p.getType() == WizardPlugin.T_INPUT:
           self.input[p.getName()] = p
           print "added %s" %(plugin)
-        elif p.getType() == WizardPlugin.__type__["output"]:
+        elif p.getType() == WizardPlugin.T_OUTPUT:
           self.output[p.getName()] = p 
           print "added %s" %(plugin)
         else:
