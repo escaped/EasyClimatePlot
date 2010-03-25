@@ -42,6 +42,9 @@ class PluginSelectionControl (Control):
   def __init__ (self, view):
     Control.__init__ (self, view)
     
+    self.pm = PluginManager.getInstance()    
+    self.view.setPlugins(self.pm.getInputPlugins().keys())
+    
   def onDeactivate(self):
     ''' Check Input '''
     if self.view.Validate():
@@ -49,16 +52,38 @@ class PluginSelectionControl (Control):
       return True
     return False
   
+  def onListSelection(self, *args, **kwargs):
+    pluginName = self.view.list.GetStringSelection()
+    print "Selected: %s" %(pluginName)
+    if pluginName != None:
+      try: 
+        plugin = self.pm.getInputPlugins()[pluginName]
+      except KeyError:
+        self.clearInfo()
+        return
+      
+      self.view.lblName.SetLabel(plugin.getName())
+      self.view.lblVersion.SetLabel(plugin.getVersion())
+      self.view.lblAuthor.SetLabel(plugin.getAuthor())
+      self.view.lblDescription.SetLabel(plugin.getDescription())   
+    else:
+      self.clearInfo()
+  
+  def clearInfo(self):
+      self.view.lblName.SetLabel("")
+      self.view.lblVersion.SetLabel("")
+      self.view.lblDescription.SetLabel("")   
+      self.view.lblAuthor.SetLabel("")
+  
+  
 class PluginSelectionPanel(Panel):
   def __init__(self, *args, **kwargs):
-    Panel.__init__ (self, *args, **kwargs)
-
-    self.pm = PluginManager.getInstance()
+    Panel.__init__ (self, *args, **kwargs)   
     
     # List
     listSizer = wx.BoxSizer(wx.VERTICAL)
-    self.list = wx.ListBox(choices=self.pm.getInputPlugins().keys(), parent=self, size=wx.Size(150, 200), validator=NotEmptyValidator("Please select a plugin."))
-    self.list.Bind(wx.EVT_LISTBOX, self.OnListBox1Listbox)
+    self.list = wx.ListBox(choices=[], parent=self, size=wx.Size(150, 200), validator=NotEmptyValidator("Please select a plugin."))
+    self.list.Bind(wx.EVT_LISTBOX, self["ListSelection"])
     
     listSizer.Add(wx.StaticText(self, -1, "Select Plugin:"), 0, wx.EXPAND, 0)
     listSizer.Add(self.list, 0, wx.EXPAND, 0)
@@ -90,31 +115,10 @@ class PluginSelectionPanel(Panel):
     mainSizer.Add(listSizer, 0, wx.EXPAND, 0)
     mainSizer.Add(infoSizer, 0, wx.EXPAND, 0)
     
-    self.SetSizer (mainSizer)
-    self.Layout()
+    self.SetSizerAndFit(mainSizer)
   
-  def OnListBox1Listbox(self, event):
-    pluginName = self.list.GetStringSelection()
-    print "Selected: %s" %(pluginName)
-    if pluginName != None:
-      try: 
-        plugin = self.pm.getInputPlugins()[pluginName]
-      except KeyError:
-        self.clearInfo()
-        return
-      
-      self.lblName.SetLabel(plugin.getName())
-      self.lblVersion.SetLabel(plugin.getVersion())
-      self.lblAuthor.SetLabel(plugin.getAuthor())
-      self.lblDescription.SetLabel(plugin.getDescription())   
-    else:
-      self.clearInfo()
-      
-  def clearInfo(self):
-      self.lblName.SetLabel("")
-      self.lblVersion.SetLabel("")
-      self.lblDescription.SetLabel("")   
-      self.lblAuthor.SetLabel("")
+  def setPlugins(self, plugins=[]):
+    self.list.SetItems(plugins)
       
 class PluginSelectionWizard (Hook, Wizard):
   def __init__ (self, *args, **kwargs):
