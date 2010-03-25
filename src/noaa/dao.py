@@ -269,6 +269,28 @@ class NOAA (Plugin):
     else:
       return filter (lambda x: x.ctry_wmo == countrycode, stations)
 
+  def exportStationsForBatchgeocode (self, listOfStations):
+    '''This method returns a string which can be used directly to map the stations via
+    http://www.batchgeocode.com/ .'''
+    stations = []
+
+    # columns
+    stations.append (("Name", "Latitude", "Longitude", "Stationnumber"))
+
+    for item in listOfStations:
+      if item["lat"] == 0 or item["lon"] == 0 or item["station_name"].strip () == "":
+        continue
+      stations.append (
+          (item["station_name"], str (item["lat"]), str (item["lon"]), str
+            (item["usaf"]))
+        )
+
+    # create strings
+    stations = map ('|'.join, stations)
+
+    return '\n'.join (stations)
+
+
   # ul: upper left
   # lr: lower right
   def searchStationsByLonLat (self, ul, lr, stationSet = None):
@@ -335,8 +357,13 @@ def listCountries ():
   for ctry in n.getCountryList ():
     print ctry
 
+def batchGeoCode ():
+  n = NOAA ()
+  print n.exportStationsForBatchgeocode (n.searchStationsByStationID (1234))
+
 
 if __name__ == "__main__":
   #example ()
   #searchStations ()
-  listCountries ()
+  #listCountries ()
+  batchGeoCode ()
