@@ -46,7 +46,7 @@ class MainWindow (wx.Frame):
     # das hinzufügen sollte dynamisch vollzogen werden
 
     import pluginmanager
-    # TODO eigentlich reicht eine Instanz!!!
+    # TODO eigentlich reicht eine Instanz mit entsprechendem Event auf der TabSelection!!!
     selectionIn = PluginSelection(self.notebook,pluginmanager.WizardPlugin.T_INPUT)
     selectionIn.initSubPanel()    
     
