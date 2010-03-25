@@ -15,6 +15,7 @@ class ExportIntro (ViewControl):
     # TODO
     #self.pool.addWindow ("NOAA_Wizard", enb.NOAA (self))
 
+# TODO WEnn das implementiert wird, sollte das mit ins NOAA Plugin dir udn entsprechendes Plugin in der __init__.py definiert werden!!!
 class PlotType (Hook, wx.Panel):
   def __init__ (self, *args, **kwargs):
     wx.Panel.__init__ (self, *args, **kwargs)
