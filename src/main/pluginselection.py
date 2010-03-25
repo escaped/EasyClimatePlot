@@ -165,7 +165,7 @@ class PluginSelectionPanel(Panel):
     self.SetSizerAndFit(btnSizer)
   
   def setPlugins(self, plugins=[]):
-    self.list.SetItems(plugins)
+    self.list.AppendItems(plugins)
       
 class PluginSelection(ViewControl):
   def __init__(self, *args, **kwargs):
