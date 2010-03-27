@@ -9,7 +9,7 @@ class OutputPanel (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
     self.sizer = wx.BoxSizer () 
-    self.textctrl = outputctrl.OutputCtrl(self)
+    self.textctrl = outputctrl.OutputCtrl(self, style=wx.TE_MULTILINE|wx.TE_AUTO_SCROLL)
     self.sizer.Add (self.textctrl, -1, wx.EXPAND, 0)
     self.SetSizer (self.sizer)
     self.Layout ()
