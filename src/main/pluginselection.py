@@ -71,7 +71,7 @@ class PluginSelectionControl (Control):
       pluginName = self.view.list.GetStringSelection()
       if pluginName != None:
         try: 
-          # TODO ist unabhŠngig vom Typ
+          # TODO ist unabhï¿½ngig vom Typ
           if self.type == WizardPlugin.T_OUTPUT:
             plugin = self.pm.getOutputPlugins()[pluginName]
           else:
@@ -79,7 +79,7 @@ class PluginSelectionControl (Control):
             
           self.vc.pool.addWindow (plugin.getName(), plugin.getWizard(self.vc))
           self.vc.switchSubPanelByName(plugin.getName())
-          selv.vc.pool[plugin.getName ()].initSubPanel ()
+          self.vc.pool[plugin.getName ()].initSubPanel ()
         except KeyError:
           print "unexpected error: no valid plugin selected"
       
@@ -89,13 +89,13 @@ class PluginSelectionControl (Control):
     print "Selected: %s" %(pluginName)
     if pluginName != None:
       try: 
-        # TODO ist unabhängig vom Typ
+        # TODO ist unabhï¿½ngig vom Typ
         if self.type == WizardPlugin.T_OUTPUT:
           plugin = self.pm.getOutputPlugins()[pluginName]
         else:
           plugin = self.pm.getInputPlugins()[pluginName]
       except KeyError:
-        # TODO hier wäre eine Warnung auch angebracht
+        # TODO hier wï¿½re eine Warnung auch angebracht
         self.clearInfo()
         return
       
@@ -116,7 +116,7 @@ class PluginSelectionControl (Control):
     self.type = type
     self.onActivate()
   
-# TODO beim rücksprung sollte man auch ein anderes plugin wählen können.  
+# TODO beim rï¿½cksprung sollte man auch ein anderes plugin wï¿½hlen kï¿½nnen.  
 class PluginSelectionPanel(Panel):
   def __init__(self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)   
