@@ -53,10 +53,12 @@ class PluginSelectionControl (Control):
   def onActivate(self):
     if self.type == WizardPlugin.T_OUTPUT:
       print "setting out"
-      self.view.setPlugins(self.pm.getOutputPlugins().keys())
+      # TODO durch setPlugins ersetzen!
+      self.view.appendPlugins(self.pm.getOutputPlugins().keys())
     else:
       print "setting in"
-      self.view.setPlugins(self.pm.getInputPlugins().keys())
+      # TODO durch setPlugins ersetzen!
+      self.view.appendPlugins(self.pm.getInputPlugins().keys())
       
     return True
     
