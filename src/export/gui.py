@@ -4,9 +4,6 @@ from mvc.workflow.hook import Hook
 from mvc.workflow.viewcontrol import ViewControl
 from mvc.workflow.wizard import Wizard
 
-
-import export.noaa.batchgeocode as enb
-
 import wx
 
 class ExportIntro (ViewControl):

@@ -4,7 +4,6 @@ import wx
 import main.splashscreen
 
 from main.pluginselection import PluginSelection
-from plot.gui import PlotIntro
 from export.gui import ExportIntro
 
 def ShowMainWindow ():
