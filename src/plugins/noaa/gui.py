@@ -17,14 +17,11 @@ import control
 
 from wxcustom.panel import Panel
 
-# date functions
-import datetime
-import time
+from config import CURRENTYEAR
 
 # global variables
 COLUMNS = ["Station Name", "Country", "USAF ID", "Lon", "Lat"]
 COMBOBOX_LIMIT = 15
-CURRENTYEAR = datetime.date.fromtimestamp (time.time ())
 
 class SearchPanel (Panel):
   def __init__(self, *args, **kwargs):
@@ -127,7 +124,7 @@ class DownloadData (Panel):
 
     # TODO year validator
     self.txtFrom = wx.TextCtrl (self, -1, "1929")
-    self.txtTo = wx.TextCtrl (self, -1, str (CURRENTYEAR.year))
+    self.txtTo = wx.TextCtrl (self, -1, str (CURRENTYEAR))
 
     self.daterange_sizer.Add (self.txtFrom)
     self.daterange_sizer.Add (self.txtTo)

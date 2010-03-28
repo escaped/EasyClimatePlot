@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import cachemanager
+
 import config
 import socket
 import data
@@ -16,6 +17,7 @@ import cPickle
 import time
 import weatherstation
 
+from config import CURRENTYEAR
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib doesn't seem to resolv the upper url right
 noaa_url="205.167.25.101"
@@ -49,8 +51,16 @@ class NOAA (object):
     self.ctry_wmo_list = set ()
     self.ctry_fips_list = set ()
 
-  # TODO end sollte vom aktuellen jahr abhängen.. ;)
-  def downloadData (self, start=1929, end=2011):
+    # ugly default
+    self.use_usaf = True
+
+  def downloadData (self, start=1929, end=CURRENTYEAR):
+
+    # get weather station
+    station = self.getStationById (self.station_number, self.use_usaf)[0]
+
+    # TODO ist das gut..?
+    self.station_number = (station["usaf"], station["wban"])
     
     if self.cache.hashExists("noaa", self.station_number, start, end):
         print "Data found in cache... loading!"
@@ -66,19 +76,12 @@ class NOAA (object):
     print 'Loading data: %d - %d' %(start, end)
 
     for year in xrange (start, end + 1):
-      # should look like this:
+      # the filepath should look like this:
       # decide wether to use WBAN or USAF
       # 998234-99999-2010.op.gz
-      # TODO falls für eine station sowohl wban als auch usaf vorhanden ist, können auch
-      # beide fehler != 999* sein.
-      if self.use_usaf:
-        s = "%s/%s-99999-%s.op.gz" %(year, 
-            str(self.station_number).ljust (6,'0'),
-            year
-          )
-      else:
-        s = "%s/999999-%s-%s.op.gz" %(year, 
-            str(self.station_number).ljust (6,'0'),
+      s = "%s/%s-%s-%s.op.gz" %(year,
+            str (self.station_number[0].ljust(6,'0')),
+            str (self.station_number[1].ljust(5,'0')),
             year
           )
       files.append (s)
@@ -291,6 +294,18 @@ class NOAA (object):
     stations = map ('\t'.join, stations)
 
     return '\n'.join (stations)
+
+  def getStationById (self, station_id, usaf = True, stationSet = None):
+    if stationSet:
+      stations = stationSet
+    else:
+      stations = self.listAvailableStations ()
+
+    if usaf:
+      return filter (lambda x: station_id == (x["usaf"]), stations)
+    else:
+      return filter (lambda x: station_id == (x["wban"]), stations)
+
 
 
   # ul: upper left
