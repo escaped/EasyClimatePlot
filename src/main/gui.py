@@ -55,10 +55,8 @@ class MainWindow (wx.Frame):
     selectionOut = PluginSelection(self.notebook,pluginmanager.WizardPlugin.T_OUTPUT)
     selectionOut.initSubPanel()    
     
-    self.notebook.AddPage (selectionIn, "Download")    
-    self.notebook.AddPage (selectionOut , "Plot")
-    self.notebook.AddPage (ExportIntro (self.notebook), "Export")
-    self.notebook.AddPage (EmptyPanel (self.notebook), "Daten verwalten")
+    self.notebook.AddPage (selectionIn, "Input/Download")    
+    self.notebook.AddPage (selectionOut , "Output/Plot")
 
     self.Layout()
     self.Show ()
