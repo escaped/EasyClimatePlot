@@ -269,6 +269,17 @@ class NOAA (object):
     else:
       return filter (lambda x: x.ctry_wmo == countrycode, stations)
 
+  def searchStationsByName (self, name, stationSet = None):
+    '''Search the stations by name. name can be a regex.'''
+    if stationSet:
+      stations = stationSet
+    else:
+      stations = self.listAvailableStations ()
+
+    reg = re.compile (str(name))
+    return filter (lambda x: reg.search (str (x["station_name"])), stations)
+
+
   def exportStationsForBatchgeocode (self, listOfStations):
     '''This method returns a string which can be used directly to map the stations via
     http://www.batchgeocode.com/ .'''

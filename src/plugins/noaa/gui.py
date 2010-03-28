@@ -30,9 +30,13 @@ class SearchPanel (Panel):
     # TODO NOAA objekt sollte global sein. das kostet sonst einfach zuviel zeit.
     self.noaa = dao.NOAA ()
 
-    # StationNumber
     self.stbSearchBox = wx.StaticBox(self, -1, "Suche")
-    self.lblStationsnummer = wx.StaticText(self, -1, "Stationsnummer:")    
+    # station name
+    self.lblStationName = wx.StaticText (self, -1, "Stationsname:")
+    # TODO text validator
+    self.txtStationName = wx.TextCtrl (self, -1, "")
+    # StationNumber
+    self.lblStationNumber = wx.StaticText(self, -1, "Stationsnummer:")    
     self.txtStationNumber = wx.TextCtrl(self, -1, "", validator = IntegerValidator())
     
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
@@ -42,6 +46,7 @@ class SearchPanel (Panel):
         style=wx.CB_DROPDOWN|wx.CB_READONLY|wx.CB_SORT)
 
     # fill combobox with countries available at NOAA
+    # TODO sortieren!
     for item in self.noaa.getCountryList ():
       # we associate each item with the given country code
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
@@ -53,9 +58,14 @@ class SearchPanel (Panel):
     self.txtLat2 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-90,90)))
     self.txtLon2 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-180,180)))
 
+    # sizer for StationName
+    stationNameSizer = wx.BoxSizer ()
+    stationNameSizer.Add (self.lblStationNumber, 0,wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0) 
+    stationNameSizer.Add(self.txtStationName, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+
     # sizer for StationNumber
     stationNrSizer = wx.BoxSizer(wx.HORIZONTAL)
-    stationNrSizer.Add(self.lblStationsnummer, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    stationNrSizer.Add(self.lblStationNumber, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
     stationNrSizer.Add(self.txtStationNumber, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
     stationNrSizer.Add(self.selectIDType, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
     
@@ -75,6 +85,7 @@ class SearchPanel (Panel):
 
     # combine all
     mainSizer = wx.StaticBoxSizer(self.stbSearchBox, wx.VERTICAL)
+    mainSizer.Add (stationNameSizer, 0, wx.EXPAND, 0)
     mainSizer.Add(stationNrSizer, 0, wx.EXPAND, 0)
     mainSizer.Add(regionSizer, 0, wx.EXPAND, 0)
     mainSizer.Add(coordSizer, 0, wx.EXPAND, 0)

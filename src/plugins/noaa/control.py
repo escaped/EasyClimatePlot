@@ -51,6 +51,7 @@ class SearchResultsControl (Control):
       # get data from previous view
       searchView = self.view.parent.pool["Search"]
 
+      stationName   = searchView.txtStationName.GetValue ()
       stationNumber = searchView.txtStationNumber.GetValue()
       region        = searchView.lsbRegion.GetClientData (searchView.lsbRegion.GetSelection ())
       ul, lr = ((searchView.txtLat1, searchView.txtLon1),
@@ -60,6 +61,8 @@ class SearchResultsControl (Control):
       searchFunctions = [lambda x: x] 
 
       searchResults = []
+      if stationName:
+        searchFunctions.append (ft.partial (self.noaa.searchStationsByName, stationName))
       if stationNumber:
         if self.view.parent.pool["Search"].USAF (): 
           searchFunctions.append (ft.partial (self.noaa.searchStationsByStationID, 
