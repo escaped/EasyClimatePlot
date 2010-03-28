@@ -26,7 +26,7 @@ def test ():
   op = OutputPanel (frame)
   frame.Show ()
 
-  print >>op, "muahahahaha\n"
+  print >>op, "muahahahaha"
 
   app.MainLoop ()
 

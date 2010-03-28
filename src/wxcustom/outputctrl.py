@@ -10,4 +10,4 @@ class OutputCtrl (wx.TextCtrl):
 
   def write (self, string):
     '''write (string) appends the given string to the TextCtrl.'''
-    self.AppendText (string)
+    self.WriteText (string)
