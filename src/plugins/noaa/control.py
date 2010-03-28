@@ -15,7 +15,9 @@ class SearchControl (Control):
     return self.Validate()
 
   def Validate(self):
-    station = region = coord = False
+    name = station = region = coord = False
+    if len(self.view.txtStationName.GetValue().strip()) == 0:
+      name = True
     if len(self.view.txtStationNumber.GetValue().strip()) == 0:
       station = True      
     if len(self.view.lsbRegion.GetValue().strip()) == 0:
