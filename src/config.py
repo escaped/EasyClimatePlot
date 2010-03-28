@@ -6,6 +6,11 @@ PLUGINDIR = "plugins"
 CACHE_INDEX_FILENAME = "index.dat"
 STATION_LIST_CACHE_FILENAME = "stationlist"
 
+# date functions
+import datetime
+import time
+CURRENTYEAR = datetime.date.fromtimestamp (time.time ()).year
+
 ###################
 #
 # global output
