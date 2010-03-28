@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import Gnuplot
+import os
 
 class WalterLieth (object):
   ouput_filename = ""
@@ -94,6 +95,6 @@ class WalterLieth (object):
     g('set nomultiplot')
 
     # TODO save to file
-    #g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
+    g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
     g.close ()
 
