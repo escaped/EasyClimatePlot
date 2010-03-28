@@ -4,10 +4,6 @@ import calendar
 categories = ['temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
 
 class Data:
-  # NOTE: all membervariables are overridden in the constructor __init__ !
-  name = ""
-  coord = (0,0) 
-
   # data: field of data
   data = {}
   cache = {}
