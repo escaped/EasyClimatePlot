@@ -65,4 +65,4 @@ class PlotControl (Control):
         )
 
     self.plot.process ()
-    print "i plotted it"
+    # TODO output status to a outputwindow

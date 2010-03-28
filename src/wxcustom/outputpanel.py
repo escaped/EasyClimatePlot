@@ -8,6 +8,8 @@ import outputctrl
 class OutputPanel (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
+    self.parent = args[0]
+
     self.sizer = wx.BoxSizer () 
     self.textctrl = outputctrl.OutputCtrl(self, style=wx.TE_MULTILINE|wx.TE_AUTO_SCROLL)
     self.sizer.Add (self.textctrl, -1, wx.EXPAND, 0)
@@ -16,6 +18,8 @@ class OutputPanel (Panel):
 
   def write (self, string):
     self.textctrl.write (string)
+
+    self.parent.Show ()
 
 
 # test cases

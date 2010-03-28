@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import Gnuplot
+import config
 import os
 
 class WalterLieth (object):
@@ -14,6 +15,7 @@ class WalterLieth (object):
     self.temp = zip (xrange (1,13), temp)
     self.prcp = zip (xrange (1,13), prcp)
     self.plot_title = plot_title
+    self.output_filename = output_filename
 
   def process (self):
     # plot a walther-lieth diagramm
@@ -95,6 +97,6 @@ class WalterLieth (object):
     g('set nomultiplot')
 
     # TODO save to file
-    g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
+    g.hardcopy (os.path.join (config.CACHEDIR, self.output_filename), enhanced=True)
     g.close ()
 
