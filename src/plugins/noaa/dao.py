@@ -279,7 +279,6 @@ class NOAA (object):
     reg = re.compile (str(name))
     return filter (lambda x: reg.search (str (x["station_name"])), stations)
 
-
   def exportStationsForBatchgeocode (self, listOfStations):
     '''This method returns a string which can be used directly to map the stations via
     http://www.batchgeocode.com/ .'''
@@ -287,7 +286,7 @@ class NOAA (object):
     countries = self.getCountryListDict ()
 
     # columns
-    stations.append (("Name", "Country", "Latitude", "Longitude", "Stationnumber"))
+    stations.append (("City", "Country", "Latitude", "Longitude", "Stationnumber"))
 
     for item in listOfStations:
       if item["lat"] == 0 or item["lon"] == 0 or item["station_name"].strip () == "":
