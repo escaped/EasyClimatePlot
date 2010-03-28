@@ -6,10 +6,13 @@ import main.splashscreen
 from main.pluginselection import PluginSelection
 from export.gui import ExportIntro
 
+import config
+
 def ShowMainWindow ():
   app = wx.App (False)
   splash = main.splashscreen.Splashy ()
   mw  = MainWindow ()
+  config.createOutputStreams ()
   app.MainLoop ()
 
 class MainWindow (wx.Frame):
