@@ -97,6 +97,3 @@ class WalterLieth (object):
     #g.hardcopy (os.path.join (config.CACHEDIR, output_filename), enhanced=True)
     g.close ()
 
-  def getUserInput (self):
-    raise NotImplemented
-
