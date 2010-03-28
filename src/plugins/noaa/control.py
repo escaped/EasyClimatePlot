@@ -53,7 +53,8 @@ class SearchResultsControl (Control):
       # get data from previous view
       searchView = self.view.parent.pool["Search"]
 
-      stationName   = searchView.txtStationName.GetValue ()
+      # upper case station name
+      stationName   = searchView.txtStationName.GetValue ().upper ()
       stationNumber = searchView.txtStationNumber.GetValue()
       region        = searchView.lsbRegion.GetClientData (searchView.lsbRegion.GetSelection ())
       ul, lr = ((searchView.txtLat1, searchView.txtLon1),
