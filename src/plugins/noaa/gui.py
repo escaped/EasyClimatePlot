@@ -31,16 +31,21 @@ class SearchPanel (Panel):
     self.noaa = dao.NOAA ()
 
     self.stbSearchBox = wx.StaticBox(self, -1, "Suche")
+
     # station name
     self.lblStationName = wx.StaticText (self, -1, "Stationsname:")
     # TODO text validator
     self.txtStationName = wx.TextCtrl (self, -1, "")
+
     # StationNumber
     self.lblStationNumber = wx.StaticText(self, -1, "Stationsnummer:")    
     self.txtStationNumber = wx.TextCtrl(self, -1, "", validator = IntegerValidator())
     
+    # id type
     self.selectIDType = wx.RadioBox(self, -1, "USAF", choices=["USAF", "WBAN"], majorDimension=0, style=wx.RA_SPECIFY_ROWS)
     self.lblRegion = wx.StaticText(self, -1, "Region")
+
+    # region
     # TODO die sortierung stimmt noch nicht.
     self.lsbRegion = wx.ComboBox(self, -1, choices=[""], 
         style=wx.CB_DROPDOWN|wx.CB_READONLY|wx.CB_SORT)
@@ -51,6 +56,7 @@ class SearchPanel (Panel):
       # we associate each item with the given country code
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
 
+    # latitude/longitude
     self.lblLatLon1 = wx.StaticText(self, -1, "Lat/Lon")
     self.txtLat1 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-90,90)))
     self.txtLon1 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-180,180)))
@@ -59,9 +65,9 @@ class SearchPanel (Panel):
     self.txtLon2 = wx.TextCtrl(self, -1, "", validator = NumberValidator((-180,180)))
 
     # sizer for StationName
-    stationNameSizer = wx.BoxSizer ()
-    stationNameSizer.Add (self.lblStationNumber, 0,wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0) 
-    stationNameSizer.Add(self.txtStationName, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    stationNameSizer = wx.BoxSizer (wx.HORIZONTAL)
+    stationNameSizer.Add (self.lblStationName, -1,wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0) 
+    stationNameSizer.Add(self.txtStationName, -1, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
 
     # sizer for StationNumber
     stationNrSizer = wx.BoxSizer(wx.HORIZONTAL)
