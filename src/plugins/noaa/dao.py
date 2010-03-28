@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import cachemanager
-import plot.contour
 import config
 import socket
 import data
