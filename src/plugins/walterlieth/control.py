@@ -41,6 +41,9 @@ class SearchResultsControl (Control):
 
     return True
 
+  def onClear (self, event):
+    raise NotImplementedError, "Not yet implemented"
+
 
 class PlotControl (Control):
   cache = cachemanager.CacheManager.getInstance()
