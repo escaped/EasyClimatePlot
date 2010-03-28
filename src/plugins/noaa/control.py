@@ -29,7 +29,7 @@ class SearchControl (Control):
       coord = True
       
     # at least one field should be filled
-    if station and region and coord:
+    if name and station and region and coord:
       ErrorMessage ("Fill at least one FieldGroup")
       return False
     
