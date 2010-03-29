@@ -3,10 +3,6 @@ import cachemanager
 
 import plot
 
-class SearchControl (Control):
-  def __init__ (self, view):
-    Control.__init__ (self, view)
-
 class SearchResultsControl (Control):
   cache = cachemanager.CacheManager.getInstance()
 
@@ -26,12 +22,19 @@ class SearchResultsControl (Control):
         # we just test, if the item converts to int.
         # if not, then it isn't a station
         try:
-          int (key)
+          usaf, wban = eval (key)
         except:
           continue
 
         for subkey, subitem in item.items ():
-          data.append ({"usaf": key, "range": subkey, "cacheid": subitem})
+          # get station data for each item
+          print subkey
+          from_, to = (subkey)
+          stationdata = self.cache.load ("noaa", key, from_, to)
+          station = stationdata.weatherstation
+          data.append ({"usaf": usaf, "wban":wban,
+            "range": subkey, "cacheid": subitem,
+            "name": station["station_name"]})
 
       for item in self.noaa_results.keys ():
         self.view.addData (data)

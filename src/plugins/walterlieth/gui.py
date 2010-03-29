@@ -6,16 +6,15 @@ import wx
 from wxcustom.panel import Panel
 import wxcustom.datalistbox as dlb
 
-from control import SearchControl, SearchResultsControl, PlotControl
+from control import SearchResultsControl, PlotControl
 
-COLUMNS = ["usaf", "range"]
+COLUMNS = ["usaf", "range", "name"]
 
 # TODO enable other search panels (e.g. sth for NASA)
 from plugins.noaa.gui import SearchPanel
 
 class WalterLiethWizard (Hook, Wizard):
   def createSubPanels (self):
-    self.searchcontrol = SearchControl (self.pool.addWindow ("Search", SearchPanel (self)))
     self.searchresultscontrol = SearchResultsControl (self.pool.addWindow ("Results", SearchResultsView (self)))
     self.plotcontrol = PlotControl (self.pool.addWindow ("Plot", PlotView (self)))
 

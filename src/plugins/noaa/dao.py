@@ -167,6 +167,9 @@ class NOAA (object):
             print values[type]
             self.data.addCategory(type, values[type])
 
+    # add weatherstation data to self.data
+    self.data.weatherstation = station
+
     # self.data.save ("cache")
     self.cache.save(self.data, "noaa", self.station_number, start, end)
   
