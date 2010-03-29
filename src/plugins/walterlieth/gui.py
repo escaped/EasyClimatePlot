@@ -30,13 +30,8 @@ class SearchResultsView (Panel):
 
     self.lctChooseData = dlb.DataListBox (self, COLUMNS)
 
-    # clear button
-    self.clearButton = wx.Button (self, -1, u"Suchergebnisse löschen")
-    self.Bind (wx.EVT_BUTTON, self["Clear"], self.clearButton)
-
     sizer_main = wx.StaticBoxSizer(self.static, wx.VERTICAL)
     sizer_main.Add(self.lctChooseData, 3, wx.EXPAND|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, 0)
-    sizer_main.Add (self.clearButton, 0)
 
     self.SetSizer(sizer_main)
     self.Layout()
