@@ -36,17 +36,12 @@ class SearchResultsControl (Control):
           data.append ({"usaf": usaf, "wban":wban,
             "range": subkey, "cacheid": subitem,
             "name": station["station_name"]})
-
-      for item in self.noaa_results.keys ():
-        self.view.addData (data)
+      self.view.addData (data)
 
       self.searchDone = True
       # TODO reset!
 
     return True
-
-  def onClear (self, event):
-    raise NotImplementedError, "Not yet implemented"
 
 
 class PlotControl (Control):
