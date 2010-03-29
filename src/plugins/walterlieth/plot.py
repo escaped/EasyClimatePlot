@@ -15,11 +15,12 @@ class WalterLieth (object):
     self.temp = zip (xrange (1,13), temp)
     self.prcp = zip (xrange (1,13), prcp)
     self.plot_title = plot_title
-    self.output_filename = output_filename
+    # TODO eigentlich sollte nicht hier die dateiendung hinzugefügt werden..
+    self.output_filename = output_filename.replace ("/","_") + ".eps"
 
   def process (self):
     # plot a walther-lieth diagramm
-    g = Gnuplot.Gnuplot ()
+    g = Gnuplot.Gnuplot (persist=True)
 
     g.title(self.plot_title)
 
@@ -97,6 +98,5 @@ class WalterLieth (object):
     g('set nomultiplot')
 
     # TODO save to file
-    g.hardcopy (os.path.join (config.CACHEDIR, self.output_filename), enhanced=True)
-    g.close ()
-
+    print self.output_filename 
+    g.hardcopy (os.path.join (config.CACHEDIR, self.output_filename), terminal="postscript", enhanced=True)

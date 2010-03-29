@@ -1,6 +1,7 @@
 from mvc.control import Control
 import cachemanager
 
+import config
 import plot
 
 class SearchResultsControl (Control):
@@ -60,9 +61,11 @@ class PlotControl (Control):
       self.plot (item)
 
   def plot (self, data):
-    dataobject = self.cache.load ('noaa', data["usaf"], data["range"][0], data["range"][1])
-    plottitle  = "%s: %d - %d" %(dataobject.name, data["range"][0],data["range"][1])
-    plotoutput = "%s_%d_%d" %(dataobject.name, data["range"][0],data["range"][1])
+    dataobject = self.cache.load ('noaa', (data["usaf"], data["wban"]), data["range"][0], data["range"][1])
+    name = dataobject.weatherstation["station_name"]
+    print >>config.out, "Plotting... %s" % (name)
+    plottitle  = "%s: %d - %d" %(name, data["range"][0],data["range"][1])
+    plotoutput = "%s_%d_%d" %(name, data["range"][0],data["range"][1])
     self.plot = plot.WalterLieth (
          dataobject.getData("temp", "m"), 
          dataobject.getData ("precipitation", "m"),
@@ -71,4 +74,3 @@ class PlotControl (Control):
         )
 
     self.plot.process ()
-    # TODO output status to a outputwindow
