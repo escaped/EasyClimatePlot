@@ -85,7 +85,7 @@ class NOAA (object):
           )
       files.append (s)
 
-    self.retrieveListOfFiles (files)
+    self.retrieveListOfFiles (files, outstream)
     
     # unzip and cache data to one file
     lines = []
@@ -181,7 +181,7 @@ class NOAA (object):
     contains all stations, which are listed and for which some data exist on the FTP.'''
     self.retrieveListOfFiles (["ish-history.txt"])
 
-  def retrieveListOfFiles (self, listoffiles):
+  def retrieveListOfFiles (self, listoffiles, outstream = sys.stdout):
     '''This method simply retrieves the files in the list listoffiles from the FTP.'''
     # check cache
     missing_files = filter (fileExistsInCache, listoffiles)
@@ -193,20 +193,20 @@ class NOAA (object):
       ftp.cwd ("pub/data/gsod")
       for f in missing_files:
         filename = os.path.basename (f)
-        print "Downloading %s........" %filename
+        print >>outstream, "Downloading %s........" %filename
         try:
           ftp.retrbinary('RETR %s' %f,
               open(os.path.join (config.CACHEDIR, "noaa", "%s" %filename), 'w+').write)
         except IOError:
-          print "Missing directory %s/noaa" %config.CACHEDIR
+          print >>config.err, "Missing directory %s/noaa" %config.CACHEDIR
           sys.exit (-1)
         except:
-          print "%s doesn't exist." %filename
-        print "waiting for 2 sec...."
+          print >>config.err, "%s doesn't exist." %filename
+        print >>outstream, "waiting for 2 sec...."
         time.sleep (2)
       ftp.quit ()
     except socket.error:
-      sys.stderr.write ("Network error. No connection to NOAA FTP server\n")
+      print >>config.err,"Network error. No connection to NOAA FTP server"
 
   def getFileContents (self, filename):
     file = open (os.path.join(config.CACHEDIR ,"noaa", filename), 'r')
