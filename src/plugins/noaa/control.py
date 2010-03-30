@@ -5,6 +5,8 @@ import dao
 import functional
 import functools as ft
 
+import config
+
 from wxcustom.error import ErrorMessage
 class SearchControl (Control):
   def __init__ (self, view):
@@ -113,7 +115,7 @@ class DownloadControl (Control):
       # TODO we should use both usaf and wban!
       self.noaa.station_number = station["usaf"]
       self.noaa.use_usaf = True
-      self.noaa.downloadData (fromYear, toYear)
+      self.noaa.downloadData (config.out, fromYear, toYear)
 
   def onActivate (self, *args, **kwargs):
     return True

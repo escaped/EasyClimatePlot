@@ -54,26 +54,25 @@ class NOAA (object):
     # ugly default
     self.use_usaf = True
 
-  def downloadData (self, start=1929, end=CURRENTYEAR):
+  def downloadData (self, outstream=sys.stdout, start=1929, end=CURRENTYEAR):
 
     # get weather station
     station = self.getStationById (self.station_number, self.use_usaf)[0]
 
-    # TODO ist das gut..?
     self.station_number = (station["usaf"], station["wban"])
     
     if self.cache.hashExists("noaa", self.station_number, start, end):
-        print "Data found in cache... loading!"
+        print >>outstream, "Data found in cache... loading!"
         self.data = self.cache.load("noaa", self.station_number, start, end)
         return 
     else:
-        print "Data not found in cache... "
+        print >>outstream, "Data not found in cache... "
     
     # createDataModel - read station data from ish-history
     self.data = data.Data (str(self.station_number), (0,0))
     # download data to tmp/noaa using ftp
     files = []
-    print 'Loading data: %d - %d' %(start, end)
+    print >>outstream, 'Loading data: %d - %d' %(start, end)
 
     for year in xrange (start, end + 1):
       # the filepath should look like this:
@@ -91,13 +90,13 @@ class NOAA (object):
     # unzip and cache data to one file
     lines = []
     for file in files:
-      print "  loading data from %s" %(file)
+      print >>outstream, "  loading data from %s" %(file)
       try:
         f = gzip.open(os.path.join(config.CACHEDIR,"noaa", "%s" %os.path.basename (file)), "rb")
         lines.extend(f.readlines()[1:]) # ignore first line
         f.close()
       except:
-        print "   (warn) file does not exist"
+        print >>outstream, "   (warn) file does not exist"
     
     # parse data
     # TODO this should be somewhere. maybe in config.py?
@@ -163,6 +162,7 @@ class NOAA (object):
     # save to dataObject                
     for type in CAT:
         if type != 'date' and len(values[type].keys()) > 0:
+          # TODO Which outputstream?
             print type
             print values[type]
             self.data.addCategory(type, values[type])

@@ -18,8 +18,7 @@ class OutputPanel (Panel):
 
   def write (self, string):
     self.textctrl.write (string)
-
-    self.parent.Show ()
+    self.parent.Show (True)
 
 
 # test cases
