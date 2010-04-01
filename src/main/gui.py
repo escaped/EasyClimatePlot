@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import wx
+import sys
 import main.splashscreen
 
 from main.pluginselection import PluginSelection
@@ -62,8 +63,8 @@ class MainWindow (wx.Frame):
     self.Show ()
 
   def onClose (self, e):
-    '''Close the frame'''
-    self.Close (True)
+    '''Stop the program'''
+    sys.exit ()
 
   def onAbout (self, e):
     '''Show the about message box'''

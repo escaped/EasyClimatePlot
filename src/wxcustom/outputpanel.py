@@ -4,7 +4,6 @@ import wx
 from panel import Panel
 import outputctrl
 
-# TODO sorge dafuer, dass ein objekt dieses typs nicht vernichtet werden kann!
 class OutputPanel (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)

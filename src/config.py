@@ -24,10 +24,8 @@ def createOutputStreams ():
   global out
   global err
   # create to different frames. for each stream one
-  import wxcustom.outputpanel
+  import wxcustom.outputframe
   import wx
 
-  outFrame = wx.Frame (None, title="Hinweismeldungen")
-  errFrame = wx.Frame (None, title="Fehlermeldungen")
-  out = wxcustom.outputpanel.OutputPanel (outFrame)
-  err = wxcustom.outputpanel.OutputPanel (errFrame)
+  outFrame = wxcustom.outputframe.OutputFrame (None, title="Hinweismeldungen")
+  errFrame = wxcustom.outputframe.OutputFrame (None, title="Fehlermeldungen")
