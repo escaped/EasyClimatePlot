@@ -10,7 +10,6 @@ class OutputFrame (wx.Frame):
     self.out = outputpanel.OutputPanel (self)
 
     self.Bind (wx.EVT_CLOSE, self.onClose, self)
-    print >>self.out, "haha"
 
   def onClose (self, evt):
     '''Just hide the window.'''
