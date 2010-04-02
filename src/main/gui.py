@@ -13,6 +13,7 @@ def ShowMainWindow ():
   app = wx.App (False)
   splash = main.splashscreen.Splashy ()
   mw  = MainWindow ()
+  mw.Show()
   config.createOutputStreams ()
   app.MainLoop ()
 
@@ -20,7 +21,7 @@ class MainWindow (wx.Frame):
   def __init__ (self):
     wx.Frame.__init__(self, None, title='Klimadaten', size=(600, 400))
     self.SetMinSize(self.GetSize())
-
+       
     ######
     # menu bar
     ######
@@ -39,8 +40,8 @@ class MainWindow (wx.Frame):
 
     # callbacks
     self.Bind (wx.EVT_MENU, self.onClose, menuClose)
-
     self.Bind (wx.EVT_MENU, self.onAbout, menuAbout)
+    self.Bind (wx.EVT_CLOSE, self.onClose)
 
     # finish menubar construction
     self.SetMenuBar (menuBar)
@@ -60,11 +61,16 @@ class MainWindow (wx.Frame):
     self.notebook.AddPage (selectionOut , "Output/Plot")
 
     self.Layout()
-    self.Show ()
 
   def onClose (self, e):
     '''Stop the program'''
-    sys.exit ()
+    dlg = wx.MessageDialog(self, 
+            "Do you really want to close this application?",
+            "Confirm Exit", wx.YES_NO|wx.ICON_QUESTION)
+    result = dlg.ShowModal()
+    dlg.Destroy()
+    if result == wx.ID_YES:
+      sys.exit()
 
   def onAbout (self, e):
     '''Show the about message box'''
