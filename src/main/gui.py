@@ -18,8 +18,8 @@ def ShowMainWindow ():
 
 class MainWindow (wx.Frame):
   def __init__ (self):
-    wx.Frame.__init__(self, None, title='Klimadaten', size=(800, 600))
-
+    wx.Frame.__init__(self, None, title='Klimadaten', size=(600, 400))
+    self.SetMinSize(self.GetSize())
 
     ######
     # menu bar
