@@ -66,8 +66,8 @@ class SearchPanel (Panel):
 
     # sizer for StationName
     stationNameSizer = wx.BoxSizer (wx.HORIZONTAL)
-    stationNameSizer.Add (self.lblStationName, -1,wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0) 
-    stationNameSizer.Add(self.txtStationName, -1, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
+    stationNameSizer.Add (self.lblStationName, 0,wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0) 
+    stationNameSizer.Add(self.txtStationName, 0, wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL|wx.ADJUST_MINSIZE, 0)
 
     # sizer for StationNumber
     stationNrSizer = wx.BoxSizer(wx.HORIZONTAL)
