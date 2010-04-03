@@ -29,7 +29,7 @@ class ExportStations (Panel):
 
     self.sizer = wx.BoxSizer (wx.VERTICAL)
 
-    self.noaa = dao.NOAA ()
+    self.noaa = dao.NOAA.getInstance ()
 
     self.exportButton = wx.Button (self, -1, "Stationen exportieren..")
     self.sizer.Add (self.exportButton)

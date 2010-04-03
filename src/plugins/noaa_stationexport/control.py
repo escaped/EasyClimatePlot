@@ -11,7 +11,7 @@ class ExportControl (Control):
   def __init__ (self, view):
     Control.__init__ (self, view)
 
-    self.dao = dao.NOAA ()
+    self.dao = dao.NOAA.getInstance ()
 
   def onExport (self, event):
     '''Show stations via config.out stream.'''
