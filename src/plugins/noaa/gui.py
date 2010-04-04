@@ -26,9 +26,7 @@ COMBOBOX_LIMIT = 15
 class SearchPanel (Panel):
   def __init__(self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
-
-    # TODO NOAA objekt sollte global sein. das kostet sonst einfach zuviel zeit.
-    self.noaa = dao.NOAA ()
+    self.noaa = dao.NOAA.getInstance ()
 
     self.stbSearchBox = wx.StaticBox(self, -1, "Suche")
 
@@ -52,6 +50,7 @@ class SearchPanel (Panel):
 
     # fill combobox with countries available at NOAA
     # TODO sortieren!
+    # TODO sollte das nicht der COntroller machen?
     for item in self.noaa.getCountryList ():
       # we associate each item with the given country code
       self.lsbRegion.Append (' '.join (item)[:COMBOBOX_LIMIT], item[0])
@@ -107,7 +106,6 @@ class SearchResults (Panel):
   def __init__ (self, *args, **kwargs):
     Panel.__init__ (self, *args, **kwargs)
     self.parent = args[0]
-    self.noaa = dao.NOAA ()
     self.results = []
 
     self.title = wx.StaticBox(self, -1, u"Station wählen")
@@ -136,6 +134,7 @@ class DownloadData (Panel):
 
     self.sizer = wx.BoxSizer (wx.VERTICAL)
 
+    # TODO verfügbarer Zeitraum sollte validiert werden. Vll.t Lädt man auch einfach alles zu einer Station herunter?!
     self.label = wx.StaticBox (self, -1, "Zeitraum:")
     self.daterange_sizer = wx.StaticBoxSizer (self.label)
 
@@ -146,8 +145,6 @@ class DownloadData (Panel):
     self.daterange_sizer.Add (self.txtFrom)
     self.daterange_sizer.Add (self.txtTo)
     self.sizer.Add (self.daterange_sizer)
-
-    self.noaa = dao.NOAA ()
 
     self.downloadButton = wx.Button (self, -1, "Daten herunterladen..")
     self.sizer.Add (self.downloadButton)

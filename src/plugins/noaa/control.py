@@ -42,7 +42,7 @@ class SearchResultsControl (Control):
     Control.__init__ (self, view)
 
     self.searchComplete = False
-    self.noaa = dao.NOAA ()
+    self.noaa = dao.NOAA.getInstance ()
 
   def onActivate (self):
     lct = self.view.lctChooseStation
@@ -100,7 +100,7 @@ class SearchResultsControl (Control):
 class DownloadControl (Control):
   def __init__ (self, view):
     Control.__init__ (self, view)
-    self.noaa = dao.NOAA ()
+    self.noaa = dao.NOAA.getInstance ()
 
   def onDownload (self, *args, **kwargs):
     fromYear = self.view.txtFrom.GetValue ()

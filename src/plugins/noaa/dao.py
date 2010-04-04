@@ -13,6 +13,8 @@ import sys
 
 import cPickle
 
+from singletonmixin import Singleton
+
 # time: used to sleep while downloading via FTP
 import time
 import weatherstation
@@ -26,7 +28,7 @@ def fileExistsInCache (f):
   f = os.path.basename (f)
   return not os.path.exists (os.path.join (config.CACHEDIR ,"noaa", "%s" %f))
 
-class NOAA (object):
+class NOAA (Singleton):
   '''Objects of this class are used to access the NOAA FTP, search and download station
   data.'''
 
