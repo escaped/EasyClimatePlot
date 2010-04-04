@@ -1,7 +1,8 @@
-from pluginmanager import WizardPlugin
-import gui
+#from pluginmanager import WizardPlugin
+#import gui
 
-class NOAA(WizardPlugin):
+# TODO implement this..
+class NOAA(object):
   def getName(self):
     return "Data Viewer"
 
@@ -19,4 +20,3 @@ class NOAA(WizardPlugin):
 
   def getWizard(self, parent):
     raise NotImplementedError, "Not yet implemented"
-    return gui.NOAA_Export_Wizard(parent)
