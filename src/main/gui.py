@@ -5,7 +5,6 @@ import sys
 import main.splashscreen
 
 from main.pluginselection import PluginSelection
-from export.gui import ExportIntro
 
 import config
 
