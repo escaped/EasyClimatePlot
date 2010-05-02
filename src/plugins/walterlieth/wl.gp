@@ -12,7 +12,7 @@ set xmtics
 set yrange [0:80]
 set y2range [0:160]
  
-set ylabel "Temperatur (Â°C)" #tc rgbcolor "#FF0000" font "Arial,18"
+set ylabel "Temperatur (¡C)" #tc rgbcolor "#FF0000" font "Arial,18"
 set y2label "Niederschlag (mm)" #tc rgbcolor "#006600"
  
 set style fill solid #border -1
