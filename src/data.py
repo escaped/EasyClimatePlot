@@ -56,26 +56,28 @@ class Data:
   
   def getData (self, category, resolution = 'm'):
     # return the category according to the given resolution
-    if resolution == 'm':
-        dat = self.data[category]
-        dates = dat.keys()
-        dates.sort()
-        counter = [0,0,0,0,0,0,0,0,0,0,0,0]
-        tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]        
-        
-        for date in dates:
-            index = int(date[4:6])-1 #month
-            tmpdata[index] += dat[date]
-            counter[index] += 1
-        
-        for index in range(0,12):
-            tmpdata[index] /= counter[index]
-            
-        if category == 'precipitation':
-            for index in range(0,12):
-                tmpdata[index] *= calendar.mdays[index+1]
-
-        return tmpdata
-            
+    try:
+      if resolution == 'm':
+          dat = self.data[category]
+          dates = dat.keys()
+          dates.sort()
+          counter = [0,0,0,0,0,0,0,0,0,0,0,0]
+          tmpdata = [0,0,0,0,0,0,0,0,0,0,0,0]        
+          
+          for date in dates:
+              index = int(date[4:6])-1 #month
+              tmpdata[index] += dat[date]
+              counter[index] += 1
+          
+          for index in range(0,12):
+              tmpdata[index] /= counter[index]
+              
+          if category == 'precipitation':
+              for index in range(0,12):
+                  tmpdata[index] *= calendar.mdays[index+1]
+  
+          return tmpdata  
+    except:
+      pass          
         
     return None

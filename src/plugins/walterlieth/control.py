@@ -1,8 +1,9 @@
 from mvc.control import Control
 import cachemanager
-
+import os
 import config
-import plot
+import gnuplot
+import re
 
 class SearchResultsControl (Control):
   cache = cachemanager.CacheManager.getInstance()
@@ -52,20 +53,26 @@ class PlotControl (Control):
 
   def onPlot (self, event):
     # plot
-    for item in self.view.getSelected ():
+    for item in self.view.getSelected():
       self.plot (item)
 
   def plot (self, data):
     dataobject = self.cache.load ('noaa', (data["usaf"], data["wban"]), data["range"][0], data["range"][1])
     name = dataobject.weatherstation["station_name"]
-    print >>config.out, "Plotting... %s" % (name)
     plottitle  = "%s: %d - %d" %(name, data["range"][0],data["range"][1])
     plotoutput = "%s_%d_%d" %(name, data["range"][0],data["range"][1])
-    self.plot = plot.WalterLieth (
-         dataobject.getData("temp", "m"), 
-         dataobject.getData ("precipitation", "m"),
-         plottitle,
-         plotoutput
-        )
-
-    self.plot.process ()
+    plotoutput = os.path.join(os.getcwd() + os.sep + re.sub('[^a-zA-Z0-9_\-.() ]+', '', plotoutput+'.png'))
+    
+    data = [dataobject.getData("temp", "m"), 
+            dataobject.getData("mintemp", "m"), 
+            dataobject.getData("maxtemp", "m"), 
+            dataobject.getData ("precipitation", "m")]
+    
+    datafile = gnuplot.GnuplotData(data, "m")
+       
+    template = gnuplot.GnuplotTemplate(os.path.dirname(__file__)+os.sep+"wl.gp" )
+    template.setTitle(plottitle)
+    template.setOutput(plotoutput)
+    
+    g = gnuplot.Gnuplot()    
+    g.plot(template, [datafile])

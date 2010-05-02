@@ -4,9 +4,8 @@ import random
 import subprocess
 
 
-class Tempfile(object):
-  
-  def getFile(self):
+class Tempfile(object):  
+  def getFilename(self):
     fd, self.path = tempfile.mkstemp(prefix=self.__class__.__name__+"_")
     os.write(fd, self.content)
     os.close(fd)
@@ -19,35 +18,55 @@ class Tempfile(object):
 
 
 
-class GnuplotData(object):
-  pass
+class GnuplotData(Tempfile):
+  def __init__(self, data, type):
+    self.content = ''
+    if type == "m":
+      for month in range(0,12):
+        self.content += str(month+1)+"\t"
+        for d in data:
+          if d == None:
+            self.content += "\t"
+          else:
+            self.content += str(d[month])+"\t"
+        self.content += "\n"
 
 
 
 class GnuplotTemplate(Tempfile): 
-  def init(self, file, data):
+  def __init__(self, file):
+    print file
     if not os.path.isfile(file):
       raise ValueError
-    
-    self.content = open(file, 'r').read() 
-    self.data = data
-  
-  def setOutputfile(self, file):
-    self.content.replace('{{OUTPUT}}', file)
-    
+    fd = open(file, 'r')    
+    self.content = fd.read()
+    fd.close() 
+
   def replace(self, pattern, value):
-    self.content.replace(pattern, value)
+    self.content = self.content.replace(pattern, value)
+  
+  def setOutput(self, file):
+    self.replace('{{OUTPUT}}', file) 
+    
+  def setTitle(self, title):
+    self.replace('{{TITLE}}', title) 
 
 
 class Gnuplot(object):
-  def init(self, template):
-    self.template = template
-    
-  def plot(self, filename):
-    self.template.setTerminal('png')
-    self.template.setOutputfile(filename+'png')
-    
-    gpfile = self.template.getFile()
+  def plot(self, template, data):
+    i = 0
+    for d in data:
+      if i == 0:
+        template.replace('{{DATA}}', d.getFilename()) 
+      else:
+        template.replace('{{DATA'+i+'}}', d.getFilename()) 
+      i = i+1
+      
+    gpfile = template.getFilename()
+    print template.content
 
     subprocess.call(['gnuplot', gpfile])
-    self.template.deleteFile()
+    
+    template.deleteFile()
+    for d in data:
+      d.deleteFile()
