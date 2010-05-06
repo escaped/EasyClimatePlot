@@ -67,6 +67,6 @@ class Gnuplot(object):
 
     subprocess.call(['gnuplot', gpfile])
     
-    template.deleteFile()
-    for d in data:
-      d.deleteFile()
+    #template.deleteFile()
+    #for d in data:
+    #  d.deleteFile()
