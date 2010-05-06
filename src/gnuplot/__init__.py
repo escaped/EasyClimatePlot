@@ -28,7 +28,7 @@ class GnuplotData(Tempfile):
           if d == None:
             self.content += "\t"
           else:
-            self.content += str(d[month])+"\t"
+            self.content += str('%.sf' %d[month])+"\t"
         self.content += "\n"
 
 
