@@ -22,3 +22,4 @@ set key below
  
 set object 1 rectangle from graph 0,0 to graph 1,1 behind fc rgbcolor "#EEEEff" lw 0
 plot "{{DATA}}" using 1:5 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "mittl. Niederschlag" , "{{DATA}}" using 1:2 with lines lc -1 lw 1.5 title "mittl. Temperatur" , "{{DATA}}" using 1:3 with lines lc 1 lw 1.5 title "mittl. max. Temperatur", "{{DATA}}" using 1:4 with lines lc 3 lw 1.5 title "mittl. min. Temperatur"
+exit
