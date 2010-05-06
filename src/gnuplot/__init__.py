@@ -57,9 +57,9 @@ class Gnuplot(object):
     i = 0
     for d in data:
       if i == 0:
-        template.replace('{{DATA}}', d.getFilename()) 
+        template.replace('{{DATA}}', d.getFilename().replace('\','/')) 
       else:
-        template.replace('{{DATA'+i+'}}', d.getFilename()) 
+        template.replace('{{DATA'+i+'}}', d.getFilename().'\','/')) 
       i = i+1
       
     gpfile = template.getFilename()
