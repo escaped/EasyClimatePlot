@@ -46,7 +46,7 @@ class GnuplotTemplate(Tempfile):
     self.content = self.content.replace(pattern, value)
   
   def setOutput(self, file):
-    self.replace('{{OUTPUT}}', file) 
+    self.replace('{{OUTPUT}}', file.replace('\\','/')) 
     
   def setTitle(self, title):
     self.replace('{{TITLE}}', title) 
@@ -58,9 +58,9 @@ class Gnuplot(object):
     for d in data:
       # Windows Gnuplot needs / instead of \
       if i == 0:
-        template.replace('{{DATA}}', d.getFilename().replace('\','/')) 
+        template.replace('{{DATA}}', d.getFilename().replace('\\','/')) 
       else:
-        template.replace('{{DATA'+i+'}}', d.getFilename().replace(','/')) 
+        template.replace('{{DATA'+i+'}}', d.getFilename().replace('\\','/')) 
       i = i+1
       
     gpfile = template.getFilename()
