@@ -56,10 +56,11 @@ class Gnuplot(object):
   def plot(self, template, data):
     i = 0
     for d in data:
+      # Windows Gnuplot needs / instead of \
       if i == 0:
         template.replace('{{DATA}}', d.getFilename().replace('\','/')) 
       else:
-        template.replace('{{DATA'+i+'}}', d.getFilename().'\','/')) 
+        template.replace('{{DATA'+i+'}}', d.getFilename().replace(','/')) 
       i = i+1
       
     gpfile = template.getFilename()
