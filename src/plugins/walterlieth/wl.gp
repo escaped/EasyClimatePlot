@@ -67,8 +67,8 @@ set y2label "Niederschlag [mm]" #tc rgbcolor "#006600"
 # second plot
 plot "{{DATA}}" u 1:5 with boxes axes x1y2 lc rgbcolor "#bbbbff" title "Niederschlag",\
 "{{DATA}}" u 1:2 with lines lc -1 lw 1.5 title "mittl. Temperatur",\
-"{{DATA}}" u 1:3 with lines lc 1 lw 1.5 title "max. Temperatur",\
-"{{DATA}}" u 1:4 with lines lc 3 lw 1.5 title "min. Temperatur"
+"{{DATA}}" u 1:3 with lines lc 3 lw 1.5 title "max. Temperatur",\
+"{{DATA}}" u 1:4 with lines lc 1 lw 1.5 title "min. Temperatur"
 
 set nomultiplot
 exit
