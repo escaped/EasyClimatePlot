@@ -76,3 +76,7 @@ class PlotControl (Control):
     
     g = gnuplot.Gnuplot()    
     g.plot(template, [datafile])
+    
+    template.deleteFile()
+    for d in data:
+      d.deleteFile()
