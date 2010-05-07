@@ -92,14 +92,16 @@ class NOAA (Singleton):
     # unzip and cache data to one file
     lines = []
     for file in files:
-      print >>outstream, "  loading data from %s" %(file)
+      filename = os.path.join(os.getcwd(), config.CACHEDIR, "noaa", "%s" %os.path.basename (file))
+      print >>outstream, "  loading data from %s" %(filename)
       try:
-        f = gzip.open(os.path.join(config.CACHEDIR,"noaa", "%s" %os.path.basename (file)), "rb")
+        f = gzip.open(filename, "rb+")
         lines.extend(f.readlines()[1:]) # ignore first line
         f.close()
-      except:
+      except Exception, e:
         print >>outstream, "   (warn) file does not exist"
-    
+        print e
+		
     # parse data
     # TODO this should be somewhere. maybe in config.py?
     CAT = ['date','temp','mintemp','maxtemp','windspeed','windgust','maxwindspeed','precipitation','visibility','dewpoint','pressure','seapressure']
@@ -198,7 +200,7 @@ class NOAA (Singleton):
         print >>outstream, "Downloading %s........" %filename
         try:
           ftp.retrbinary('RETR %s' %f,
-              open(os.path.join (config.CACHEDIR, "noaa", "%s" %filename), 'w+').write)
+              open(os.path.join (config.CACHEDIR, "noaa", "%s" %filename), 'wb+').write)
         except IOError:
           print >>config.err, "Missing directory %s/noaa" %config.CACHEDIR
           sys.exit (-1)
