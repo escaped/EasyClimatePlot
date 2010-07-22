@@ -4,6 +4,7 @@ data/
 *.eps
 *.pdf
 *.pyc
+data
 src/tmp
 src/cache
 webform/download/*
