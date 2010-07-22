@@ -1,0 +1,23 @@
+EasyClimatePlot
+========
+
+EasyClimatePlot is a small Tool written in python (with WxWidgets) and uses gnuplot (http://www.gnuplot.info) to create climate diagrams easily.
+It's licenced under GPL2.
+
+Features
+--------
+ * Import data from NOAA (http://www.noaa.gov/)
+ * Create diagrams: 
+   * Walther-Lieth
+ * Visualize Stations on GoogleMaps (http://maps.google.de)
+ 
+RoadMap
+-------
+ * Isopletendiagramme
+ * Import:
+   * custom data
+   * NASA (http://eosweb.larc.nasa.gov/ | http://eosweb.larc.nasa.gov/cgi-bin/sse/register.cgi)
+
+Want to help?
+------------
+Just contact us! We are looking forward to your participation.
