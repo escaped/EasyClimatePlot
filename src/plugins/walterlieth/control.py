@@ -78,5 +78,3 @@ class PlotControl (Control):
     g.plot(template, [datafile])
     
     template.deleteFile()
-    for d in data:
-      d.deleteFile()
