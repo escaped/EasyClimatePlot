@@ -40,7 +40,7 @@ set xtics nomirror
 set xtics ("J" 1, "F" 2, "M" 3, "A" 4, "M" 5, "J" 6, "J" 7, "A" 8, "S" 9, "O" 10, "N" 11, "D" 12)
 
 # y - Temp
-set ylabel "Temperatur [�C]" #tc rgbcolor "#FF0000" font "Arial,18"
+set ylabel "Temperatur [°C]" #tc rgbcolor "#FF0000" font "Arial,18"
 set yrange [0:50]
 set ytics 0, 10, 50 tc rgbcolor "#000000"
 set grid ytics
