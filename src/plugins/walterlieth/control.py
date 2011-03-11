@@ -56,11 +56,11 @@ class PlotControl (Control):
     for item in self.view.getSelected():
       self.plot (item)
 
-  def plot (self, data):
-    dataobject = self.cache.load ('noaa', (data["usaf"], data["wban"]), data["range"][0], data["range"][1])
+  def plot (self, weatherstation):
+    dataobject = self.cache.load ('noaa', (weatherstation["usaf"], weatherstation["wban"]), weatherstation["range"][0], weatherstation["range"][1])
     name = dataobject.weatherstation["station_name"]
-    plottitle  = "%s: %d - %d" %(name, data["range"][0],data["range"][1])
-    plotoutput = "%s_%d_%d" %(name, data["range"][0],data["range"][1])
+    plottitle  = "%s: %d - %d" %(name, weatherstation["range"][0], weatherstation["range"][1])
+    plotoutput = "%s_%d_%d" %(name, weatherstation["range"][0], weatherstation["range"][1])
     plotoutput = os.path.join(os.getcwd() + os.sep + re.sub('[^a-zA-Z0-9_\-.() ]+', '', plotoutput+'.png'))
     
     data = [dataobject.getData("temp", "m"), 
