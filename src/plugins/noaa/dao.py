@@ -20,9 +20,15 @@ import time
 import weatherstation
 
 from config import CURRENTYEAR
+
+noaa_configuration = dict()
+
 # noaa_url="ftp://ftp.ncdc.noaa.gov/pub/data/gsod/"
 # ftplib doesn't seem to resolv the upper url right
-noaa_url="205.167.25.101"
+noaa_configuration["url"]     = "205.167.25.101"
+noaa_configuration["user"]    = "anonymous"
+noaa_configuration["email"]   = ""
+noaa_configuration["basedir"] = "pub/data/gsod"
 
 def fileExistsInCache (f):
   f = os.path.basename (f)
@@ -192,9 +198,9 @@ class NOAA (Singleton):
 
     # get missing files
     try:
-      ftp = ftplib.FTP(noaa_url)
-      ftp.login("anonymous", "")
-      ftp.cwd ("pub/data/gsod")
+      ftp = ftplib.FTP(noaa_configuration["url"])
+      ftp.login(noaa_configuration["user"], noaa_configuration["email"])
+      ftp.cwd (noaa_configuration["basedir"])
       for f in missing_files:
         filename = os.path.basename (f)
         print >>outstream, "Downloading %s........" %filename
