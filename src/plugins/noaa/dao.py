@@ -203,9 +203,14 @@ class NOAA (Singleton):
               open(os.path.join (config.CACHEDIR, "noaa", "%s" %filename), 'wb+').write)
         except IOError:
           print >>config.err, "Missing directory %s/noaa" %config.CACHEDIR
-          sys.exit (-1)
-        except:
-          print >>config.err, "%s doesn't exist." %filename
+          print >>config.err, "Adding %s/noaa" %config.CACHEDIR
+          os.mkdir ("%s/noaa" %config.CACHEDIR)
+          print >>config.err, "Added %s/noaa" %config.CACHEDIR
+          print >>config.err, "Restarting method, please wait..."
+          self.retrieveListOfFiles (listoffiles, outstream)
+        except ftplib.error_perm:
+          print >>config.err, "File %s not found. Aborting." %f
+
         print >>outstream, "waiting for 2 sec...."
         time.sleep (2)
       ftp.quit ()
