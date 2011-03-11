@@ -43,18 +43,12 @@ class CacheManager(Singleton):
         print "load obj for (%s, %s)" %(module, id)
         obj=None
         
-        if starttime==None or endtime==None:
-            f=open(os.path.join(config.CACHEDIR, module, self.index[module][str(id)]), "r")
-            obj=cPickle.load(f)
-            f.close()
-        
-        else:
-            for key in self.index[module][str(id)]:
-                if key[0]<=starttime and endtime<=key[1]:
-                    f=open(os.path.join(config.CACHEDIR, module, self.index[module][str(id)][key]), "r")
-                    obj=cPickle.load(f)
-                    f.close()
-                    break
+        for key in self.index[module][str(id)]:
+            if key[0]<=starttime and endtime<=key[1]:
+                f=open(os.path.join(config.CACHEDIR, module, self.index[module][str(id)][key]), "r")
+                obj=cPickle.load(f)
+                f.close()
+                break
 
         return obj
     
