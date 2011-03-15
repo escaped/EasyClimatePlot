@@ -41,14 +41,14 @@ set xtics ("J" 1, "F" 2, "M" 3, "A" 4, "M" 5, "J" 6, "J" 7, "A" 8, "S" 9, "O" 10
 
 # y - Temp
 set ylabel "Temperatur [°C]" #tc rgbcolor "#FF0000" font "Arial,18"
-set yrange [0:50]
-set ytics 0, 10, 50 tc rgbcolor "#000000"
+set yrange [-30:50]
+set ytics -30, 10, 50 tc rgbcolor "#000000"
 set grid ytics
 set format "  %g"
 
 # y - PRCP
 set y2label "Niederschlag [mm]" #tc rgbcolor "#006600"
-set y2range [ 0 : 100 ]
+set y2range [ -60 : 100 ]
 set y2tics 0, 20, 100 tc rgbcolor "#000000"
 set y2tics nomirror
 
